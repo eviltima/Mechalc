@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Калькулятор">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="icon" href="assets/icon-180.png">
+<title>Калькулятор</title>
+<style>
+:root{--bg:#e9e9ea;--panel:#f6f6f7;--ink:#17181c;--muted:#6b7280;--cap:#fff;--edge:#c3c6cd;--hi:#fff;--fn:#eceef2;--acc:#e8822e;--accedge:#a85a12;--accink:#1b1204;--line:rgba(0,0,0,.1);--shadow:rgba(60,35,10,.38);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1e23;--panel:#272a31;--ink:#f2f3f5;--muted:#8b91a0;--cap:#343943;--edge:#15171b;--hi:rgba(255,255,255,.10);--fn:#3a404c;--line:rgba(255,255,255,.1);--shadow:rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1e23;--panel:#272a31;--ink:#f2f3f5;--muted:#8b91a0;--cap:#343943;--edge:#15171b;--hi:rgba(255,255,255,.10);--fn:#3a404c;--line:rgba(255,255,255,.1);--shadow:rgba(0,0,0,.6);color-scheme:dark}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:400 17px/1.3 -apple-system,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.app{height:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;padding:10px 16px 14px;box-sizing:border-box}
+header{display:flex;align-items:center;gap:6px}
+.seg{display:flex;flex:1;background:var(--panel);border-radius:12px;padding:3px}
+.seg button{flex:1;border:0;background:none;color:var(--muted);font:600 15px/1 inherit;font-family:inherit;padding:10px 8px;border-radius:9px}
+.seg button.on{background:var(--cap);color:var(--ink);box-shadow:0 1px 3px var(--shadow)}
+.ib{width:42px;height:42px;border:0;border-radius:12px;background:var(--panel);color:var(--ink);display:grid;place-items:center}
+.ib .x{display:none}.ib.off .w{display:none}.ib.off .x{display:inline}.ib.off{color:var(--muted)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.screen{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 4px 14px}
+.screen[hidden]{display:none}
+#hist{color:var(--muted);text-align:right;min-height:1.4em;font-size:17px;font-variant-numeric:tabular-nums}
+#val{text-align:right;font-weight:300;font-size:78px;line-height:1.08;font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap;overflow:hidden}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 2px}
+.row+.row{border-top:1px solid var(--line)}
+.amt{flex:1;min-width:0;text-align:right;font-size:44px;font-weight:300;line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+select{-webkit-appearance:none;appearance:none;background:var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%238b91a0' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 12px center;color:var(--ink);border:0;border-radius:12px;padding:11px 34px 11px 14px;font:600 18px/1 inherit;font-family:inherit}
+.note{color:var(--muted);font-size:14px;text-align:right;padding:8px 2px 0}
+.note b{display:block;color:var(--ink);font-weight:500;font-size:16px;margin-bottom:2px}
+.pad{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:min(100%,calc((100vh - 270px)*.85 + 30px));width:min(100%,calc((100dvh - 270px)*.85 + 30px));margin:0 auto;padding:0 0 10px;box-sizing:border-box}
+.key{border:0;margin:0;padding:0;background:transparent center/100% 100% no-repeat;aspect-ratio:187/176;font-size:0;color:transparent;filter:drop-shadow(0 4px 4px var(--shadow));transition:transform .045s,filter .045s;touch-action:manipulation;cursor:pointer}
+.key.wide,.key.tall{aspect-ratio:auto}
+.key.down{transform:translateY(3px) scale(.985);filter:brightness(.9) drop-shadow(0 1px 1px var(--shadow))}
+.key.op.on{filter:brightness(1.4) saturate(1.1) drop-shadow(0 4px 4px var(--shadow))}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.card{background:var(--panel);width:100%;max-width:440px;border-radius:24px 24px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));max-height:88%;overflow:auto;box-sizing:border-box}
+.card h2{margin:0 0 14px;font-size:22px;font-weight:600}
+.card h3{margin:20px 0 8px;font-size:15px;font-weight:600;color:var(--muted)}
+.line{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:8px 0}
+.rr{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.rr .in{display:flex;align-items:center;gap:8px}
+input[type=number]{width:110px;background:var(--bg);color:var(--ink);border:0;border-radius:10px;padding:10px 12px;font:500 17px/1 inherit;font-family:inherit;text-align:right;-webkit-user-select:text;user-select:text}
+em{font-style:normal;color:var(--muted);width:34px}
+input[type=range]{width:150px;accent-color:var(--acc)}
+input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
+.btn{border:0;border-radius:12px;background:var(--cap);color:var(--ink);font:600 16px/1 inherit;font-family:inherit;padding:13px 16px;box-shadow:0 3px 0 var(--edge)}
+.btn.main{background:var(--acc);color:var(--accink);box-shadow:0 3px 0 var(--accedge)}
+.acts{display:flex;gap:10px;margin-top:20px}.acts .btn{flex:1}
+@media (prefers-reduced-motion:reduce){.key{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="seg" role="tablist">
+      <button class="on" data-m="calc" role="tab">Калькулятор</button>
+      <button data-m="conv" role="tab">Конвертер</button>
+    </div>
+    <button class="ib" id="snd" aria-label="Звук клавиш" aria-pressed="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="w" d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/><path class="x" d="M17 9l5 6M22 9l-5 6"/></svg></button>
+    <button class="ib" id="cfg" aria-label="Настройки"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h8M18 7h2M4 17h2M12 17h8"/><circle cx="15" cy="7" r="2.5"/><circle cx="9" cy="17" r="2.5"/></svg></button>
+  </header>
+
+  <section class="screen" id="scrCalc">
+    <div id="hist"></div>
+    <div id="val">0</div>
+  </section>
+
+  <section class="screen" id="scrConv" hidden>
+    <div class="row"><select id="cFrom" aria-label="Из валюты"></select><div class="amt" id="cAmt">0</div></div>
+    <div class="row"><select id="cTo" aria-label="В валюту"></select><div class="amt" id="cOut">0</div></div>
+    <div class="note"><b id="cRate"></b>Курс ориентировочный. Поправь его в настройках.</div>
+  </section>
+
+  <div class="pad" id="pad"></div>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="card" role="dialog" aria-label="Настройки">
+    <h2>Настройки</h2>
+    <h3>Звук клавиш</h3>
+    <label class="line"><span>Звук включён</span><input type="checkbox" id="sOn"></label>
+    <label class="line"><span>Громкость</span><input type="range" id="sVol" min="0" max="100"></label>
+    <h3>Курсы к тенге</h3>
+    <div id="rates"></div>
+    <div class="acts"><button class="btn" id="reset">Сбросить курсы</button><button class="btn main" id="done">Готово</button></div>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const CUR=['USD','EUR','KZT','RUB','CNY','GBP','TRY','AED'];
+const DEF={KZT:1,USD:495,EUR:525,RUB:5,CNY:68,GBP:625,TRY:14.5,AED:135};
+let rates={...DEF}, snd={on:true,vol:.6}, mode='calc';
+try{
+  const r=JSON.parse(localStorage.getItem('calc.rates')||'null'); if(r) rates={...DEF,...r};
+  const s=JSON.parse(localStorage.getItem('calc.snd')||'null'); if(s) snd={...snd,...s};
+}catch(e){}
+const save=()=>{try{localStorage.setItem('calc.rates',JSON.stringify(rates));localStorage.setItem('calc.snd',JSON.stringify(snd));}catch(e){}};
+
+/* ---------- sound: synthesized mechanical key ---------- */
+let ctx,nb,sample=null,gain0=1;
+function synth(p,up){
+  if(!snd.on||snd.vol<=0) return;
+  try{
+    ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+    if(ctx.state!=='running') ctx.resume();
+    const t=ctx.currentTime, v=snd.vol*(up?.4:1);
+    if(!nb){const n=ctx.sampleRate*.08|0; nb=ctx.createBuffer(1,n,ctx.sampleRate); const d=nb.getChannelData(0); for(let i=0;i<n;i++)d[i]=Math.random()*2-1;}
+    const s=ctx.createBufferSource(); s.buffer=nb;
+    const f=ctx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=(up?2200:3000)*p; f.Q.value=.9;
+    const g=ctx.createGain(); g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(.8*v,t+.002); g.gain.exponentialRampToValueAtTime(.0001,t+(up?.03:.055));
+    s.connect(f); f.connect(g); g.connect(ctx.destination); s.start(t); s.stop(t+.08);
+    const o=ctx.createOscillator(), og=ctx.createGain(); o.type='triangle';
+    o.frequency.setValueAtTime((up?200:150)*p,t); o.frequency.exponentialRampToValueAtTime(70*p,t+.07);
+    og.gain.setValueAtTime(.0001,t); og.gain.linearRampToValueAtTime(.9*v,t+.003); og.gain.exponentialRampToValueAtTime(.0001,t+.09);
+    o.connect(og); og.connect(ctx.destination); o.start(t); o.stop(t+.1);
+  }catch(e){}
+}
+const pitch=b=>b.classList.contains('eq')?.7:b.classList.contains('op')?.85:b.classList.contains('fn')?1.15:1;
+/* own recording: assets/sounds/mech_click.wav; the synthesized click above is the fallback */
+try{
+  ctx=new (window.AudioContext||window.webkitAudioContext)();
+  fetch('assets/sounds/mech_click.wav').then(r=>r.arrayBuffer()).then(b=>ctx.decodeAudioData(b)).then(buf=>{
+    const d=buf.getChannelData(0); let pk=0; for(let i=0;i<d.length;i++) pk=Math.max(pk,Math.abs(d[i]));
+    gain0=pk>0?Math.min(3,.9/pk):1; sample=buf;
+  }).catch(()=>{});
+}catch(e){}
+function click(p,up){
+  if(!snd.on||snd.vol<=0) return;
+  if(!sample) return synth(p,up);
+  if(up) return;
+  try{
+    if(ctx.state!=='running') ctx.resume();
+    const s=ctx.createBufferSource(), g=ctx.createGain();
+    s.buffer=sample; s.playbackRate.value=(.55+.45*p)*(.96+Math.random()*.08);
+    g.gain.value=snd.vol*gain0; s.connect(g); g.connect(ctx.destination); s.start();
+  }catch(e){}
+}
+
+/* ---------- formatting ---------- */
+function fmt(s){
+  if(s==='Ошибка') return s;
+  let [i,f]=s.split('.'); const neg=i[0]==='-'; if(neg) i=i.slice(1);
+  i=i.replace(/\B(?=(\d{3})+(?!\d))/g,'\u202f');
+  return (neg?'−':'')+i+(f!==undefined?','+f:'');
+}
+const str=n=>isFinite(n)?String(parseFloat(n.toPrecision(12))):'Ошибка';
+const calc=(a,b,op)=>{a=+a;b=+b;return op==='+'?a+b:op==='−'?a-b:op==='×'?a*b:b===0?NaN:a/b;};
+
+/* ---------- calculator ---------- */
+const S={cur:'0',prev:null,op:null,fresh:false,hist:''};
+function calcKey(k){
+  const err=S.cur==='Ошибка';
+  if(/^\d$/.test(k)){
+    if(S.fresh||err){S.cur=k;S.fresh=false;}
+    else if(S.cur.replace(/\D/g,'').length<12) S.cur=S.cur==='0'?k:S.cur+k;
+  }else if(k===','){
+    if(S.fresh||err){S.cur='0.';S.fresh=false;}
+    else if(!S.cur.includes('.')) S.cur+='.';
+  }else if(k==='ac'){
+    Object.assign(S,{cur:'0',prev:null,op:null,fresh:false,hist:''});
+  }else if(k==='bs'){
+    if(!S.fresh&&!err) S.cur=(S.cur.length>1&&!(S.cur.length===2&&S.cur[0]==='-'))?S.cur.slice(0,-1):'0';
+  }else if(err){return;
+  }else if(k==='neg'){
+    if(S.cur!=='0') S.cur=S.cur[0]==='-'?S.cur.slice(1):'-'+S.cur;
+  }else if(k==='pct'){
+    S.cur=str(+S.cur/100); S.fresh=true;
+  }else if('+−×÷'.includes(k)){
+    if(S.op&&!S.fresh){
+      S.cur=str(calc(S.prev,S.cur,S.op));
+      if(S.cur==='Ошибка'){S.op=null;S.prev=null;S.hist='';S.fresh=true;return;}
+    }
+    S.prev=+S.cur; S.op=k; S.fresh=true; S.hist=fmt(S.cur)+' '+k;
+  }else if(k==='='){
+    if(S.op){
+      const r=calc(S.prev,S.cur,S.op);
+      S.hist=fmt(str(S.prev))+' '+S.op+' '+fmt(S.cur)+' =';
+      S.cur=str(r); S.op=null; S.prev=null; S.fresh=true;
+    }
+  }
+}
+
+/* ---------- converter ---------- */
+const C={amt:'0',from:'USD',to:'KZT'};
+function convKey(k){
+  if(/^\d$/.test(k)){
+    if(C.amt==='0') C.amt=k; else if(C.amt.replace(/\D/g,'').length<12) C.amt+=k;
+  }else if(k===','){ if(!C.amt.includes('.')) C.amt+='.';
+  }else if(k==='bs'){ C.amt=C.amt.length>1?C.amt.slice(0,-1):'0';
+  }else if(k==='ac'){ C.amt='0';
+  }else if(k==='swap'){ [C.from,C.to]=[C.to,C.from]; }
+}
+
+/* ---------- render ---------- */
+const loc=(n,d)=>n.toLocaleString('ru-RU',{maximumFractionDigits:d});
+function render(){
+  if(mode==='calc'){
+    const t=fmt(S.cur);
+    $('#hist').textContent=S.hist; $('#val').textContent=t;
+    $('#val').style.fontSize=(t.length<=7?78:Math.max(34,78-(t.length-7)*7))+'px';
+  }else{
+    const a=+C.amt||0, r=rates[C.from]/rates[C.to], out=a*r, t=fmt(C.amt);
+    $('#cAmt').textContent=t; $('#cAmt').style.fontSize=(t.length<=8?44:Math.max(24,44-(t.length-8)*3))+'px';
+    const o=loc(out,Math.abs(out)<1&&out!==0?4:2);
+    $('#cOut').textContent=o; $('#cOut').style.fontSize=(o.length<=8?44:Math.max(24,44-(o.length-8)*3))+'px';
+    $('#cRate').textContent='1 '+C.from+' = '+loc(r,4)+' '+C.to;
+    $('#cFrom').value=C.from; $('#cTo').value=C.to;
+  }
+  document.querySelectorAll('#pad .op').forEach(b=>b.classList.toggle('on',mode==='calc'&&S.op===b.dataset.k&&S.fresh));
+}
+function key(k){ mode==='calc'?calcKey(k):convKey(k); render(); }
+
+/* ---------- keypad ---------- */
+const CALC=[['AC','ac','fn','ac'],['±','neg','fn','plusminus'],['%','pct','fn','percent'],['÷','÷','op','div'],
+ ['7','7','num','7'],['8','8','num','8'],['9','9','num','9'],['×','×','op','mul'],
+ ['4','4','num','4'],['5','5','num','5'],['6','6','num','6'],['−','−','op','minus'],
+ ['1','1','num','1'],['2','2','num','2'],['3','3','num','3'],['+','+','op','plus'],
+ ['0','0','num wide','0'],[',',',','num','dot'],['=','=','eq','equals']];
+const CONV=[['7','7','num','7'],['8','8','num','8'],['9','9','num','9'],['⌫','bs','fn','bs'],
+ ['4','4','num','4'],['5','5','num','5'],['6','6','num','6'],['AC','ac','fn','ac'],
+ ['1','1','num','1'],['2','2','num','2'],['3','3','num','3'],['⇄','swap','op tall','swap'],
+ ['0','0','num wide','0'],[',',',','num','dot']];
+function build(){
+  const pad=$('#pad'); pad.innerHTML='';
+  (mode==='calc'?CALC:CONV).forEach(([t,k,c,img])=>{
+    const b=document.createElement('button'); b.className='key '+c; b.textContent=t; b.dataset.k=k;
+    b.style.backgroundImage='url(assets/keys/'+img+'.webp)';
+    b.setAttribute('aria-label',k==='swap'?'Поменять валюты':k==='bs'?'Стереть цифру':k==='ac'?'Сбросить':t);
+    if(c.includes('wide')) b.style.gridColumn='span 2';
+    if(c.includes('tall')) b.style.gridRow='span 2';
+    pad.appendChild(b);
+  });
+}
+let pressed=null;
+$('#pad').addEventListener('pointerdown',e=>{
+  const b=e.target.closest('.key'); if(!b) return;
+  pressed=b; b.classList.add('down'); click(pitch(b),false);
+});
+const release=()=>{ if(pressed){pressed.classList.remove('down'); click(pitch(pressed),true); pressed=null;} };
+window.addEventListener('pointerup',release); window.addEventListener('pointercancel',release);
+$('#pad').addEventListener('click',e=>{
+  const b=e.target.closest('.key'); if(!b) return;
+  if(ctx&&ctx.state!=='running') ctx.resume();
+  key(b.dataset.k);
+});
+
+/* physical keyboard */
+const KMAP={',':',','.':',','+':'+','-':'−','*':'×','/':'÷','Enter':'=','=':'=','Backspace':'bs','Escape':'ac','%':'pct'};
+window.addEventListener('keydown',e=>{
+  if(!$('#sheet').hidden||e.target.tagName==='SELECT'||e.metaKey||e.ctrlKey) return;
+  const k=/^\d$/.test(e.key)?e.key:KMAP[e.key]; if(!k) return;
+  e.preventDefault(); click(1,false); key(k);
+});
+
+/* swipe on display deletes last digit */
+let sx=null; const sc=$('#scrCalc');
+sc.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+sc.addEventListener('touchend',e=>{ if(sx!==null&&Math.abs(e.changedTouches[0].clientX-sx)>40){click(1,false);key('bs');} sx=null; },{passive:true});
+
+/* ---------- tabs, selects ---------- */
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
+  mode=b.dataset.m;
+  document.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b));
+  $('#scrCalc').hidden=mode!=='calc'; $('#scrConv').hidden=mode!=='conv';
+  build(); render();
+}));
+['#cFrom','#cTo'].forEach(id=>{
+  const s=$(id); s.innerHTML=CUR.map(c=>'<option>'+c+'</option>').join('');
+  s.addEventListener('change',()=>{ C.from=$('#cFrom').value; C.to=$('#cTo').value; render(); });
+});
+
+/* ---------- settings ---------- */
+function buildRates(){
+  const box=$('#rates'); box.innerHTML='';
+  CUR.filter(c=>c!=='KZT').forEach(c=>{
+    const l=document.createElement('label'); l.className='rr';
+    l.innerHTML='<span>1 '+c+'</span><span class="in"><input type="number" inputmode="decimal" step="any" min="0" value="'+rates[c]+'" data-c="'+c+'"><em>KZT</em></span>';
+    box.appendChild(l);
+  });
+}
+$('#rates').addEventListener('input',e=>{
+  const v=parseFloat(e.target.value);
+  if(v>0&&e.target.dataset.c){rates[e.target.dataset.c]=v; save(); render();}
+});
+$('#reset').addEventListener('click',()=>{rates={...DEF}; save(); buildRates(); render();});
+const sndIcon=()=>{$('#snd').classList.toggle('off',!snd.on); $('#snd').setAttribute('aria-pressed',String(snd.on)); $('#sOn').checked=snd.on;};
+$('#snd').addEventListener('click',()=>{snd.on=!snd.on; save(); sndIcon(); click(1,false);});
+$('#sOn').addEventListener('change',e=>{snd.on=e.target.checked; save(); sndIcon(); click(1,false);});
+$('#sVol').addEventListener('input',e=>{snd.vol=e.target.value/100; save(); click(1,false);});
+$('#cfg').addEventListener('click',()=>{$('#sheet').hidden=false;});
+$('#done').addEventListener('click',()=>{$('#sheet').hidden=true;});
+$('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet') $('#sheet').hidden=true;});
+
+$('#sVol').value=Math.round(snd.vol*100);
+sndIcon(); buildRates(); build(); render();
+</script>
+</body>
+</html>
