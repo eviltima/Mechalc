@@ -47,15 +47,15 @@ select{-webkit-appearance:none;appearance:none;max-width:150px;background:#2a241
 #vHist{justify-content:flex-start;overflow:auto;padding-top:4px}
 .hbar{display:flex;justify-content:space-between;align-items:center;color:var(--lcdDim);font-size:13px;padding:2px 0 8px}
 .hbar button{border:0;background:#2a241d;color:var(--lcd);border-radius:8px;padding:8px 12px;font:600 13px/1 inherit;font-family:inherit}
-.hrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;width:100%;border:0;background:none;color:var(--lcdDim);padding:10px 0;border-top:1px solid rgba(255,160,70,.15);font:400 14px/1.2 inherit;font-family:inherit;text-align:left;-webkit-user-select:text;user-select:text}
+.hrow{cursor:pointer;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;border:0;background:none;color:var(--lcdDim);padding:10px 0;border-top:1px solid rgba(255,160,70,.15);font:400 14px/1.2 inherit;font-family:inherit;text-align:left;-webkit-user-select:text;user-select:text}
 .hrow b{color:var(--lcd);font:600 20px/1.1 inherit;font-family:inherit;white-space:nowrap}
 .empty{color:var(--lcdDim);padding:30px 6px;text-align:center}
 #toast{position:absolute;left:50%;top:44px;transform:translateX(-50%);background:var(--lcd);color:#1b1204;font:600 12px/1 inherit;font-family:inherit;padding:6px 10px;border-radius:999px;opacity:0;transition:opacity .15s;pointer-events:none}
 #toast.show{opacity:1}
 .pad{display:grid;grid-template-columns:repeat(var(--cols,5),1fr);gap:4px;margin:0 auto;box-sizing:border-box}
 .pad[hidden]{display:none}
-.key{border:0;margin:0;padding:0;background:transparent center/100% 100% no-repeat;aspect-ratio:187/176;font-size:0;color:transparent;filter:drop-shadow(0 3px 3px var(--shadow));transition:transform .045s,filter .045s;touch-action:manipulation;cursor:pointer}
-.key.wide,.key.tall{aspect-ratio:auto}
+.key{position:absolute;inset:0;width:100%;height:100%;border:0;margin:0;padding:0;background:none;font-size:0;color:transparent;filter:drop-shadow(0 3px 3px var(--shadow));transition:transform .045s,filter .045s;touch-action:manipulation;cursor:pointer}
+.cell{position:relative;aspect-ratio:187/176;border-radius:10px}.cell.wide,.cell.tall{aspect-ratio:auto}
 .key.down{transform:translateY(3px) scale(.985);filter:brightness(.88) drop-shadow(0 1px 1px var(--shadow))}
 .key.op.on{filter:brightness(1.45) saturate(1.1) drop-shadow(0 3px 3px var(--shadow))}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
@@ -74,6 +74,34 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
 .btn.main{background:var(--acc);color:var(--accink);box-shadow:0 3px 0 var(--accedge)}
 .acts{display:flex;gap:10px;margin-top:20px}.acts .btn{flex:1}
 @media (prefers-reduced-motion:reduce){.key,#toast{transition:none}}
+
+.app{position:relative;z-index:1}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.6;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='.33 .33 .33 0 0 .33 .33 .33 0 0 .33 .33 .33 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%2523n)'/%3E%3C/svg%3E")}
+.key svg{display:block;width:100%;height:100%;pointer-events:none;overflow:visible}
+.sheet{z-index:100}
+.tabs[hidden],.pbar[hidden],.tray[hidden]{display:none}
+.line1{display:flex;align-items:center;gap:4px}
+.line1 #hist{flex:1;min-width:0}.line1 .lcdbox{flex:1;min-width:0}
+.cp{border:0;background:none;color:var(--lcdDim);width:30px;height:30px;display:grid;place-items:center;border-radius:8px;flex:none;opacity:.85;padding:0}
+.cp:active{color:var(--lcd)}
+.hrow span{flex:1;min-width:0}
+.btn.wide{width:100%;display:flex;align-items:center;justify-content:center;gap:10px}
+.rst{color:var(--muted);font-size:13px;padding:0 0 8px}.rst a{color:inherit}
+.pbar{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:38px;color:var(--ink);font-size:13px;font-weight:600;line-height:1.2}
+.pbar .btn{padding:9px 12px;font-size:13px;box-shadow:0 2px 0 var(--tabedge)}
+.pbar .btns{display:flex;gap:6px}
+.pad{position:relative;z-index:5}
+.sw{position:absolute;inset:0;width:100%;height:100%;display:none}
+.pulling .sw{display:block}
+.pulling .cell{background:rgba(0,0,0,.2)}
+.pulling .key{transition:none}
+html.pulling-on,html.pulling-on *{touch-action:none;cursor:none}
+.puller{position:fixed;left:0;top:0;width:90px;height:130px;pointer-events:none;z-index:120;display:none;filter:drop-shadow(0 6px 5px rgba(0,0,0,.45));will-change:transform}
+.tray{position:fixed;z-index:30;box-sizing:border-box;padding:12px;border-radius:16px;background:rgba(28,30,34,.9);overflow:auto;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.tray .tt{font-weight:600;margin:0 0 10px;text-align:center;color:var(--ink)}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.opt{border:0;background:none;padding:0;aspect-ratio:187/176;filter:drop-shadow(0 3px 3px var(--shadow));cursor:pointer}
+.opt:active{transform:translateY(2px)}.opt svg{display:block;width:100%;height:100%}
 </style>
 </head>
 <body>
@@ -84,6 +112,7 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
     <button data-m="conv" role="tab">Конвертер</button>
     <button data-m="hist" role="tab">История</button>
   </nav>
+  <div class="pbar" id="pbar" hidden><span id="phint"></span><span class="btns"><button class="btn" id="pchange" hidden>Сменить</button><button class="btn main" id="pdone">Готово</button></span></div>
 
   <section class="lcd" id="lcd">
     <div class="lcdtop">
@@ -96,8 +125,8 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
     <div id="toast">Скопировано</div>
 
     <div class="view" id="vCalc">
-      <div id="hist"></div>
-      <div class="lcdbox" id="lcdMain" role="img"></div>
+      <div class="line1"><div id="hist"></div><button class="cp" data-cp="hist" aria-label="Копировать"></button></div>
+      <div class="line1"><div class="lcdbox" id="lcdMain" role="img"></div><button class="cp" data-cp="main" aria-label="Копировать"></button></div>
     </div>
 
     <div class="view" id="vConv" hidden>
@@ -113,7 +142,9 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
   </section>
 
   <div class="pad" id="pad"></div>
+  <div class="tray" id="tray" hidden></div>
 </div>
+<svg class="puller" id="puller" viewBox="0 0 90 130" aria-hidden="true"><rect x="28" y="0" width="34" height="40" rx="15" fill="#d84a3a" stroke="#8d231a" stroke-width="2"/><path d="M36 10v20M45 8v24M54 10v20" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/><path d="M38 40L22 92M52 40L68 92" stroke="#c9ced6" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M22 92H68V122H22Z" fill="none" stroke="#dfe3ea" stroke-width="4" stroke-linejoin="round"/><path d="M22 108h8M68 108h-8" stroke="#dfe3ea" stroke-width="4" stroke-linecap="round"/></svg>
 
 <div class="sheet" id="sheet" hidden>
   <div class="card" role="dialog" aria-label="Настройки">
@@ -121,9 +152,13 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
     <h3>Звук клавиш</h3>
     <label class="line"><span>Звук включён</span><input type="checkbox" id="sOn"></label>
     <label class="line"><span>Громкость</span><input type="range" id="sVol" min="0" max="100"></label>
+    <h3>Кейкапы</h3>
+    <button class="btn wide" id="pullBtn"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="6" rx="3"/><path d="M10 8l-3 8M14 8l3 8"/><rect x="5" y="16" width="14" height="6" rx="1.5"/></svg>Пуллер кейкапов</button>
     <h3>Курсы к тенге</h3>
+    <div class="rst" id="rstat"></div>
     <div id="rates"></div>
-    <div class="acts"><button class="btn" id="reset">Сбросить курсы</button><button class="btn main" id="done">Готово</button></div>
+    <div class="rst" style="padding-top:8px">Курсы: <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a></div>
+    <div class="acts"><button class="btn" id="reset">Обновить курсы</button><button class="btn main" id="done">Готово</button></div>
   </div>
 </div>
 
@@ -176,6 +211,28 @@ function click(p,up){
     const s=ctx.createBufferSource(), g=ctx.createGain();
     s.buffer=sample; s.playbackRate.value=(.55+.45*p)*(.96+Math.random()*.08);
     g.gain.value=snd.vol*gain0; s.connect(g); g.connect(ctx.destination); s.start();
+  }catch(e){}
+}
+
+/* Звуки пуллера. Чтобы заменить: положи свои WAV с теми же именами в assets/sounds/
+   или поправь список. Из списка каждый раз берётся случайный файл. */
+const SOUNDS={
+  pull:['assets/sounds/keycap_pull_1.wav','assets/sounds/keycap_pull_2.wav','assets/sounds/keycap_pull_3.wav'],
+  insert:['assets/sounds/keycap_insert_1.wav','assets/sounds/keycap_insert_2.wav','assets/sounds/keycap_insert_3.wav']
+};
+const BUF={pull:[],insert:[]};
+try{ for(const n in SOUNDS) SOUNDS[n].forEach(u=>fetch(u).then(r=>r.arrayBuffer()).then(b=>ctx.decodeAudioData(b)).then(buf=>{
+  const d=buf.getChannelData(0); let pk=0; for(let i=0;i<d.length;i++) pk=Math.max(pk,Math.abs(d[i]));
+  BUF[n].push({buf,g:pk>0?Math.min(3,.9/pk):1});
+}).catch(()=>{})); }catch(e){}
+function play(n,rate){
+  if(!snd.on||snd.vol<=0) return;
+  const a=BUF[n]; if(!a.length) return synth(n==='pull'?1.3:.7,false);
+  try{
+    if(ctx.state!=='running') ctx.resume();
+    const x=a[Math.random()*a.length|0], s=ctx.createBufferSource(), g=ctx.createGain();
+    s.buffer=x.buf; s.playbackRate.value=(rate||1)*(.97+Math.random()*.06); g.gain.value=snd.vol*x.g;
+    s.connect(g); g.connect(ctx.destination); s.start();
   }catch(e){}
 }
 
@@ -423,44 +480,163 @@ function render(){
     $('#cFrom').value=C.from; $('#cTo').value=C.to;
     let note;
     if(r.cross) note=crossNote(a,b);
-    else{ const u=convert(1,a,b).v; note='1 '+a.name+' = '+show(numStr(u))+' '+b.name+(a.cur?'. Курс ориентировочный, поправь его в настройках.':''); }
+    else{ const u=convert(1,a,b).v; note='1 '+a.name+' = '+show(numStr(u))+' '+b.name+(a.cur?'. Курс подтягивается из сети, его можно поправить в настройках.':''); }
     $('#cNote').textContent=note;
   }else{
     const L=$('#hList');
     if(!H.length) L.innerHTML='<div class="empty">Пока пусто. Посчитай что-нибудь, и вычисления появятся здесь.</div>';
-    else L.innerHTML=H.map((x,i)=>'<button class="hrow" data-i="'+i+'"><span>'+x.e.replace(/&/g,'&amp;').replace(/</g,'&lt;')+' =</span><b>'+show(x.r)+'</b></button>').join('');
+    else{ L.innerHTML=H.map((x,i)=>'<div class="hrow" data-i="'+i+'"><span>'+x.e.replace(/&/g,'&amp;').replace(/</g,'&lt;')+' =</span><b>'+show(x.r)+'</b><button class="cp" aria-label="Копировать"></button></div>').join(''); fillIcons(); }
   }
   document.querySelectorAll('#pad .op').forEach(b=>b.classList.toggle('on',mode==='calc'&&S.op===b.dataset.k&&S.fresh));
 }
+const U=[];
+const snap=()=>JSON.stringify({S,E,C,H});
 function key(k){
+  if(k==='undo'){
+    if(U.length){ const o=JSON.parse(U.pop()); Object.assign(S,o.S); Object.assign(E,o.E); Object.assign(C,o.C); H=o.H; save(); }
+    render(); return;
+  }
+  const before=snap();
   if(mode==='calc') calcKey(k); else if(mode==='eng') engKey(k); else if(mode==='conv') convKey(k);
+  if(snap()!==before){ U.push(before); if(U.length>60) U.shift(); }
   render();
 }
 
 /* ================= keypad ================= */
-const NUM=(d)=>[d,d,'num',d];
+const NUM=d=>[d,d,'num'];
 const BASE=[
- ['AC','ac','fn','ac'],['±','neg','fn','plusminus'],['%','pct','fn','percent'],['÷','÷','op','div'],['⌫','bs','fn','bs'],
- NUM('7'),NUM('8'),NUM('9'),['×','×','op','mul'],['√','sqrt','fn','sqrt'],
- NUM('4'),NUM('5'),NUM('6'),['−','−','op','minus'],['CE','ce','fn','ce'],
- NUM('1'),NUM('2'),NUM('3'),['+','+','op tall','plus'],['AC','onc','fn','onc'],
- ['0','0','num wide','0'],[',',',','num','dot'],['=','=','eq','equals']];
-const FUNCS=[['sin','sin','fn','sin'],['cos','cos','fn','cos'],['tan','tan','fn','tan'],['ln','ln','fn','ln'],['log','log','fn','log'],
- ['(','(','fn','lp'],[')',')','fn','rp'],['π','pi','fn','pi'],['e','e','fn','e'],['степень','^','op','pow']];
-const CONV=[NUM('7'),NUM('8'),NUM('9'),['⌫','bs','fn','bs'],NUM('4'),NUM('5'),NUM('6'),['AC','ac','fn','ac'],
- NUM('1'),NUM('2'),NUM('3'),['⇄','swap','op tall','swap'],['0','0','num wide','0'],[',',',','num','dot']];
+ ['C','ac','fn'],['±','neg','fn'],['%','pct','fn'],['÷','÷','op'],['=','=','eq'],
+ NUM('7'),NUM('8'),NUM('9'),['×','×','op'],['√','sqrt','fn'],
+ NUM('4'),NUM('5'),NUM('6'),['−','−','op'],['↶','undo','fn'],
+ NUM('1'),NUM('2'),NUM('3'),['+','+','op tall'],['⌫','bs','fn tall'],
+ ['0','0','num wide'],[',',',','num']];
+const FUNCS=[['sin','sin','fn'],['cos','cos','fn'],['tan','tan','fn'],['ln','ln','fn'],['log','log','fn'],
+ ['(','(','fn'],[')',')','fn'],['π','pi','fn'],['e','e','fn'],['xʸ','^','op']];
+const CONV=[NUM('7'),NUM('8'),NUM('9'),['⌫','bs','fn'],NUM('4'),NUM('5'),NUM('6'),['C','ac','fn'],
+ NUM('1'),NUM('2'),NUM('3'),['⇄','swap','op tall'],['0','0','num wide'],[',',',','num']];
+
+/* ---- векторные кейкапы ---- */
+const FONTS={sans:'-apple-system,"SF Pro Display",system-ui,"Segoe UI",Roboto,sans-serif',mono:'ui-monospace,Menlo,Consolas,monospace',serif:'Georgia,"Times New Roman",serif',round:'ui-rounded,"SF Pro Rounded","Trebuchet MS",sans-serif',slab:'Rockwell,"Courier New",serif',bold:'Impact,"Arial Black",sans-serif',hand:'"Brush Script MT","Segoe Script",cursive'};
+const DSK={num:{top:'#8a8b88',side:'#3b3b3b',ink:'#f1f1ee',r:24,ins:14,shape:'cyl',font:'sans'},
+ fn:{top:'#d07a39',side:'#8e2b02',ink:'#1b1204',r:24,ins:14,shape:'cyl',font:'sans'}};
+DSK.op=DSK.fn; DSK.eq=DSK.fn;
+const KITS=[
+ {id:'cream',n:'Крем',top:'#ece4d0',ink:'#4a463d',r:24,ins:14,shape:'rect',font:'sans'},
+ {id:'ink',n:'Чёрный',top:'#2c2e33',ink:'#e9ebef',r:20,ins:16,shape:'cyl',font:'mono'},
+ {id:'red',n:'Красный',top:'#d9453d',ink:'#fff3ee',r:60,ins:12,shape:'sph',font:'round'},
+ {id:'teal',n:'Бирюза',top:'#2fb7a8',ink:'#06312d',r:30,ins:18,shape:'oct',font:'bold'},
+ {id:'pink',n:'Розовый',top:'#f29ac0',ink:'#5a1237',r:70,ins:10,shape:'sph',font:'hand'},
+ {id:'sun',n:'Жёлтый',top:'#f6c744',ink:'#3b2a00',r:14,ins:20,shape:'cyl',font:'slab'},
+ {id:'navy',n:'Синий',top:'#2f4aa8',ink:'#e8eeff',r:22,ins:14,shape:'rect',font:'serif'},
+ {id:'lime',n:'Лайм',top:'#9ad63a',ink:'#1d3300',r:34,ins:12,shape:'oct',font:'mono'},
+ {id:'lilac',n:'Сирень',top:'#a98be0',ink:'#ffffff',r:60,ins:12,shape:'sph',font:'bold'},
+ {id:'orange',n:'Оранж',top:'#ff8f1f',ink:'#241300',r:16,ins:18,shape:'cyl',font:'sans'},
+ {id:'snow',n:'Белый',top:'#f7f7f5',ink:'#222222',r:28,ins:12,shape:'rect',font:'serif'},
+ {id:'mint',n:'Мята',top:'#bfeadb',ink:'#0b3b2e',r:26,ins:16,shape:'oct',font:'hand'}];
+const LBS=['7','C','+','=','5','−','×','÷','9','%','√','0'];
+let SKM={}; try{ SKM=JSON.parse(localStorage.getItem('mechalc.skins')||'{}')||{}; }catch(e){}
+const sh=(h,f)=>{ const n=parseInt(h.slice(1),16); return 'rgb('+[n>>16,(n>>8)&255,n&255].map(v=>Math.max(0,Math.min(255,Math.round(v*f))))+')'; };
+function shp(x,y,w,h,r,oct,a){
+  if(oct){ const c=Math.min(r,w/2,h/2); return '<polygon '+a+' points="'+[x+c,y,x+w-c,y,x+w,y+c,x+w,y+h-c,x+w-c,y+h,x+c,y+h,x,y+h-c,x,y+c].join(' ').replace(/(\S+) (\S+)/g,'$1,$2')+'"/>'; }
+  return '<rect '+a+' x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+Math.min(r,w/2,h/2)+'"/>';
+}
+let capN=0;
+function capSVG(sk,label,vw,vh){
+  const id='c'+(++capN), oct=sk.shape==='oct', side=sk.side||sh(sk.top,.6), hi=sh(sk.top,1.2), lo=sh(sk.top,.85);
+  const bh=vh-8, ty=sk.ins*.5+2, tw=vw-2*sk.ins, th=bh-sk.ins*1.5-2;
+  const fs=Math.min(th*.52,tw/(Math.max(1,[...label].length)*.7));
+  const grad=sk.shape==='cyl'
+    ?'<linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+hi+'"/><stop offset=".5" stop-color="'+sk.top+'"/><stop offset="1" stop-color="'+lo+'"/></linearGradient>'
+    :'<radialGradient id="'+id+'" cx=".35" cy=".25" r=".95"><stop offset="0" stop-color="'+hi+'"/><stop offset="1" stop-color="'+lo+'"/></radialGradient>';
+  return '<svg viewBox="0 0 '+vw+' '+vh+'" preserveAspectRatio="none" aria-hidden="true"><defs>'+grad+'</defs>'
+    +shp(0,6,vw,bh,sk.r+4,oct,'fill="'+side+'" stroke="rgba(0,0,0,.3)" stroke-width="2"')
+    +shp(sk.ins,ty,tw,th,sk.r,oct,'fill="url(#'+id+')" stroke="rgba(255,255,255,.3)" stroke-width="2"')
+    +'<text x="'+vw/2+'" y="'+(ty+th/2)+'" text-anchor="middle" dominant-baseline="central" font-family=\''+FONTS[sk.font]+'\' font-size="'+fs+'" font-weight="700" fill="'+sk.ink+'">'+label+'</text></svg>';
+}
+const roleOf=c=>c.includes('eq')?'eq':c.includes('op')?'op':c.includes('num')?'num':'fn';
+const skinFor=(k,c)=>KITS.find(x=>x.id===SKM[k])||DSK[roleOf(c)];
+const VB=c=>c.includes('wide')?[378,176]:c.includes('tall')?[187,356]:[187,176];
+function paintKey(b){ const c=b.className, v=VB(c); b.innerHTML=capSVG(skinFor(b.dataset.k,c),b.dataset.t,v[0],v[1]); }
+const SW='<svg class="sw" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><rect x="12" y="12" width="76" height="76" rx="9" fill="#2a2c30"/><rect x="18" y="18" width="64" height="64" rx="7" fill="#3b3e44" stroke="#15161a" stroke-width="2"/><rect x="25" y="25" width="50" height="50" rx="5" fill="#1d1f23"/><g fill="#e0453a"><rect x="44" y="34" width="12" height="32" rx="2.5"/><rect x="34" y="44" width="32" height="12" rx="2.5"/></g><path d="M45 36v28M36 46h28" stroke="#fff" stroke-opacity=".25" stroke-width="1.5"/><circle cx="21" cy="21" r="1.8" fill="#8b8f98"/><circle cx="79" cy="79" r="1.8" fill="#8b8f98"/></svg>';
 function build(){
   const pad=$('#pad'); pad.innerHTML='';
   const layout=mode==='conv'?CONV:mode==='eng'?FUNCS.concat(BASE):BASE;
-  layout.forEach(([t,k,c,img])=>{
-    const b=document.createElement('button'); b.className='key '+c; b.textContent=t; b.dataset.k=k;
-    b.style.backgroundImage='url(assets/keys/'+img+'.webp)';
-    b.setAttribute('aria-label',k==='swap'?'Поменять единицы':k==='bs'?'Стереть цифру':k==='ac'||k==='onc'?'Сбросить':t);
-    if(c.includes('wide')) b.style.gridColumn='span 2';
-    if(c.includes('tall')) b.style.gridRow='span 2';
-    pad.appendChild(b);
+  layout.forEach(([t,k,c])=>{
+    const cell=document.createElement('div'); cell.className='cell '+c; cell.dataset.k=k; cell.innerHTML=SW;
+    if(c.includes('wide')) cell.style.gridColumn='span 2';
+    if(c.includes('tall')) cell.style.gridRow='span 2';
+    const b=document.createElement('button'); b.className='key '+c; b.dataset.k=k; b.dataset.t=t;
+    b.setAttribute('aria-label',k==='swap'?'Поменять единицы':k==='bs'?'Стереть цифру':k==='ac'?'Сбросить':k==='undo'?'Отменить':k==='^'?'Степень':t);
+    paintKey(b); cell.appendChild(b); pad.appendChild(cell);
   });
 }
+
+/* ---- пуллер кейкапов ---- */
+const P={on:false,phase:'pull',n:0,placed:0,total:0,sel:null};
+const hint=t=>{ $('#phint').textContent=t; };
+function mv(x,y){ const p=$('#puller'); p.style.display='block'; p.style.transform='translate('+(x-45)+'px,'+(y-122)+'px)'; }
+function startPull(){
+  if(mode!=='calc') setMode('calc'); else build();
+  P.on=true; P.phase='pull'; P.n=0; P.placed=0; P.sel=null; P.total=$('#pad').children.length;
+  document.documentElement.classList.add('pulling-on'); $('#pad').classList.add('pulling');
+  $('.tabs').hidden=true; $('#pbar').hidden=false; $('#pchange').hidden=true; $('#tray').hidden=true;
+  hint('Води пуллером по клавишам: кейкапы слетят');
+  const r=$('#pad').getBoundingClientRect(); mv(r.left+r.width/2,r.top+r.height/2);
+}
+function endPull(){
+  P.on=false; document.documentElement.classList.remove('pulling-on'); $('#pad').classList.remove('pulling');
+  $('.tabs').hidden=false; $('#pbar').hidden=true; $('#tray').hidden=true; $('#puller').style.display='none';
+  build(); fitPad(); render();
+}
+function pullKey(cell){
+  if(cell.dataset.gone) return; cell.dataset.gone=1; P.n++;
+  const b=cell.querySelector('.key'); b.style.zIndex=60; b.style.pointerEvents='none';
+  play('pull',.95+Math.random()*.15); try{ navigator.vibrate&&navigator.vibrate(8); }catch(e){}
+  const dx=(Math.random()-.5)*180, dy=-110-Math.random()*130, rot=(Math.random()-.5)*600;
+  const a=b.animate([
+    {transform:'translate(0,0) rotate(0deg) scale(1)',opacity:1},
+    {transform:'translate('+dx*.5+'px,'+dy+'px) rotate('+rot*.5+'deg) scale(1.2)',opacity:1,offset:.4},
+    {transform:'translate('+dx+'px,'+(dy+280)+'px) rotate('+rot+'deg) scale(.9)',opacity:0}
+  ],{duration:700,easing:'cubic-bezier(.2,.7,.4,1)',fill:'forwards'});
+  a.onfinish=()=>{ b.style.visibility='hidden'; };
+  if(P.n>=P.total) setTimeout(openTray,800);
+}
+function posTray(){ const r=$('#pad').getBoundingClientRect(); Object.assign($('#tray').style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'}); }
+function openTray(){
+  if(!P.on) return; P.phase='pick'; const t=$('#tray');
+  t.innerHTML='<div class="tt">Выбери кейкапы</div><div class="opts">'+KITS.map((k,i)=>'<button class="opt" data-id="'+k.id+'" aria-label="'+k.n+'">'+capSVG(k,LBS[i%LBS.length],187,176)+'</button>').join('')+'</div>';
+  posTray(); t.hidden=false; $('#pchange').hidden=true; hint('Выбери набор кейкапов');
+}
+function placeCap(cell){
+  if(!P.sel||!cell.dataset.gone||cell.dataset.sk===P.sel) return;
+  const b=cell.querySelector('.key'), first=!cell.dataset.sk;
+  SKM[cell.dataset.k]=P.sel; try{ localStorage.setItem('mechalc.skins',JSON.stringify(SKM)); }catch(e){}
+  cell.dataset.sk=P.sel; if(first) P.placed++;
+  b.getAnimations().forEach(a=>a.cancel()); b.style.zIndex=''; paintKey(b); b.style.visibility='visible';
+  b.animate([
+    {transform:'translateY(-22px) scale(1.08)',opacity:.2},
+    {transform:'translateY(2px) scale(.99)',opacity:1,offset:.6},
+    {transform:'translateY(0) scale(1)',opacity:1}],{duration:200,easing:'ease-in'});
+  setTimeout(()=>play('insert',.95+Math.random()*.1),90);
+  if(P.placed>=P.total){ hint('Готово! Все кейкапы на месте'); setTimeout(()=>{ if(P.on) endPull(); },1300); }
+  else hint('Тыкай на свичи, осталось: '+(P.total-P.placed));
+}
+$('#tray').addEventListener('click',e=>{
+  const o=e.target.closest('.opt'); if(!o) return;
+  P.sel=o.dataset.id; P.phase='place'; $('#tray').hidden=true; $('#pchange').hidden=false;
+  hint(P.placed>=P.total?'Все кейкапы на месте':'Тыкай на свичи, осталось: '+(P.total-P.placed));
+});
+$('#pchange').addEventListener('click',openTray);
+$('#pdone').addEventListener('click',endPull);
+$('#pullBtn').addEventListener('click',()=>{ $('#sheet').hidden=true; startPull(); });
+window.addEventListener('pointermove',e=>{
+  if(!P.on) return; mv(e.clientX,e.clientY);
+  const c=document.elementFromPoint(e.clientX,e.clientY), cell=c&&c.closest&&c.closest('.cell');
+  if(!cell||cell.parentNode.id!=='pad') return;
+  if(P.phase==='pull') pullKey(cell); else if(P.phase==='place'&&(e.buttons&1)) placeCap(cell);
+});
+window.addEventListener('pointerdown',e=>{ if(P.on) mv(e.clientX,e.clientY); });
+window.addEventListener('resize',()=>{ if(P.on&&P.phase==='pick') posTray(); });
 function fitPad(){
   const pad=$('#pad'); if(mode==='hist'){ pad.hidden=true; return; } pad.hidden=false;
   const cols=mode==='conv'?4:5, rows=mode==='eng'?7:mode==='conv'?4:5, gap=4;
@@ -470,15 +646,16 @@ function fitPad(){
   pad.style.width=(cols*c+(cols-1)*gap)+'px'; pad.style.setProperty('--cols',cols);
 }
 let pressed=null;
-$('#pad').addEventListener('pointerdown',e=>{ const b=e.target.closest('.key'); if(!b) return; pressed=b; b.classList.add('down'); click(pitch(b),false); });
+$('#pad').addEventListener('pointerdown',e=>{ if(P.on){ if(P.phase==='place'){ const c=e.target.closest('.cell'); if(c) placeCap(c); } return; } const b=e.target.closest('.key'); if(!b) return; pressed=b; b.classList.add('down'); click(pitch(b),false); });
 const release=()=>{ if(pressed){ pressed.classList.remove('down'); click(pitch(pressed),true); pressed=null; } };
 window.addEventListener('pointerup',release); window.addEventListener('pointercancel',release);
-$('#pad').addEventListener('click',e=>{ const b=e.target.closest('.key'); if(!b) return; if(ctx&&ctx.state!=='running') ctx.resume(); key(b.dataset.k); });
+$('#pad').addEventListener('click',e=>{ if(P.on) return; const b=e.target.closest('.key'); if(!b) return; if(ctx&&ctx.state!=='running') ctx.resume(); key(b.dataset.k); });
 
 /* physical keyboard */
 const KMAP={',':',','.':',','+':'+','-':'−','*':'×','/':'÷','Enter':'=','=':'=','Backspace':'bs','Escape':'ac','%':'pct','(':'(',')':')','^':'^'};
 window.addEventListener('keydown',e=>{
-  if(!$('#sheet').hidden||e.target.tagName==='SELECT'||e.target.tagName==='INPUT'||e.metaKey||e.ctrlKey||mode==='hist') return;
+  if(!$('#sheet').hidden||P.on||e.target.tagName==='SELECT'||e.target.tagName==='INPUT'||mode==='hist') return;
+  if(e.metaKey||e.ctrlKey){ if(e.key.toLowerCase()==='z'&&mode!=='conv'){ e.preventDefault(); key('undo'); } return; }
   let k=/^\d$/.test(e.key)?e.key:KMAP[e.key]; if(!k) return;
   if(mode==='conv'&&!/^\d$|^,$|^bs$|^ac$/.test(k)) return;
   e.preventDefault(); click(1,false); key(k);
@@ -486,7 +663,7 @@ window.addEventListener('keydown',e=>{
 
 /* ================= tabs ================= */
 function setMode(m){
-  mode=m;
+  mode=m; U.length=0;
   document.querySelectorAll('.tabs button').forEach(b=>{ b.classList.toggle('on',b.dataset.m===m); b.setAttribute('aria-selected',String(b.dataset.m===m)); });
   $('#vCalc').hidden=!(m==='calc'||m==='eng'); $('#vConv').hidden=m!=='conv'; $('#vHist').hidden=m!=='hist';
   $('#deg').hidden=m!=='eng';
@@ -498,7 +675,9 @@ window.addEventListener('resize',fitPad);
 /* history */
 $('#hList').addEventListener('click',e=>{
   const b=e.target.closest('.hrow'); if(!b) return;
-  const x=H[+b.dataset.i]; if(!x||bad(x.r)||x.r.includes('E')) return;
+  const x=H[+b.dataset.i]; if(!x) return;
+  if(e.target.closest('.cp')){ copyText(x.e+' = '+x.r); return; }
+  if(bad(x.r)||x.r.includes('E')) return;
   Object.assign(S,{cur:x.r,prev:null,op:null,fresh:true,hist:x.e+' =',note:''});
   setMode('calc');
 });
@@ -529,7 +708,30 @@ function buildRates(){
   });
 }
 $('#rates').addEventListener('input',e=>{ const v=parseFloat(e.target.value); if(v>0&&e.target.dataset.c){ rates[e.target.dataset.c]=v; save(); render(); } });
-$('#reset').addEventListener('click',()=>{ rates={...DEF}; save(); buildRates(); render(); });
+$('#reset').addEventListener('click',()=>{ liveRates(true); });
+const rstat=t=>{ const e=$('#rstat'); if(e) e.textContent=t; };
+async function liveRates(force){
+  let ts=0; try{ ts=+localStorage.getItem('mechalc.ratesT')||0; }catch(e){}
+  const ago=()=>ts?'Обновлено '+new Date(ts).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Курсы ориентировочные';
+  if(!force&&ts&&Date.now()-ts<6*36e5){ rstat(ago()); return; }
+  rstat('Обновляю…');
+  try{
+    let r;
+    try{ const j=await (await fetch('https://open.er-api.com/v6/latest/KZT')).json(); if(j.result!=='success') throw 0; r=j.rates; }
+    catch(e){ const j=await (await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/kzt.json')).json(); r={}; for(const c in DEF) r[c]=j.kzt[c.toLowerCase()]; }
+    let n=0; for(const c in DEF){ if(c!=='KZT'&&r[c]>0){ rates[c]=+(1/r[c]).toPrecision(5); n++; } }
+    if(!n) throw 0;
+    ts=Date.now(); try{ localStorage.setItem('mechalc.ratesT',String(ts)); }catch(e){}
+    save(); buildRates(); render(); rstat(ago());
+  }catch(e){ rstat('Нет сети: показаны сохранённые курсы'); }
+}
+/* копирование: иконки у строки истории над дисплеем и у главной строки */
+const CPI='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg>';
+function fillIcons(){ document.querySelectorAll('.cp:empty').forEach(b=>{ b.innerHTML=CPI; }); }
+document.querySelectorAll('.cp[data-cp]').forEach(b=>b.addEventListener('click',()=>{
+  const t=b.dataset.cp==='main'?$('#lcdMain').dataset.v:$('#hist').textContent.trim();
+  if(t&&!bad(t)) copyText(t.replace(/\u202f/g,'')); else if(t) copyText(t);
+}));
 const sndIcon=()=>{ $('#snd').classList.toggle('off',!snd.on); $('#snd').setAttribute('aria-pressed',String(snd.on)); $('#sOn').checked=snd.on; };
 $('#snd').addEventListener('click',()=>{ snd.on=!snd.on; save(); sndIcon(); click(1,false); });
 $('#sOn').addEventListener('change',e=>{ snd.on=e.target.checked; save(); sndIcon(); click(1,false); });
@@ -539,7 +741,7 @@ $('#done').addEventListener('click',()=>{ $('#sheet').hidden=true; });
 $('#sheet').addEventListener('click',e=>{ if(e.target.id==='sheet') $('#sheet').hidden=true; });
 
 $('#sVol').value=Math.round(snd.vol*100);
-sndIcon(); buildRates(); setMode('calc');
+sndIcon(); buildRates(); fillIcons(); setMode('calc'); liveRates(false);
 </script>
 </body>
 </html>
