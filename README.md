@@ -11,22 +11,26 @@
 
 Нажатие на число на дисплее копирует его.
 
-## Файлы
+## Структура репозитория
 
-- `index.html`: всё приложение
-- `assets/keys/`: клавиши (WebP с прозрачным фоном)
-- `assets/sounds/mech_click.wav`: звук нажатия
-- `assets/icon-180.png`, `assets/icon-512.png`, `manifest.webmanifest`: иконка и описание для экрана «Домой»
+- `wrangler.jsonc`: настройки Cloudflare (имя проекта и папка с сайтом)
+- `public/`: сам сайт. Всё, что внутри, становится корнем сайта
+  - `index.html`: всё приложение
+  - `assets/keys/`: клавиши (WebP с прозрачным фоном)
+  - `assets/sounds/mech_click.wav`: звук нажатия
+  - `assets/icon-180.png`, `assets/icon-512.png`, `manifest.webmanifest`: иконка и описание для экрана «Домой»
 
 ## Выложить
 
-GitHub: загрузить в корень репозитория всё содержимое папки (`index.html` должен лежать в корне).
-
-Cloudflare: Workers & Pages → Create application → Pages → Connect to Git → выбрать репозиторий. Framework preset: None, Build command пустой, Build output directory `/`. Дальше сайт обновляется при каждом push.
+1. Загрузить в репозиторий на GitHub всё содержимое этой папки так, чтобы `wrangler.jsonc` лежал в корне, а рядом папка `public`.
+2. Cloudflare → Workers & Pages → Create application → Import a repository → выбрать репозиторий.
+3. Настройки сборки: Build command пустой, Deploy command `npx wrangler deploy`, Root directory `/`.
+4. Имя Worker в Cloudflare должно совпадать с `name` в `wrangler.jsonc` (сейчас `mechalc`). Если назвал иначе, поправь `name` в файле.
+5. Сайт откроется по адресу `mechalc.<твой-поддомен>.workers.dev` и будет обновляться при каждом push в `main`.
 
 ## Что менять
 
-- **Курсы валют**: в приложении, настройки (значок справа вверху) → «Курсы к тенге». Стартовые значения ориентировочные, лежат в `index.html`, в константе `DEF`.
-- **Результат для несовместимых единиц**: функции `absurd` и `crossNote` в `index.html`. Сейчас это стабильный «курс Вселенной» для каждой пары. Любое другое правило и текст меняются там же.
-- **Звук**: заменить `assets/sounds/mech_click.wav` файлом с тем же именем (лучше короткий, до 100 мс).
-- **Клавиши**: заменить файлы в `assets/keys/` с теми же именами. Подключаются по именам в массивах `BASE`, `FUNCS` и `CONV` в `index.html`.
+- **Курсы валют**: в приложении, настройки (значок справа вверху) → «Курсы к тенге». Стартовые значения ориентировочные, лежат в `public/index.html`, в константе `DEF`.
+- **Результат для несовместимых единиц**: функции `absurd` и `crossNote` в `public/index.html`. Сейчас это стабильный «курс Вселенной» для каждой пары. Любое другое правило и текст меняются там же.
+- **Звук**: заменить `public/assets/sounds/mech_click.wav` файлом с тем же именем (лучше короткий, до 100 мс).
+- **Клавиши**: заменить файлы в `public/assets/keys/` с теми же именами. Подключаются по именам в массивах `BASE`, `FUNCS` и `CONV` в `public/index.html`.
