@@ -22,7 +22,6 @@ body{margin:0;height:100%;color:var(--ink);background:var(--tex) 0 0/256px 256px
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .tabs button{border:0;margin:0;padding:0;height:50px;background:none;position:relative;filter:drop-shadow(0 3px 3px var(--shadow));transition:transform .045s,filter .045s;touch-action:manipulation;cursor:pointer}
 .tabs button svg{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
-.tabs button.on{transform:translateY(3px) scale(.985);filter:brightness(.92) drop-shadow(0 1px 1px var(--shadow))}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .lcd{position:relative;flex:1;min-height:150px;display:flex;flex-direction:column;padding:8px 14px 12px;border-radius:18px;background:linear-gradient(#17120d,#0c0906);box-shadow:inset 0 2px 12px rgba(0,0,0,.85),inset 0 0 0 1px rgba(255,255,255,.05),0 1px 0 rgba(255,255,255,.22)}
 .lcdtop{display:flex;align-items:center;justify-content:space-between;min-height:30px}
@@ -643,7 +642,7 @@ const CONV=[NUM('7'),NUM('8'),NUM('9'),['BACK\nSPACE','bs','fn'],NUM('4'),NUM('5
 /* ---- векторные кейкапы (повторяют растровые: скосы, блики, зерно) ---- */
 const FONTS={arial:'"Helvetica Neue",Helvetica,Arial,sans-serif',sans:'-apple-system,"SF Pro Display",system-ui,"Segoe UI",Roboto,sans-serif',mono:'ui-monospace,Menlo,Consolas,monospace',serif:'Georgia,"Times New Roman",serif',round:'ui-rounded,"SF Pro Rounded","Trebuchet MS",sans-serif',slab:'Rockwell,"Courier New",serif',bold:'Impact,"Arial Black",sans-serif',hand:'"Brush Script MT","Segoe Script",cursive',custom:'"MechCap",sans-serif'};
 const FONTN=[['','Как в наборе'],['arial','Helvetica'],['sans','Системный'],['mono','Моноширинный'],['serif','С засечками'],['round','Округлый'],['slab','Брусковый'],['bold','Плакатный'],['hand','Рукописный']];
-const DSK={num:{top:'#efefec',ink:'#2a1a10',r:17,shape:'rect',font:'arial'},fn:{top:'#d07828',ink:'#2a1a10',r:17,shape:'rect',font:'arial'}};
+const DSK={num:{top:'#6b6d73',ink:'#f4f1ec',r:17,shape:'rect',font:'arial'},fn:{top:'#f58f1f',ink:'#fff8ee',r:17,shape:'rect',font:'arial'}};
 DSK.op=DSK.fn; DSK.eq=DSK.fn;
 const KITS=[
  /* два набора по умолчанию: «Цифры» для цифровых клавиш и «Функции» для всех остальных. Сброс возвращает клавиши к ним */
@@ -738,8 +737,8 @@ function capSVG(sk,label,vw,vh,fsx){
   const font=FONTS[cfg.capFont]||FONTS[sk.font||'arial'], fwt=cfg.capFont==='custom'?400:800;
   const photo=sk.img?'<clipPath id="'+id+'p"><rect x="'+X+'" y="'+Y+'" width="'+fw+'" height="'+fh+'" rx="'+(fw*.1)+'"/></clipPath><image href="'+sk.img+'" x="'+X+'" y="'+Y+'" width="'+fw+'" height="'+fh+'" preserveAspectRatio="xMidYMid slice" clip-path="url(#'+id+'p)"/>':'';
   return '<svg viewBox="0 0 '+vw+' '+vh+'" preserveAspectRatio="none" aria-hidden="true"><image href="'+url+'" width="'+vw+'" height="'+vh+'" preserveAspectRatio="none"/>'+photo
-   +(label==='⇄'?(()=>{ const u=fw*.2, P=(a,b)=>(cx+a*u).toFixed(1)+' '+(cy+b*u).toFixed(1); return '<path filter="url(#engrave)" fill="none" stroke="'+sk.ink+'" stroke-width="'+(u*.34).toFixed(1)+'" stroke-linecap="round" stroke-linejoin="round" d="M'+P(-1,-.5)+'L'+P(1,-.5)+'M'+P(.45,-1)+'L'+P(1,-.5)+'L'+P(.45,0)+'M'+P(1,.5)+'L'+P(-1,.5)+'M'+P(-.45,0)+'L'+P(-1,.5)+'L'+P(-.45,1)+'"/></svg>'; })()
-   :'<text text-anchor="middle" filter="url(#engrave)" font-family=\''+font+'\' font-size="'+fs+'" font-weight="'+fwt+'" fill="'+sk.ink+'">'+lines.map((l,i)=>'<tspan x="'+cx+'" y="'+(cy+(i-(lines.length-1)/2)*fs*1.1)+'" dy=".35em">'+l+'</tspan>').join('')+'</text></svg>');
+   +(label==='⇄'?(()=>{ const u=fw*.2, P=(a,b)=>(cx+a*u).toFixed(1)+' '+(cy+b*u).toFixed(1); return '<path fill="none" stroke="'+sk.ink+'" stroke-width="'+(u*.34).toFixed(1)+'" stroke-linecap="round" stroke-linejoin="round" d="M'+P(-1,-.5)+'L'+P(1,-.5)+'M'+P(.45,-1)+'L'+P(1,-.5)+'L'+P(.45,0)+'M'+P(1,.5)+'L'+P(-1,.5)+'M'+P(-.45,0)+'L'+P(-1,.5)+'L'+P(-.45,1)+'"/></svg>'; })()
+   :'<text text-anchor="middle" font-family=\''+font+'\' font-size="'+fs+'" font-weight="'+fwt+'" fill="'+sk.ink+'">'+lines.map((l,i)=>'<tspan x="'+cx+'" y="'+(cy+(i-(lines.length-1)/2)*fs*1.1)+'" dy=".35em">'+l+'</tspan>').join('')+'</text></svg>');
 }
 /* акцентный цвет интерфейса и цифр дисплея = цвет клавиши «=» (бывшей оранжевой) */
 function rgb2hsl(R,G,B){ R/=255;G/=255;B/=255; const mx=Math.max(R,G,B), mn=Math.min(R,G,B), l=(mx+mn)/2, d=mx-mn; let h=0,s=0;
