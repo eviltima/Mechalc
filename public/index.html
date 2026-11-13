@@ -19,7 +19,7 @@ html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;height:100%;color:var(--ink);background:radial-gradient(120% 70% at 50% 0%,#9b9da1,#7a7c81 60%,#6f7176);font:400 16px/1.3 -apple-system,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .sel{-webkit-user-select:text;user-select:text}
 .app{height:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:8px;padding:10px 16px 12px;box-sizing:border-box}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .tabs button{border:0;border-radius:10px;padding:11px 2px;font:600 12.5px/1 inherit;font-family:inherit;background:var(--tab);color:var(--ink);box-shadow:0 2px 0 var(--tabedge);white-space:nowrap}
 .tabs button.on{background:var(--acc);color:var(--accink);box-shadow:0 2px 0 var(--accedge)}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
@@ -106,6 +106,11 @@ html.pulling-on,html.pulling-on *{touch-action:none;cursor:none}
 .line .in{display:flex;gap:6px;align-items:center}
 .btn.sm{padding:9px 11px;font-size:14px;border-radius:10px;box-shadow:0 2px 0 var(--tabedge)}
 input[type=color]{width:44px;height:36px;border:0;padding:0;background:none}
+html,body{overflow:hidden}
+#hList{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-user-select:text;user-select:text}
+#hList::-webkit-scrollbar{display:none}
+.hin{min-height:100%;display:flex;flex-direction:column;justify-content:flex-end}
+#hList .hrow{padding:6px 0;font-size:13px}#hList .hrow b{font-size:16px}
 </style>
 </head>
 <body>
@@ -115,7 +120,6 @@ input[type=color]{width:44px;height:36px;border:0;padding:0;background:none}
     <button class="on" data-m="calc" role="tab">Обычный</button>
     <button data-m="eng" role="tab">Инженерный</button>
     <button data-m="conv" role="tab">Конвертер</button>
-    <button data-m="hist" role="tab">История</button>
   </nav>
   <div class="pbar" id="pbar" hidden><span id="phint"></span><span class="btns"><button class="btn" id="pchange" hidden>Сменить</button><button class="btn main" id="pdone">Готово</button></span></div>
 
@@ -123,6 +127,7 @@ input[type=color]{width:44px;height:36px;border:0;padding:0;background:none}
     <div class="lcdtop">
       <div><span class="brand">MECHALC</span><button class="tag" id="deg" hidden>DEG</button></div>
       <div class="tools">
+        <button class="ib" id="hClr" aria-label="Очистить историю"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>
         <button class="ib" id="snd" aria-label="Звук клавиш" aria-pressed="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="w" d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/><path class="x" d="M17 9l5 6M22 9l-5 6"/></svg></button>
         <button class="ib" id="cfg" aria-label="Настройки"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h8M18 7h2M4 17h2M12 17h8"/><circle cx="15" cy="7" r="2.5"/><circle cx="9" cy="17" r="2.5"/></svg></button>
       </div>
@@ -130,6 +135,7 @@ input[type=color]{width:44px;height:36px;border:0;padding:0;background:none}
     <div id="toast">Скопировано</div>
 
     <div class="view" id="vCalc">
+      <div id="hList"></div>
       <div class="line1"><div id="hist"></div><button class="cp" data-cp="hist" aria-label="Копировать"></button></div>
       <div class="line1"><div class="lcdbox" id="lcdMain" role="img"></div><button class="cp" data-cp="main" aria-label="Копировать"></button></div>
     </div>
@@ -140,10 +146,6 @@ input[type=color]{width:44px;height:36px;border:0;padding:0;background:none}
       <div class="cnote" id="cNote"></div>
     </div>
 
-    <div class="view sel" id="vHist" hidden>
-      <div class="hbar"><span>Нажми на строку, чтобы вернуть результат</span><button id="hClear">Очистить</button></div>
-      <div id="hList"></div>
-    </div>
   </section>
 
   <div class="pad" id="pad"></div>
@@ -471,6 +473,7 @@ function fillSel(sel){
 
 /* ================= render ================= */
 function render(){
+  if(mode==='calc'||mode==='eng') renderHist();
   if(mode==='calc'){
     const h=$('#hist'); h.classList.remove('expr'); h.textContent=S.note||S.hist;
     setLCD($('#lcdMain'),fmt(S.cur));
@@ -492,15 +495,18 @@ function render(){
     if(r.cross) note=crossNote(a,b);
     else{ const u=convert(1,a,b).v; note='1 '+a.name+' = '+show(numStr(u))+' '+b.name+(a.cur?'. Курс подтягивается из сети, его можно поправить в настройках.':''); }
     $('#cNote').textContent=note;
-  }else{
-    const L=$('#hList');
-    if(!H.length) L.innerHTML='<div class="empty">Пока пусто. Посчитай что-нибудь, и вычисления появятся здесь.</div>';
-    else{ L.innerHTML=H.map((x,i)=>'<div class="hrow" data-i="'+i+'"><span>'+x.e.replace(/&/g,'&amp;').replace(/</g,'&lt;')+' =</span><b>'+show(x.r)+'</b><button class="cp" aria-label="Копировать"></button></div>').join(''); fillIcons(); }
   }
   document.querySelectorAll('#pad .op').forEach(b=>b.classList.toggle('on',mode==='calc'&&S.op===b.dataset.k&&S.fresh));
 }
 const U=[];
 const snap=()=>JSON.stringify({S,E,C,H});
+let hSig='';
+function renderHist(){
+  const sig=H.length+'|'+(H[0]?H[0].e+H[0].r:''); if(sig===hSig) return; hSig=sig;
+  const L=$('#hList');
+  L.innerHTML='<div class="hin">'+H.map((x,i)=>'<div class="hrow" data-i="'+i+'"><span>'+x.e.replace(/&/g,'&amp;').replace(/</g,'&lt;')+' =</span><b>'+show(x.r)+'</b><button class="cp" aria-label="Копировать"></button></div>').reverse().join('')+'</div>';
+  fillIcons(); L.scrollTop=L.scrollHeight;
+}
 function key(k){
   if(k==='puller'){ startPull(); return; }
   if(k==='undo'){
@@ -516,10 +522,10 @@ function key(k){
 /* ================= keypad ================= */
 const NUM=d=>[d,d,'num'];
 const BASE=[
- ['±','neg','fn'],['%','pct','fn'],['÷','÷','op'],['CLEAR','ac','fn'],['=','=','eq'],
+ ['±','neg','fn'],['%','pct','fn'],['÷','÷','op'],['UNDO','undo','fn'],['=','=','eq'],
  NUM('7'),NUM('8'),NUM('9'),['×','×','op'],['BACK\nSPACE','bs','fn'],
  NUM('4'),NUM('5'),NUM('6'),['−','−','op'],['√','sqrt','fn'],
- NUM('1'),NUM('2'),NUM('3'),['+','+','op tall'],['UNDO','undo','fn'],
+ NUM('1'),NUM('2'),NUM('3'),['+','+','op tall'],['CLEAR','ac','fn'],
  ['0','0','num wide'],[',',',','num'],['PULLER','puller','fn']];
 const FUNCS=[['sin','sin','fn'],['cos','cos','fn'],['tan','tan','fn'],['ln','ln','fn'],['log','log','fn'],
  ['(','(','fn'],[')',')','fn'],['π','pi','fn'],['e','e','fn'],['xʸ','^','op']];
@@ -665,7 +671,7 @@ window.addEventListener('pointermove',e=>{
 window.addEventListener('pointerdown',e=>{ if(P.on) mv(e.clientX,e.clientY); });
 window.addEventListener('resize',()=>{ if(P.on&&P.phase==='pick') posTray(); });
 function fitPad(){
-  const pad=$('#pad'); if(mode==='hist'){ pad.hidden=true; return; } pad.hidden=false;
+  const pad=$('#pad'); pad.hidden=false;
   const cols=mode==='conv'?4:5, rows=mode==='eng'?7:mode==='conv'?4:5, gap=4;
   const avail=Math.min(window.innerWidth,440)-32, Hh=window.innerHeight-250;
   let c=(Hh-(rows-1)*gap)/(rows*.94);
@@ -681,7 +687,7 @@ $('#pad').addEventListener('click',e=>{ if(P.on) return; const b=e.target.closes
 /* physical keyboard */
 const KMAP={',':',','.':',','+':'+','-':'−','*':'×','/':'÷','Enter':'=','=':'=','Backspace':'bs','Escape':'ac','%':'pct','(':'(',')':')','^':'^'};
 window.addEventListener('keydown',e=>{
-  if(!$('#sheet').hidden||P.on||e.target.tagName==='SELECT'||e.target.tagName==='INPUT'||mode==='hist') return;
+  if(!$('#sheet').hidden||P.on||e.target.tagName==='SELECT'||e.target.tagName==='INPUT') return;
   if(e.metaKey||e.ctrlKey){ if(e.key.toLowerCase()==='z'&&mode!=='conv'){ e.preventDefault(); key('undo'); } return; }
   let k=/^\d$/.test(e.key)?e.key:KMAP[e.key]; if(!k) return;
   if(mode==='conv'&&!/^\d$|^,$|^bs$|^ac$/.test(k)) return;
@@ -692,7 +698,7 @@ window.addEventListener('keydown',e=>{
 function setMode(m){
   mode=m; U.length=0;
   document.querySelectorAll('.tabs button').forEach(b=>{ b.classList.toggle('on',b.dataset.m===m); b.setAttribute('aria-selected',String(b.dataset.m===m)); });
-  $('#vCalc').hidden=!(m==='calc'||m==='eng'); $('#vConv').hidden=m!=='conv'; $('#vHist').hidden=m!=='hist';
+  $('#vCalc').hidden=!(m==='calc'||m==='eng'); $('#vConv').hidden=m!=='conv';
   $('#deg').hidden=m!=='eng';
   build(); fitPad(); render();
 }
@@ -705,10 +711,11 @@ $('#hList').addEventListener('click',e=>{
   const x=H[+b.dataset.i]; if(!x) return;
   if(e.target.closest('.cp')){ copyText(x.e+' = '+x.r); return; }
   if(bad(x.r)||x.r.includes('E')) return;
-  Object.assign(S,{cur:x.r,prev:null,op:null,fresh:true,hist:x.e+' =',note:''});
-  setMode('calc');
+  if(mode==='eng') Object.assign(E,{expr:x.r.replace('-','−'),fresh:true,hist:x.e+' =',shown:x.r});
+  else Object.assign(S,{cur:x.r,prev:null,op:null,fresh:true,hist:x.e+' =',note:''});
+  U.length=0; render();
 });
-$('#hClear').addEventListener('click',()=>{ H=[]; save(); render(); });
+$('#hClr').addEventListener('click',()=>{ H=[]; save(); render(); });
 
 /* copy result by tapping the display */
 let toastT;
@@ -823,11 +830,25 @@ function buildCust(){
   });
 }
 async function loadCustom(){
-  const r=await Promise.all([idb.get('bgimg'),idb.get('capimg')]); IMG.bg=r[0]||''; IMG.cap=r[1]||''; applyBg(); if(IMG.cap&&!P.on) build();
+  const r=await Promise.all([idb.get('bgimg'),idb.get('capimg')]); IMG.bg=r[0]||''; IMG.cap=r[1]||''; applyBg(); if(IMG.cap&&!P.on) document.querySelectorAll('#pad .key').forEach(paintKey);
   for(const a of SLOTS){ const ab=await idb.get('snd_'+a[0]); if(ab) try{ await useSound(a[0],ab); }catch(e){} }
 }
 $('#lcd').classList.toggle('plain',cfg.plain); applyBg();
-sndIcon(); buildRates(); buildCust(); fillIcons(); setMode('calc'); liveRates(false); loadCustom();
+/* заставка: клавиши заезжают из-за границ экрана и встают со звуком */
+function intro(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches||P.on||mode==='conv') return;
+  const pad=$('#pad'), W=innerWidth, Hh=innerHeight; let end=0; pad.style.pointerEvents='none';
+  pad.querySelectorAll('.key').forEach((b,i)=>{
+    const r=b.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2, m=Math.min(cx,W-cx,Hh-cy);
+    const o=m===cx?[-(r.right+30),0]:m===W-cx?[W-r.left+30,0]:[0,Hh-r.top+30];
+    const delay=i*32+Math.random()*60, dur=380+Math.random()*120, rot=(Math.random()-.5)*40;
+    b.animate([{transform:'translate('+o[0]+'px,'+o[1]+'px) rotate('+rot+'deg)'},{transform:'translate(0,0) rotate(0deg)',offset:.82},{transform:'translateY(3px) scale(.985)',offset:.91},{transform:'none'}],{duration:dur,delay,easing:'cubic-bezier(.2,.8,.3,1)',fill:'backwards'});
+    setTimeout(()=>play('insert',.95+Math.random()*.12),delay+dur*.82); end=Math.max(end,delay+dur);
+  });
+  setTimeout(()=>{ pad.style.pointerEvents=''; },end+50);
+}
+const introWait=()=>new Promise(r=>{ let t=0; const i=setInterval(()=>{ if(BUF.insert.length||++t>15){ clearInterval(i); r(); } },60); });
+sndIcon(); buildRates(); buildCust(); fillIcons(); setMode('calc'); liveRates(false); loadCustom(); introWait().then(intro);
 </script>
 </body>
 </html>
