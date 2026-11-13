@@ -18,7 +18,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;height:100%;color:var(--ink);background:radial-gradient(120% 70% at 50% 0%,#9b9da1,#7a7c81 60%,#6f7176);font:400 16px/1.3 -apple-system,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .sel{-webkit-user-select:text;user-select:text}
-.app{height:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:8px;padding:10px 16px 12px;box-sizing:border-box}
+.app{height:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:8px;padding:10px 16px 26px;box-sizing:border-box}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .tabs button{border:0;border-radius:10px;padding:11px 2px;font:600 12.5px/1 inherit;font-family:inherit;background:var(--tab);color:var(--ink);box-shadow:0 2px 0 var(--tabedge);white-space:nowrap}
 .tabs button.on{background:var(--acc);color:var(--accink);box-shadow:0 2px 0 var(--accedge)}
@@ -54,10 +54,10 @@ select{-webkit-appearance:none;appearance:none;max-width:150px;background:#2a241
 #toast.show{opacity:1}
 .pad{display:grid;grid-template-columns:repeat(var(--cols,5),1fr);gap:4px;margin:0 auto;box-sizing:border-box}
 .pad[hidden]{display:none}
-.key{position:absolute;inset:0;width:100%;height:100%;border:0;margin:0;padding:0;background:none;font-size:0;color:transparent;filter:drop-shadow(0 3px 3px var(--shadow));transition:transform .045s,filter .045s;touch-action:manipulation;cursor:pointer}
+.key{position:absolute;inset:0;width:100%;height:100%;border:0;margin:0;padding:0;background:none;font-size:0;color:transparent;filter:drop-shadow(0 4px 4px var(--shadow));transition:transform .045s,filter .045s;touch-action:manipulation;cursor:pointer}
 .cell{position:relative;aspect-ratio:187/176;border-radius:10px}.cell.wide,.cell.tall{aspect-ratio:auto}
 .key.down{transform:translateY(3px) scale(.985);filter:brightness(.88) drop-shadow(0 1px 1px var(--shadow))}
-.key.op.on{filter:brightness(1.45) saturate(1.1) drop-shadow(0 3px 3px var(--shadow))}
+.key.op.on{filter:brightness(1.45) saturate(1.1) drop-shadow(0 4px 4px var(--shadow))}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
 .sheet[hidden]{display:none}
 .card{background:#23262c;color:var(--ink);width:100%;max-width:440px;border-radius:24px 24px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));max-height:88%;overflow:auto;box-sizing:border-box}
@@ -112,38 +112,46 @@ html,body{overflow:hidden}
 #hList::-webkit-scrollbar{display:none}
 .hin{min-height:100%;display:flex;flex-direction:column;justify-content:flex-end}
 #hList .hrow{padding:6px 0;font-size:13px}#hList .hrow b{font-size:16px}
+.pad,.cell{overflow:visible}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 8px;margin-top:6px}
+.kc{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.kc .kp{display:block;width:100%;aspect-ratio:187/176;filter:drop-shadow(0 4px 4px var(--shadow))}
+.kc .kp svg{display:block;width:100%;height:100%}
+.kc input[type=color]{position:absolute;left:0;top:0;width:100%;height:calc(100% - 20px);opacity:0;cursor:pointer;padding:0;border:0}
+.kc .kn{font-size:11px;line-height:1.1;color:var(--muted);text-align:center}
+.kc:focus-within .kp{outline:3px solid var(--acc);outline-offset:2px;border-radius:12px}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="engrave" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="inv"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feOffset in="inv" dx="1" dy="2.6" result="io"/><feGaussianBlur in="io" stdDeviation="1.1" result="ib"/><feComposite in="ib" in2="SourceAlpha" operator="in" result="ic"/><feFlood flood-color="#000" flood-opacity=".6"/><feComposite in2="ic" operator="in" result="inner"/><feOffset in="SourceAlpha" dx="-.4" dy="1.9" result="ro"/><feComposite in="ro" in2="SourceAlpha" operator="out" result="rm"/><feGaussianBlur in="rm" stdDeviation=".55" result="rb"/><feFlood flood-color="#fff" flood-opacity=".5"/><feComposite in2="rb" operator="in" result="rim"/><feOffset in="SourceAlpha" dx=".3" dy="-1.1" result="to"/><feComposite in="to" in2="SourceAlpha" operator="out" result="tm"/><feGaussianBlur in="tm" stdDeviation=".5" result="tb"/><feFlood flood-color="#000" flood-opacity=".35"/><feComposite in2="tb" operator="in" result="topw"/><feMerge><feMergeNode in="topw"/><feMergeNode in="rim"/><feMergeNode in="SourceGraphic"/><feMergeNode in="inner"/></feMerge></filter><filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="2" seed="3" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.5 0 0 0 -.75" result="lt"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 0 0 0 .75" result="dk"/><feComposite in="lt" in2="SourceAlpha" operator="in" result="l2"/><feComposite in="dk" in2="SourceAlpha" operator="in" result="d2"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="d2"/><feMergeNode in="l2"/></feMerge></filter></defs></svg>
 <div class="app">
   <nav class="tabs" role="tablist">
-    <button class="on" data-m="calc" role="tab">Обычный</button>
-    <button data-m="eng" role="tab">Инженерный</button>
-    <button data-m="conv" role="tab">Конвертер</button>
+    <button class="on" data-m="calc" role="tab" data-i="Обычный">Обычный</button>
+    <button data-m="eng" role="tab" data-i="Инженерный">Инженерный</button>
+    <button data-m="conv" role="tab" data-i="Конвертер">Конвертер</button>
   </nav>
-  <div class="pbar" id="pbar" hidden><span id="phint"></span><span class="btns"><button class="btn" id="pchange" hidden>Сменить</button><button class="btn main" id="pdone">Готово</button></span></div>
+  <div class="pbar" id="pbar" hidden><span id="phint"></span><span class="btns"><button class="btn" id="pchange" data-i="Сменить" hidden>Сменить</button><button class="btn main" id="pdone" data-i="Готово">Готово</button></span></div>
 
   <section class="lcd" id="lcd">
     <div class="lcdtop">
       <div><span class="brand">MECHALC</span><button class="tag" id="deg" hidden>DEG</button></div>
       <div class="tools">
-        <button class="ib" id="hClr" aria-label="Очистить историю"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>
-        <button class="ib" id="snd" aria-label="Звук клавиш" aria-pressed="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="w" d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/><path class="x" d="M17 9l5 6M22 9l-5 6"/></svg></button>
-        <button class="ib" id="cfg" aria-label="Настройки"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h8M18 7h2M4 17h2M12 17h8"/><circle cx="15" cy="7" r="2.5"/><circle cx="9" cy="17" r="2.5"/></svg></button>
+        <button class="ib" id="hClr" aria-label="Очистить историю" data-ial="Очистить историю"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>
+        <button class="ib" id="snd" aria-label="Звук клавиш" data-ial="Звук клавиш" aria-pressed="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="w" d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/><path class="x" d="M17 9l5 6M22 9l-5 6"/></svg></button>
+        <button class="ib" id="cfg" aria-label="Настройки" data-ial="Настройки"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
       </div>
     </div>
     <div id="toast">Скопировано</div>
 
     <div class="view" id="vCalc">
       <div id="hList"></div>
-      <div class="line1"><div id="hist"></div><button class="cp" data-cp="hist" aria-label="Копировать"></button></div>
-      <div class="line1"><div class="lcdbox" id="lcdMain" role="img"></div><button class="cp" data-cp="main" aria-label="Копировать"></button></div>
+      <div class="line1"><div id="hist"></div><button class="cp" data-cp="hist" aria-label="Копировать" data-ial="Копировать"></button></div>
+      <div class="line1"><div class="lcdbox" id="lcdMain" role="img"></div><button class="cp" data-cp="main" aria-label="Копировать" data-ial="Копировать"></button></div>
     </div>
 
     <div class="view" id="vConv" hidden>
-      <div class="crow"><select id="cFrom" aria-label="Из единицы"></select><div class="lcdbox" id="cAmt" role="img"></div></div>
-      <div class="crow"><select id="cTo" aria-label="В единицу"></select><div class="lcdbox" id="cOut" role="img"></div></div>
+      <div class="crow"><select id="cFrom" aria-label="Из единицы" data-ial="Из единицы"></select><div class="lcdbox" id="cAmt" role="img"></div></div>
+      <div class="crow"><select id="cTo" aria-label="В единицу" data-ial="В единицу"></select><div class="lcdbox" id="cOut" role="img"></div></div>
       <div class="cnote" id="cNote"></div>
     </div>
 
@@ -155,27 +163,108 @@ html,body{overflow:hidden}
 <svg class="puller" id="puller" viewBox="0 0 90 130" aria-hidden="true"><rect x="28" y="0" width="34" height="40" rx="15" fill="#d84a3a" stroke="#8d231a" stroke-width="2"/><path d="M36 10v20M45 8v24M54 10v20" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/><path d="M38 40L22 92M52 40L68 92" stroke="#c9ced6" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M22 92H68V122H22Z" fill="none" stroke="#dfe3ea" stroke-width="4" stroke-linejoin="round"/><path d="M22 108h8M68 108h-8" stroke="#dfe3ea" stroke-width="4" stroke-linecap="round"/></svg>
 
 <div class="sheet" id="sheet" hidden>
-  <div class="card" role="dialog" aria-label="Настройки">
-    <h2>Настройки</h2>
-    <h3>Звук клавиш</h3>
-    <label class="line"><span>Звук включён</span><input type="checkbox" id="sOn"></label>
-    <label class="line"><span>Громкость</span><input type="range" id="sVol" min="0" max="100"></label>
-    <h3>Кейкапы</h3>
-    <button class="btn wide" id="pullBtn"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="6" rx="3"/><path d="M10 8l-3 8M14 8l3 8"/><rect x="5" y="16" width="14" height="6" rx="1.5"/></svg>Пуллер кейкапов</button>
+  <div class="card" role="dialog" aria-label="Настройки" data-ial="Настройки">
+    <h2 data-i="Настройки">Настройки</h2>
+    <label class="line"><span>Язык · Language · Тіл</span><select id="lang" aria-label="Language"></select></label>
+    <h3 data-i="Звук клавиш">Звук клавиш</h3>
+    <label class="line"><span data-i="Звук включён">Звук включён</span><input type="checkbox" id="sOn"></label>
+    <label class="line"><span data-i="Звук отпускания">Звук отпускания</span><input type="checkbox" id="sRel"></label>
+    <label class="line"><span data-i="Громкость">Громкость</span><input type="range" id="sVol" min="0" max="100"></label>
+    <h3 data-i="Кейкапы">Кейкапы</h3>
+    <button class="btn wide" id="pullBtn"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="6" rx="3"/><path d="M10 8l-3 8M14 8l3 8"/><rect x="5" y="16" width="14" height="6" rx="1.5"/></svg><span data-i="Пуллер кейкапов">Пуллер кейкапов</span></button>
+    <h3 data-i="Пресеты кейкапов">Пресеты кейкапов</h3>
+    <div class="rst" data-i="Цвет каждой ячейки в меню пуллера">Цвет каждой ячейки в меню пуллера</div>
+    <div class="kgrid" id="kgrid"></div>
+    <div style="margin:12px 0 10px"><button class="btn sm" id="kReset" data-i="Сбросить цвета пресетов">Сбросить цвета пресетов</button></div>
     <div id="cust"></div>
-    <h3>Курсы к тенге</h3>
+    <h3 data-i="Курсы к тенге">Курсы к тенге</h3>
     <div class="rst" id="rstat"></div>
     <div id="rates"></div>
-    <div class="rst" style="padding-top:8px">Курсы: <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a></div>
-    <div class="acts"><button class="btn" id="reset">Обновить курсы</button><button class="btn main" id="done">Готово</button></div>
+    <div class="rst" style="padding-top:8px"><span data-i="Курсы">Курсы</span>: <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a></div>
+    <div class="acts"><button class="btn" id="reset" data-i="Обновить курсы">Обновить курсы</button><button class="btn main" id="done" data-i="Готово">Готово</button></div>
   </div>
 </div>
 
 <script>
 const $=s=>document.querySelector(s);
+/* ================= язык интерфейса =================
+   Исходные строки русские и служат ключами. Чтобы добавить язык: допиши его в LANGS и в TR (ключ = русская строка).
+   Что не переведено, показывается по-русски. */
+const LANGS=[['ru','Русский'],['en','English'],['kk','Қазақша']], LOC={ru:'ru-RU',en:'en-US',kk:'kk-KZ'};
+const TR={
+en:{
+'Обычный':'Basic','Инженерный':'Scientific','Конвертер':'Converter','Сменить':'Change','Готово':'Done',
+'Очистить историю':'Clear history','Звук клавиш':'Key sound','Настройки':'Settings','Копировать':'Copy',
+'Из единицы':'From unit','В единицу':'To unit','Скопировано':'Copied',
+'Не удалось загрузить шрифт':'Could not load the font','Не открылась картинка':'Could not open the image','Не удалось загрузить звук':'Could not load the sound',
+'0 ÷ 0: подойдёт любое число':'0 ÷ 0: any number fits','на ноль нельзя, но справа +∞, слева −∞':'no division by zero, but +∞ from the right and −∞ from the left',
+'Поменять единицы':'Swap units','Стереть цифру':'Backspace','Сбросить':'Clear','Отменить':'Undo','Пуллер кейкапов':'Keycap puller','Степень':'Power',
+'Води пуллером по клавишам: кейкапы слетят':'Drag the puller over the keys: the keycaps will pop off','Выбери набор кейкапов':'Choose a keycap set','Выбери кейкапы':'Choose keycaps',
+'Тыкай на свичи, осталось: ':'Tap the switches, left: ','Все кейкапы на месте':'All keycaps are in place','Готово! Все кейкапы на месте':'Done! All keycaps are in place',
+'Звук включён':'Sound on','Звук отпускания':'Key release sound','Громкость':'Volume','Кейкапы':'Keycaps',
+'Пресеты кейкапов':'Keycap presets','Цвет каждой ячейки в меню пуллера':'Colour of every cell in the puller menu','Сбросить цвета пресетов':'Reset preset colours',
+'Курсы к тенге':'Rates to tenge','Курсы':'Rates','Обновить курсы':'Update rates','Обновляю…':'Updating…','Нет сети: показаны сохранённые курсы':'No network: showing saved rates','Курсы ориентировочные':'Approximate rates','Обновлено':'Updated',
+'Обычный шрифт на дисплее':'Plain font on the display','Оформление':'Appearance','Фон':'Background','Картинка':'Image','Сброс':'Reset',
+'Кейкапы: цифры':'Keycaps: digits','Кейкапы: функции и акцент':'Keycaps: functions & accent','Шрифт клавиш':'Key font','Свой шрифт (файл)':'Custom font (file)',
+'Загрузить':'Upload','Картинка на кейкапах':'Image on keycaps','Выбрать':'Choose','Свои звуки':'Custom sounds',
+'Клавиши':'Keys','Снятие кейкапа':'Keycap removal','Посадка кейкапа':'Keycap insertion',
+'Как в наборе':'As in the set','Системный':'System','Моноширинный':'Monospace','С засечками':'Serif','Округлый':'Rounded','Брусковый':'Slab','Плакатный':'Poster','Рукописный':'Handwritten','Свой файл':'Custom file',
+'Крем':'Cream','Чёрный':'Black','Красный':'Red','Бирюза':'Teal','Розовый':'Pink','Жёлтый':'Yellow','Синий':'Blue','Лайм':'Lime','Сирень':'Lilac','Оранж':'Orange','Белый':'White','Мята':'Mint',
+'Длина':'Length','Масса':'Mass','Температура':'Temperature','Объём':'Volume','Площадь':'Area','Скорость':'Speed','Время':'Time','Данные':'Data','Валюты':'Currencies',
+'миллиметр':'millimeter','сантиметр':'centimeter','метр':'meter','километр':'kilometer','дюйм':'inch','фут':'foot','ярд':'yard','миля':'mile','морская миля':'nautical mile',
+'миллиграмм':'milligram','грамм':'gram','килограмм':'kilogram','тонна':'tonne','унция':'ounce','фунт':'pound',
+'градус Цельсия':'degree Celsius','градус Фаренгейта':'degree Fahrenheit','кельвин':'kelvin',
+'миллилитр':'milliliter','литр':'liter','галлон США':'US gallon','стакан США':'US cup','столовая ложка':'tablespoon',
+'кв. метр':'square meter','кв. километр':'square kilometer','гектар':'hectare','акр':'acre','кв. фут':'square foot',
+'метр в секунду':'meter per second','километр в час':'kilometer per hour','миля в час':'mile per hour','узел':'knot',
+'секунда':'second','минута':'minute','час':'hour','сутки':'day','неделя':'week','год':'year',
+'байт':'byte','килобайт':'kilobyte','мегабайт':'megabyte','гигабайт':'gigabyte','терабайт':'terabyte',
+'тенге':'tenge','доллар США':'US dollar','евро':'euro','рубль':'ruble','юань':'yuan','фунт стерлингов':'pound sterling','турецкая лира':'Turkish lira','дирхам ОАЭ':'UAE dirham',
+'. Курс подтягивается из сети, его можно поправить в настройках.':'. The rate is fetched online and can be adjusted in settings.',
+'«{a}» и «{b}» измеряют разное. Курс придуман, зато каждый раз один и тот же.':'“{a}” and “{b}” measure different things. The rate is made up, but it is always the same.'
+},
+kk:{
+'Обычный':'Қарапайым','Инженерный':'Инженерлік','Конвертер':'Конвертер','Сменить':'Ауыстыру','Готово':'Дайын',
+'Очистить историю':'Тарихты тазалау','Звук клавиш':'Пернелер дыбысы','Настройки':'Баптаулар','Копировать':'Көшіру',
+'Из единицы':'Қай бірліктен','В единицу':'Қай бірлікке','Скопировано':'Көшірілді',
+'Не удалось загрузить шрифт':'Қаріпті жүктеу мүмкін болмады','Не открылась картинка':'Суретті ашу мүмкін болмады','Не удалось загрузить звук':'Дыбысты жүктеу мүмкін болмады',
+'0 ÷ 0: подойдёт любое число':'0 ÷ 0: кез келген сан сәйкес келеді','на ноль нельзя, но справа +∞, слева −∞':'нөлге бөлуге болмайды, бірақ оң жағынан +∞, сол жағынан −∞',
+'Поменять единицы':'Бірліктерді ауыстыру','Стереть цифру':'Санды өшіру','Сбросить':'Тазалау','Отменить':'Болдырмау','Пуллер кейкапов':'Кейкап суырғыш','Степень':'Дәреже',
+'Води пуллером по клавишам: кейкапы слетят':'Суырғышты пернелер үстімен жүргіз: кейкаптар ұшып кетеді','Выбери набор кейкапов':'Кейкап жинағын таңда','Выбери кейкапы':'Кейкаптарды таңда',
+'Тыкай на свичи, осталось: ':'Свичтерді бас, қалғаны: ','Все кейкапы на месте':'Барлық кейкаптар орнында','Готово! Все кейкапы на месте':'Дайын! Барлық кейкаптар орнында',
+'Звук включён':'Дыбыс қосулы','Звук отпускания':'Пернені жіберу дыбысы','Громкость':'Дыбыс деңгейі','Кейкапы':'Кейкаптар',
+'Пресеты кейкапов':'Кейкап пресеттері','Цвет каждой ячейки в меню пуллера':'Суырғыш мәзіріндегі әр ұяшықтың түсі','Сбросить цвета пресетов':'Пресет түстерін бастапқыға қайтару',
+'Курсы к тенге':'Теңгеге қатысты бағамдар','Курсы':'Бағамдар','Обновить курсы':'Бағамдарды жаңарту','Обновляю…':'Жаңартылуда…','Нет сети: показаны сохранённые курсы':'Желі жоқ: сақталған бағамдар көрсетілді','Курсы ориентировочные':'Бағамдар шамамен','Обновлено':'Жаңартылды',
+'Обычный шрифт на дисплее':'Дисплейде қарапайым қаріп','Оформление':'Безендіру','Фон':'Фон','Картинка':'Сурет','Сброс':'Бастапқы',
+'Кейкапы: цифры':'Кейкаптар: сандар','Кейкапы: функции и акцент':'Кейкаптар: функциялар және акцент','Шрифт клавиш':'Перне қарпі','Свой шрифт (файл)':'Өз қарпің (файл)',
+'Загрузить':'Жүктеу','Картинка на кейкапах':'Кейкаптардағы сурет','Выбрать':'Таңдау','Свои звуки':'Өз дыбыстарың',
+'Клавиши':'Пернелер','Снятие кейкапа':'Кейкапты шешу','Посадка кейкапа':'Кейкапты орнату',
+'Как в наборе':'Жинақтағыдай','Системный':'Жүйелік','Моноширинный':'Моноенді','С засечками':'Сызықшалы','Округлый':'Дөңгелек','Брусковый':'Тақта типті','Плакатный':'Плакаттық','Рукописный':'Қолжазба','Свой файл':'Өз файлың',
+'Крем':'Крем','Чёрный':'Қара','Красный':'Қызыл','Бирюза':'Көгілдір','Розовый':'Қызғылт','Жёлтый':'Сары','Синий':'Көк','Лайм':'Лайм','Сирень':'Күлгін','Оранж':'Қызғылт сары','Белый':'Ақ','Мята':'Жалбыз',
+'Длина':'Ұзындық','Масса':'Масса','Температура':'Температура','Объём':'Көлем','Площадь':'Аудан','Скорость':'Жылдамдық','Время':'Уақыт','Данные':'Деректер','Валюты':'Валюталар',
+'миллиметр':'миллиметр','сантиметр':'сантиметр','метр':'метр','километр':'километр','дюйм':'дюйм','фут':'фут','ярд':'ярд','миля':'миля','морская миля':'теңіз милі',
+'миллиграмм':'миллиграмм','грамм':'грамм','килограмм':'килограмм','тонна':'тонна','унция':'унция','фунт':'фунт',
+'градус Цельсия':'Цельсий градусы','градус Фаренгейта':'Фаренгейт градусы','кельвин':'кельвин',
+'миллилитр':'миллилитр','литр':'литр','галлон США':'АҚШ галлоны','стакан США':'АҚШ стақаны','столовая ложка':'ас қасық',
+'кв. метр':'шаршы метр','кв. километр':'шаршы километр','гектар':'гектар','акр':'акр','кв. фут':'шаршы фут',
+'метр в секунду':'метр/секунд','километр в час':'километр/сағат','миля в час':'миля/сағат','узел':'түйін',
+'секунда':'секунд','минута':'минут','час':'сағат','сутки':'тәулік','неделя':'апта','год':'жыл',
+'байт':'байт','килобайт':'килобайт','мегабайт':'мегабайт','гигабайт':'гигабайт','терабайт':'терабайт',
+'тенге':'теңге','доллар США':'АҚШ доллары','евро':'еуро','рубль':'рубль','юань':'юань','фунт стерлингов':'фунт стерлинг','турецкая лира':'түрік лирасы','дирхам ОАЭ':'БАӘ дирхамы',
+'. Курс подтягивается из сети, его можно поправить в настройках.':'. Бағам желіден алынады, оны баптауларда түзетуге болады.',
+'«{a}» и «{b}» измеряют разное. Курс придуман, зато каждый раз один и тот же.':'«{a}» мен «{b}» әртүрлі нәрсені өлшейді. Бағам ойдан шығарылған, бірақ әрдайым бірдей.'
+}};
+let lang=(()=>{ const n=(navigator.language||'ru').slice(0,2).toLowerCase(); return TR[n]?n:'ru'; })();
+try{ const lg=localStorage.getItem('mechalc.lang'); if(lg==='ru'||TR[lg]) lang=lg; }catch(e){}
+function tr(s,v){ let r=TR[lang]&&TR[lang][s]; if(r===undefined) r=s; if(v) for(const k in v) r=r.split('{'+k+'}').join(v[k]); return r; }
+function applyStatic(){
+  document.querySelectorAll('[data-i]').forEach(e=>{ e.textContent=tr(e.dataset.i); });
+  document.querySelectorAll('[data-ial]').forEach(e=>{ e.setAttribute('aria-label',tr(e.dataset.ial)); });
+}
+
 const DEF={KZT:1,USD:495,EUR:525,RUB:5,CNY:68,GBP:625,TRY:14.5,AED:135};
 const CURN={KZT:'тенге',USD:'доллар США',EUR:'евро',RUB:'рубль',CNY:'юань',GBP:'фунт стерлингов',TRY:'турецкая лира',AED:'дирхам ОАЭ'};
-let rates={...DEF}, snd={on:true,vol:.6}, mode='calc', deg=true, H=[];
+let rates={...DEF}, snd={on:true,vol:.6,rel:true}, mode='calc', deg=true, H=[];
 try{
   const r=JSON.parse(localStorage.getItem('mechalc.rates')||'null'); if(r) rates={...DEF,...r};
   const s=JSON.parse(localStorage.getItem('mechalc.snd')||'null'); if(s) snd={...snd,...s};
@@ -185,7 +274,7 @@ try{
 const save=()=>{try{localStorage.setItem('mechalc.rates',JSON.stringify(rates));localStorage.setItem('mechalc.snd',JSON.stringify(snd));localStorage.setItem('mechalc.hist',JSON.stringify(H));localStorage.setItem('mechalc.deg',deg?'1':'0');}catch(e){}};
 
 const CS={};
-let cfg={plain:false,bg:'',capNum:'',capFn:'',capFont:''}, IMG={bg:'',cap:''};
+let cfg={plain:false,bg:'',capNum:'',capFn:'',capFont:'',kits:{}}, IMG={bg:'',cap:''};
 try{ cfg={...cfg,...JSON.parse(localStorage.getItem('mechalc.cfg')||'{}')}; }catch(e){}
 /* ================= sound ================= */
 let ctx,nb,sample=null,gain0=1;
@@ -216,23 +305,28 @@ try{
 }catch(e){}
 function click(p,up){
   if(!snd.on||snd.vol<=0) return;
-  const cs0=CS.click||(sample&&{buf:sample,g:gain0}); if(!cs0) return synth(p,up);
-  if(up) return;
+  if(up&&snd.rel===false) return;
+  let cs0;
+  if(CS.click){ if(up) return; cs0=CS.click; }
+  else{ const a=up?BUF.up:BUF.down; cs0=a.length?a[Math.random()*a.length|0]:(!up&&sample?{buf:sample,g:gain0}:null); if(!cs0) return synth(p,up); }
   try{
     if(ctx.state!=='running') ctx.resume();
     const s=ctx.createBufferSource(), g=ctx.createGain();
     s.buffer=cs0.buf; s.playbackRate.value=(.55+.45*p)*(.96+Math.random()*.08);
-    g.gain.value=snd.vol*cs0.g; s.connect(g); g.connect(ctx.destination); s.start();
+    g.gain.value=snd.vol*cs0.g*(up?.4:1); s.connect(g); g.connect(ctx.destination); s.start();
   }catch(e){}
 }
 
 /* Звуки пуллера. Чтобы заменить: положи свои WAV с теми же именами в assets/sounds/
    или поправь список. Из списка каждый раз берётся случайный файл. */
+/* Нажатие и отпускание нарезаны из mech_click.wav скриптом tools/slice_click.py: из списка каждый раз берётся случайный кусок. */
 const SOUNDS={
+  down:['assets/sounds/key_down_1.wav','assets/sounds/key_down_2.wav','assets/sounds/key_down_3.wav'],
+  up:['assets/sounds/key_up_1.wav','assets/sounds/key_up_2.wav'],
   pull:['assets/sounds/keycap_pull_1.wav','assets/sounds/keycap_pull_2.wav','assets/sounds/keycap_pull_3.wav'],
   insert:['assets/sounds/keycap_insert_1.wav','assets/sounds/keycap_insert_2.wav','assets/sounds/keycap_insert_3.wav']
 };
-const BUF={pull:[],insert:[]};
+const BUF={down:[],up:[],pull:[],insert:[]};
 try{ for(const n in SOUNDS) SOUNDS[n].forEach(u=>fetch(u).then(r=>r.arrayBuffer()).then(b=>ctx.decodeAudioData(b)).then(buf=>{
   const d=buf.getChannelData(0); let pk=0; for(let i=0;i<d.length;i++) pk=Math.max(pk,Math.abs(d[i]));
   BUF[n].push({buf,g:pk>0?Math.min(3,.9/pk):1});
@@ -291,7 +385,7 @@ function addHist(e,r){ H.unshift({e,r}); if(H.length>100) H.length=100; save(); 
 
 /* ================= basic calculator ================= */
 const S={cur:'0',prev:null,op:null,fresh:false,hist:'',note:''};
-const NOTE=a=>a===0?'0 ÷ 0: подойдёт любое число':'на ноль нельзя, но справа +∞, слева −∞';
+const NOTE=a=>a===0?'0 ÷ 0: подойдёт любое число':'на ноль нельзя, но справа +∞, слева −∞'; /* ключ перевода, переводится при показе */
 function calcKey(k){
   const b=bad(S.cur);
   if(/^\d$/.test(k)){
@@ -437,7 +531,8 @@ const CATS=[
  ['Валюты',Object.keys(DEF).map(c=>[c,CURN[c],0])]
 ];
 const UNITS={};
-CATS.forEach(([cat,list])=>list.forEach(([id,name,f])=>{ UNITS[id]={id,name:cat==='Валюты'?id+' · '+name:name,cat,f,cur:cat==='Валюты'}; }));
+CATS.forEach(([cat,list])=>list.forEach(([id,name,f])=>{ UNITS[id]={id,nm:name,cat,f,cur:cat==='Валюты'}; }));
+const uLab=u=>(u.cur?u.id+' · ':'')+tr(u.nm);
 const C={amt:'0',from:'USD',to:'KZT'};
 /* Результат для несовместимых величин (например кг → мили). Пока заглушка: «курс Вселенной»,
    стабильный для каждой пары. Здесь можно поменять правило и текст. */
@@ -445,7 +540,7 @@ function absurd(a,b){
   let h=2166136261; for(const ch of a.id+'>'+b.id){ h^=ch.charCodeAt(0); h=Math.imul(h,16777619); } h>>>=0;
   return (1+(h%900)/100)*Math.pow(10,((h>>>10)%9)-4);
 }
-function crossNote(a,b){ return '«'+a.name+'» и «'+b.name+'» измеряют разное. Курс придуман, зато каждый раз один и тот же.'; }
+function crossNote(a,b){ return tr('«{a}» и «{b}» измеряют разное. Курс придуман, зато каждый раз один и тот же.',{a:uLab(a),b:uLab(b)}); }
 function convert(v,a,b){
   if(a.cat!==b.cat) return {v:v*absurd(a,b),cross:true};
   if(a.cat==='Температура'){
@@ -469,14 +564,14 @@ function convKey(k){
   else if(k==='swap'){ [C.from,C.to]=[C.to,C.from]; }
 }
 function fillSel(sel){
-  sel.innerHTML=CATS.map(([cat,list])=>'<optgroup label="'+cat+'">'+list.map(([id])=>'<option value="'+id+'">'+UNITS[id].name+'</option>').join('')+'</optgroup>').join('');
+  sel.innerHTML=CATS.map(([cat,list])=>'<optgroup label="'+tr(cat)+'">'+list.map(([id])=>'<option value="'+id+'">'+uLab(UNITS[id])+'</option>').join('')+'</optgroup>').join('');
 }
 
 /* ================= render ================= */
 function render(){
   if(mode==='calc'||mode==='eng') renderHist();
   if(mode==='calc'){
-    const h=$('#hist'); h.classList.remove('expr'); h.textContent=S.note||S.hist;
+    const h=$('#hist'); h.classList.remove('expr'); h.textContent=S.note?tr(S.note):S.hist;
     setLCD($('#lcdMain'),fmt(S.cur));
   }else if(mode==='eng'){
     const h=$('#hist'); h.classList.add('expr');
@@ -494,7 +589,7 @@ function render(){
     $('#cFrom').value=C.from; $('#cTo').value=C.to;
     let note;
     if(r.cross) note=crossNote(a,b);
-    else{ const u=convert(1,a,b).v; note='1 '+a.name+' = '+show(numStr(u))+' '+b.name+(a.cur?'. Курс подтягивается из сети, его можно поправить в настройках.':''); }
+    else{ const u=convert(1,a,b).v; note='1 '+uLab(a)+' = '+show(numStr(u))+' '+uLab(b)+(a.cur?tr('. Курс подтягивается из сети, его можно поправить в настройках.'):''); }
     $('#cNote').textContent=note;
   }
   document.querySelectorAll('#pad .op').forEach(b=>b.classList.toggle('on',mode==='calc'&&S.op===b.dataset.k&&S.fresh));
@@ -505,7 +600,7 @@ let hSig='';
 function renderHist(){
   const sig=H.length+'|'+(H[0]?H[0].e+H[0].r:''); if(sig===hSig) return; hSig=sig;
   const L=$('#hList');
-  L.innerHTML='<div class="hin">'+H.map((x,i)=>'<div class="hrow" data-i="'+i+'"><span>'+x.e.replace(/&/g,'&amp;').replace(/</g,'&lt;')+' =</span><b>'+show(x.r)+'</b><button class="cp" aria-label="Копировать"></button></div>').reverse().join('')+'</div>';
+  L.innerHTML='<div class="hin">'+H.map((x,i)=>'<div class="hrow" data-i="'+i+'"><span>'+x.e.replace(/&/g,'&amp;').replace(/</g,'&lt;')+' =</span><b>'+show(x.r)+'</b><button class="cp" aria-label="'+tr('Копировать')+'"></button></div>').reverse().join('')+'</div>';
   fillIcons(); L.scrollTop=L.scrollHeight;
 }
 function key(k){
@@ -552,6 +647,13 @@ const KITS=[
  {id:'snow',n:'Белый',top:'#f1f1ee',ink:'#222222',r:22,shape:'rect',font:'serif'},
  {id:'mint',n:'Мята',top:'#9fdcc6',ink:'#0b3b2e',r:26,shape:'oct',font:'hand'}];
 const LBS=['7','C','+','=','5','−','×','÷','9','%','√','0'];
+/* пресеты из меню пуллера; цвет каждого можно поменять в настройках (cfg.kits), цвет надписи подбирается по яркости */
+let KL=null;
+function kitList(){
+  return KL||(KL=KITS.map(k=>{ const c=cfg.kits&&cfg.kits[k.id]; if(!c) return k;
+    const n=parseInt(c.slice(1),16), l=(.3*(n>>16)+.59*((n>>8)&255)+.11*(n&255))/255;
+    return {...k,top:c,ink:l>.55?'#2a1a10':'#f4efe8'}; }));
+}
 let SKM={}; try{ SKM=JSON.parse(localStorage.getItem('mechalc.skins')||'{}')||{}; }catch(e){}
 const sh=(h,f)=>{ const n=parseInt(h.slice(1),16); return 'rgb('+[n>>16,(n>>8)&255,n&255].map(v=>Math.max(0,Math.min(255,Math.round(v*f))))+')'; };
 function shp(x,y,w,h,r,oct,a){
@@ -572,14 +674,14 @@ function capSVGv(sk,label,vw,vh){
   const defs='<defs>'+ga('t',0,0,0,T+8,m(.35),.3,0)+ga('b',0,vh-B-14,0,vh,m(.3),0,.85)+ga('l',0,0,L+14,0,m(.35),.45,0)+ga('r',vw-R-14,0,vw,0,m(.45),0,.4)+face
    +gd('e',L,T,L+fw,T+fh,[[0,'rgba(255,255,255,.38)'],[.4,'rgba(255,255,255,0)'],[.62,'rgba(0,0,0,0)'],[1,'rgba(0,0,0,.4)']])
    +'<radialGradient id="'+id+'s" cx=".28" cy=".18" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".26"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>'
-   +'<clipPath id="'+id+'k">'+shp(0,0,vw,vh,17,oct,'')+'</clipPath><clipPath id="'+id+'c">'+shp(L,T,fw,fh,fr,oct,'')+'</clipPath></defs>';
+   +'<clipPath id="'+id+'k">'+shp(0,0,vw,vh,28,oct,'')+'</clipPath><clipPath id="'+id+'c">'+shp(L,T,fw,fh,fr,oct,'')+'</clipPath></defs>';
   const img=sk.img?'<image href="'+sk.img+'" x="'+L+'" y="'+T+'" width="'+fw+'" height="'+fh+'" preserveAspectRatio="xMidYMid slice" clip-path="url(#'+id+'c)"/><'+'g/>':'';
   return '<svg viewBox="0 0 '+vw+' '+vh+'" preserveAspectRatio="none" aria-hidden="true">'+defs
    +'<g clip-path="url(#'+id+'k)" filter="url(#grain)"><rect width="'+vw+'" height="'+vh+'" fill="'+m(.88)+'"/>'
    +rc(0,0,vw,T+8,'t')+rc(0,vh-B-14,vw,B+14,'b')+rc(0,0,L+14,vh,'l')+rc(vw-R-14,0,R+14,vh,'r')
    +shp(L,T,fw,fh,fr,oct,'fill="url(#'+id+'f)"')+img+shp(L,T,fw,fh,fr,oct,'fill="url(#'+id+'s)"')
    +shp(L+1.5,T+1.5,fw-3,fh-3,fr,oct,'fill="none" stroke="url(#'+id+'e)" stroke-width="2.5"')
-   +shp(1,1,vw-2,vh-2,16,oct,'fill="none" stroke="rgba(0,0,0,.35)" stroke-width="2"')+'</g>'
+   +shp(1,1,vw-2,vh-2,27,oct,'fill="none" stroke="rgba(0,0,0,.35)" stroke-width="2"')+'</g>'
    +'<text text-anchor="middle" font-family=\''+FONTS[sk.font||'arial']+'\' font-size="'+fs+'" font-weight="800" fill="'+sk.ink+'">'+lines.map((l,i)=>'<tspan x="'+cx+'" y="'+(cy+(i-(lines.length-1)/2)*fs*1.1)+'" dy=".35em">'+l+'</tspan>').join('')+'</text></svg>';
 }
 /* ---- растровые кейкапы: серые вырезки (assets/keys) перекрашиваются в любой цвет,
@@ -589,9 +691,10 @@ const capsReady=Promise.all(Object.keys(CAPS).map(k=>new Promise(res=>{
   const im=new Image();
   im.onload=()=>{ try{ const c=document.createElement('canvas'); c.width=im.naturalWidth; c.height=im.naturalHeight; const x=c.getContext('2d',{willReadFrequently:true}); x.drawImage(im,0,0); CAPS[k].w=c.width; CAPS[k].h=c.height; CAPS[k].d=x.getImageData(0,0,c.width,c.height).data; }catch(e){} res(); };
   im.onerror=()=>res(); im.src=CAPS[k].src; })));
-const TINT={};
+const TINT={}, CAPR=.125; /* CAPR: радиус скругления клавиши в долях ширины 1u (256 px). Больше число, круглее углы; светлые «уши» сверху срезаются */
 function tintURL(t,hex){
   const k=t+hex, S=CAPS[t]; if(TINT[k]) return TINT[k]; if(!S||!S.d) return '';
+  if(Object.keys(TINT).length>90) for(const q in TINT) delete TINT[q];
   const n=parseInt(hex.slice(1),16), R=n>>16, G=(n>>8)&255, B=n&255;
   const c=document.createElement('canvas'); c.width=S.w; c.height=S.h;
   const x=c.getContext('2d'), o=x.createImageData(S.w,S.h), s=S.d, d=o.data;
@@ -601,7 +704,10 @@ function tintURL(t,hex){
     else{ const a=Math.min(1,(r-1)*1.1)*.6; d[i]=R+(255-R)*a; d[i+1]=G+(255-G)*a; d[i+2]=B+(255-B)*a; }
     d[i+3]=s[i+3];
   }
-  x.putImageData(o,0,0); return TINT[k]=c.toDataURL('image/png');
+  x.putImageData(o,0,0);
+  const rd=CAPR*256; x.globalCompositeOperation='destination-in'; x.beginPath(); x.moveTo(rd,0);
+  x.arcTo(S.w,0,S.w,S.h,rd); x.arcTo(S.w,S.h,0,S.h,rd); x.arcTo(0,S.h,0,0,rd); x.arcTo(0,0,S.w,0,rd); x.closePath(); x.fill();
+  return TINT[k]=c.toDataURL('image/png');
 }
 function capSVG(sk,label,vw,vh){
   const t=vw>300?'w':vh>300?'t':'u', S=CAPS[t], url=S&&S.d?tintURL(t,sk.top):'';
@@ -630,7 +736,7 @@ function applyAccent(){
 }
 const roleOf=c=>c.includes('eq')?'eq':c.includes('op')?'op':c.includes('num')?'num':'fn';
 function skinFor(k,c){
-  const kit=KITS.find(x=>x.id===SKM[k]); if(kit) return kit;
+  const kit=kitList().find(x=>x.id===SKM[k]); if(kit) return kit;
   const r=roleOf(c), d={...DSK[r]}, col=r==='num'?cfg.capNum:cfg.capFn;
   if(col){ d.top=col; const n=parseInt(col.slice(1),16), l=(.3*(n>>16)+.59*((n>>8)&255)+.11*(n&255))/255; d.ink=l>.55?'#2a1a10':'#f4efe8'; }
   if(IMG.cap) d.img=IMG.cap;
@@ -648,7 +754,7 @@ function build(){
     if(c.includes('wide')) cell.style.gridColumn='span 2';
     if(c.includes('tall')) cell.style.gridRow='span 2';
     const b=document.createElement('button'); b.className='key '+c; b.dataset.k=k; b.dataset.t=t;
-    b.setAttribute('aria-label',k==='swap'?'Поменять единицы':k==='bs'?'Стереть цифру':k==='ac'?'Сбросить':k==='undo'?'Отменить':k==='puller'?'Пуллер кейкапов':k==='^'?'Степень':t);
+    b.setAttribute('aria-label',k==='swap'?tr('Поменять единицы'):k==='bs'?tr('Стереть цифру'):k==='ac'?tr('Сбросить'):k==='undo'?tr('Отменить'):k==='puller'?tr('Пуллер кейкапов'):k==='^'?tr('Степень'):t);
     paintKey(b); cell.appendChild(b); pad.appendChild(cell);
   });
 }
@@ -662,7 +768,7 @@ function startPull(){
   P.on=true; P.phase='pull'; P.n=0; P.placed=0; P.sel=null; P.total=$('#pad').children.length;
   document.documentElement.classList.add('pulling-on'); $('#pad').classList.add('pulling');
   $('.tabs').hidden=true; $('#pbar').hidden=false; $('#pchange').hidden=true; $('#tray').hidden=true;
-  hint('Води пуллером по клавишам: кейкапы слетят');
+  hint(tr('Води пуллером по клавишам: кейкапы слетят'));
   const r=$('#pad').getBoundingClientRect(); mv(r.left+r.width/2,r.top+r.height/2);
 }
 function endPull(){
@@ -686,8 +792,8 @@ function pullKey(cell){
 function posTray(){ const r=$('#pad').getBoundingClientRect(); Object.assign($('#tray').style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'}); }
 function openTray(){
   if(!P.on) return; P.phase='pick'; const t=$('#tray');
-  t.innerHTML='<div class="tt">Выбери кейкапы</div><div class="opts">'+KITS.map((k,i)=>'<button class="opt" data-id="'+k.id+'" aria-label="'+k.n+'">'+capSVG(k,LBS[i%LBS.length],200,188)+'</button>').join('')+'</div>';
-  posTray(); t.hidden=false; $('#pchange').hidden=true; hint('Выбери набор кейкапов');
+  t.innerHTML='<div class="tt">'+tr('Выбери кейкапы')+'</div><div class="opts">'+kitList().map((k,i)=>'<button class="opt" data-id="'+k.id+'" aria-label="'+tr(k.n)+'">'+capSVG(k,LBS[i%LBS.length],200,188)+'</button>').join('')+'</div>';
+  posTray(); t.hidden=false; $('#pchange').hidden=true; hint(tr('Выбери набор кейкапов'));
 }
 function placeCap(cell){
   if(!P.sel||!cell.dataset.gone||cell.dataset.sk===P.sel) return;
@@ -700,13 +806,13 @@ function placeCap(cell){
     {transform:'translateY(2px) scale(.99)',opacity:1,offset:.6},
     {transform:'translateY(0) scale(1)',opacity:1}],{duration:200,easing:'ease-in'});
   setTimeout(()=>play('insert',.95+Math.random()*.1),90);
-  if(P.placed>=P.total){ hint('Готово! Все кейкапы на месте'); setTimeout(()=>{ if(P.on) endPull(); },1300); }
-  else hint('Тыкай на свичи, осталось: '+(P.total-P.placed));
+  if(P.placed>=P.total){ hint(tr('Готово! Все кейкапы на месте')); setTimeout(()=>{ if(P.on) endPull(); },1300); }
+  else hint(tr('Тыкай на свичи, осталось: ')+(P.total-P.placed));
 }
 $('#tray').addEventListener('click',e=>{
   const o=e.target.closest('.opt'); if(!o) return;
   P.sel=o.dataset.id; P.phase='place'; $('#tray').hidden=true; $('#pchange').hidden=false;
-  hint(P.placed>=P.total?'Все кейкапы на месте':'Тыкай на свичи, осталось: '+(P.total-P.placed));
+  hint(P.placed>=P.total?tr('Все кейкапы на месте'):tr('Тыкай на свичи, осталось: ')+(P.total-P.placed));
 });
 $('#pchange').addEventListener('click',openTray);
 $('#pdone').addEventListener('click',endPull);
@@ -722,7 +828,7 @@ window.addEventListener('resize',()=>{ if(P.on&&P.phase==='pick') posTray(); });
 function fitPad(){
   const pad=$('#pad'); pad.hidden=false;
   const cols=mode==='conv'?4:5, rows=mode==='eng'?7:mode==='conv'?4:5, gap=4;
-  const avail=Math.min(window.innerWidth,440)-32, Hh=window.innerHeight-250-(mode==='conv'?0:150); /* 150px резерв: на низком окне ПК клавиши не должны выдавливать историю */
+  const avail=Math.min(window.innerWidth,440)-32, Hh=window.innerHeight-264-(mode==='conv'?0:150); /* 150px резерв: на низком окне ПК клавиши не должны выдавливать историю */
   let c=(Hh-(rows-1)*gap)/(rows*.94);
   c=Math.max(40,Math.min(c,(avail-(cols-1)*gap)/cols,92));
   pad.style.width=(cols*c+(cols-1)*gap)+'px'; pad.style.setProperty('--cols',cols);
@@ -770,7 +876,7 @@ $('#hClr').addEventListener('click',()=>{ H=[]; save(); render(); });
 let toastT;
 function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove('show'),1100); }
 function copyText(t){
-  const done=()=>toast('Скопировано');
+  const done=()=>toast(tr('Скопировано'));
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done,()=>fallback());
   else fallback();
   function fallback(){ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done(); }catch(e){} }
@@ -792,12 +898,15 @@ function buildRates(){
 }
 $('#rates').addEventListener('input',e=>{ const v=parseFloat(e.target.value); if(v>0&&e.target.dataset.c){ rates[e.target.dataset.c]=v; save(); render(); } });
 $('#reset').addEventListener('click',()=>{ liveRates(true); });
-const rstat=t=>{ const e=$('#rstat'); if(e) e.textContent=t; };
+let RS=['approx',0];
+function drawRs(){ const e=$('#rstat'); if(!e) return; const k=RS[0];
+  e.textContent=k==='ago'?tr('Обновлено')+' '+new Date(RS[1]).toLocaleString(LOC[lang],{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):tr(k==='upd'?'Обновляю…':k==='off'?'Нет сети: показаны сохранённые курсы':'Курсы ориентировочные'); }
+const rstat=(k,ts)=>{ RS=[k,ts||0]; drawRs(); };
 async function liveRates(force){
   let ts=0; try{ ts=+localStorage.getItem('mechalc.ratesT')||0; }catch(e){}
-  const ago=()=>ts?'Обновлено '+new Date(ts).toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Курсы ориентировочные';
-  if(!force&&ts&&Date.now()-ts<6*36e5){ rstat(ago()); return; }
-  rstat('Обновляю…');
+  const ago=()=>ts?rstat('ago',ts):rstat('approx');
+  if(!force&&ts&&Date.now()-ts<6*36e5){ ago(); return; }
+  rstat('upd');
   try{
     let r;
     try{ const j=await (await fetch('https://open.er-api.com/v6/latest/KZT')).json(); if(j.result!=='success') throw 0; r=j.rates; }
@@ -805,8 +914,8 @@ async function liveRates(force){
     let n=0; for(const c in DEF){ if(c!=='KZT'&&r[c]>0){ rates[c]=+(1/r[c]).toPrecision(5); n++; } }
     if(!n) throw 0;
     ts=Date.now(); try{ localStorage.setItem('mechalc.ratesT',String(ts)); }catch(e){}
-    save(); buildRates(); render(); rstat(ago());
-  }catch(e){ rstat('Нет сети: показаны сохранённые курсы'); }
+    save(); buildRates(); render(); ago();
+  }catch(e){ rstat('off'); }
 }
 /* копирование: иконки у строки истории над дисплеем и у главной строки */
 const CPI='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg>';
@@ -815,11 +924,12 @@ document.querySelectorAll('.cp[data-cp]').forEach(b=>b.addEventListener('click',
   const t=b.dataset.cp==='main'?$('#lcdMain').dataset.v:$('#hist').textContent.trim();
   if(t&&!bad(t)) copyText(t.replace(/\u202f/g,'')); else if(t) copyText(t);
 }));
-const sndIcon=()=>{ $('#snd').classList.toggle('off',!snd.on); $('#snd').setAttribute('aria-pressed',String(snd.on)); $('#sOn').checked=snd.on; };
+const sndIcon=()=>{ $('#snd').classList.toggle('off',!snd.on); $('#snd').setAttribute('aria-pressed',String(snd.on)); $('#sOn').checked=snd.on; $('#sRel').checked=snd.rel!==false; };
 $('#snd').addEventListener('click',()=>{ snd.on=!snd.on; save(); sndIcon(); click(1,false); });
 $('#sOn').addEventListener('change',e=>{ snd.on=e.target.checked; save(); sndIcon(); click(1,false); });
+$('#sRel').addEventListener('change',e=>{ snd.rel=e.target.checked; save(); });
 $('#sVol').addEventListener('input',e=>{ snd.vol=e.target.value/100; save(); click(1,false); });
-$('#cfg').addEventListener('click',()=>{ $('#sheet').hidden=false; });
+$('#cfg').addEventListener('click',()=>{ buildKits(); $('#sheet').hidden=false; });
 $('#done').addEventListener('click',()=>{ $('#sheet').hidden=true; });
 $('#sheet').addEventListener('click',e=>{ if(e.target.id==='sheet') $('#sheet').hidden=true; });
 
@@ -847,20 +957,23 @@ const crow=(t,h)=>'<div class="line"><span>'+t+'</span><span class="in">'+h+'</s
 let FACE=null;
 async function loadFont(ab){ try{ if(FACE) document.fonts.delete(FACE); FACE=new FontFace('MechCap',ab.slice(0)); await FACE.load(); document.fonts.add(FACE); return true; }catch(e){ FACE=null; return false; } }
 const repaintKeys=()=>{ if(!P.on) document.querySelectorAll('#pad .key').forEach(paintKey); };
-function fontSel(){ const e=$('#cFont'); if(!e) return; e.innerHTML=FONTN.concat(FACE?[['custom','Свой файл']]:[]).map(a=>'<option value="'+a[0]+'">'+a[1]+'</option>').join(''); e.value=cfg.capFont||''; }
-function buildCust(){
+function fontSel(){ const e=$('#cFont'); if(!e) return; e.innerHTML=FONTN.concat(FACE?[['custom','Свой файл']]:[]).map(a=>'<option value="'+a[0]+'">'+tr(a[1])+'</option>').join(''); e.value=cfg.capFont||''; }
+let want=null;
+function renderCust(){
   const box=$('#cust');
-  box.innerHTML='<label class="line"><span>Обычный шрифт на дисплее</span><input type="checkbox" id="cPlain"></label><h3>Оформление</h3>'
-   +crow('Фон','<input type="color" id="cBg"><button class="btn sm" id="cBgImg">Картинка</button><button class="btn sm" id="cBgRst">Сброс</button>')
-   +crow('Кейкапы: цифры','<input type="color" id="cNum"><button class="btn sm" id="cNumRst">Сброс</button>')
-   +crow('Кейкапы: функции и акцент','<input type="color" id="cFn"><button class="btn sm" id="cFnRst">Сброс</button>')
-   +crow('Шрифт клавиш','<select id="cFont" aria-label="Шрифт клавиш"></select>')
-   +crow('Свой шрифт (файл)','<button class="btn sm" id="cFontUp">Загрузить</button><button class="btn sm" id="cFontRst">Сброс</button>')
-   +crow('Картинка на кейкапах','<button class="btn sm" id="cCapImg">Выбрать</button><button class="btn sm" id="cCapRst">Сброс</button>')
-   +'<h3>Свои звуки</h3>'+SLOTS.map(a=>crow(a[1],'<button class="btn sm" data-up="'+a[0]+'">Загрузить</button><button class="btn sm" data-rs="'+a[0]+'">Сброс</button>')).join('')
+  box.innerHTML='<label class="line"><span>'+tr('Обычный шрифт на дисплее')+'</span><input type="checkbox" id="cPlain"></label><h3>'+tr('Оформление')+'</h3>'
+   +crow(tr('Фон'),'<input type="color" id="cBg"><button class="btn sm" id="cBgImg">'+tr('Картинка')+'</button><button class="btn sm" id="cBgRst">'+tr('Сброс')+'</button>')
+   +crow(tr('Кейкапы: цифры'),'<input type="color" id="cNum"><button class="btn sm" id="cNumRst">'+tr('Сброс')+'</button>')
+   +crow(tr('Кейкапы: функции и акцент'),'<input type="color" id="cFn"><button class="btn sm" id="cFnRst">'+tr('Сброс')+'</button>')
+   +crow(tr('Шрифт клавиш'),'<select id="cFont" aria-label="'+tr('Шрифт клавиш')+'"></select>')
+   +crow(tr('Свой шрифт (файл)'),'<button class="btn sm" id="cFontUp">'+tr('Загрузить')+'</button><button class="btn sm" id="cFontRst">'+tr('Сброс')+'</button>')
+   +crow(tr('Картинка на кейкапах'),'<button class="btn sm" id="cCapImg">'+tr('Выбрать')+'</button><button class="btn sm" id="cCapRst">'+tr('Сброс')+'</button>')
+   +'<h3>'+tr('Свои звуки')+'</h3>'+SLOTS.map(a=>crow(tr(a[1]),'<button class="btn sm" data-up="'+a[0]+'">'+tr('Загрузить')+'</button><button class="btn sm" data-rs="'+a[0]+'">'+tr('Сброс')+'</button>')).join('')
    +'<input type="file" id="fImg" accept="image/*" hidden><input type="file" id="fFont" accept=".ttf,.otf,.woff,.woff2,font/*" hidden><input type="file" id="fSnd" accept="audio/*" hidden>';
   fontSel(); $('#cPlain').checked=cfg.plain; $('#cBg').value=cfg.bg||'#7b7d82'; $('#cNum').value=cfg.capNum||'#868784'; $('#cFn').value=cfg.capFn||'#d07828';
-  let want=null;
+}
+function wireCust(){
+  const box=$('#cust');
   box.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return;
     if(b.id==='cBgImg'||b.id==='cCapImg'){ want=b.id; $('#fImg').click(); }
     else if(b.dataset.up){ want=b.dataset.up; $('#fSnd').click(); }
@@ -876,20 +989,49 @@ function buildCust(){
     if(t.id==='cPlain'){ cfg.plain=t.checked; saveCfg(); $('#lcd').classList.toggle('plain',cfg.plain); render(); }
     else if(t.id==='cBg'){ cfg.bg=t.value; IMG.bg=''; idb.del('bgimg'); saveCfg(); applyBg(); }
     else if(t.id==='cFont'){ cfg.capFont=t.value; saveCfg(); repaintKeys(); }
-    else if(t.id==='cNum'){ cfg.capNum=t.value; saveCfg(); build(); }
-    else if(t.id==='cFn'){ cfg.capFn=t.value; saveCfg(); build(); }
+    else if(t.id==='cNum'){ cfg.capNum=t.value; saveCfg(); lazyBuild(); }
+    else if(t.id==='cFn'){ cfg.capFn=t.value; saveCfg(); lazyBuild(); }
   });
-  $('#fFont').addEventListener('change',e=>{ const f=e.target.files[0]; e.target.value=''; if(!f) return;
-    f.arrayBuffer().then(async ab=>{ if(!(await loadFont(ab))) throw 0; idb.set('capfont',ab); cfg.capFont='custom'; saveCfg(); fontSel(); repaintKeys(); }).catch(()=>toast('Не удалось загрузить шрифт'));
-  });
-  $('#fImg').addEventListener('change',e=>{ const f=e.target.files[0]; e.target.value=''; if(!f) return;
-    if(want==='cBgImg') fileImg(f,1400,false).then(u=>{ IMG.bg=u; idb.set('bgimg',u); applyBg(); }).catch(()=>toast('Не открылась картинка'));
-    else fileImg(f,256,true).then(u=>{ IMG.cap=u; idb.set('capimg',u); build(); }).catch(()=>toast('Не открылась картинка'));
-  });
-  $('#fSnd').addEventListener('change',e=>{ const f=e.target.files[0], n=want; e.target.value=''; if(!f) return;
-    f.arrayBuffer().then(ab=>{ idb.set('snd_'+n,ab); return useSound(n,ab); }).then(()=>{ if(n==='click') click(1,false); else play(n); }).catch(()=>toast('Не удалось загрузить звук'));
+  box.addEventListener('change',e=>{ const t=e.target, f=t.files&&t.files[0];
+    if(t.id==='fFont'){ t.value=''; if(!f) return;
+      f.arrayBuffer().then(async ab=>{ if(!(await loadFont(ab))) throw 0; idb.set('capfont',ab); cfg.capFont='custom'; saveCfg(); fontSel(); repaintKeys(); }).catch(()=>toast(tr('Не удалось загрузить шрифт')));
+    }else if(t.id==='fImg'){ t.value=''; if(!f) return;
+      if(want==='cBgImg') fileImg(f,1400,false).then(u=>{ IMG.bg=u; idb.set('bgimg',u); applyBg(); }).catch(()=>toast(tr('Не открылась картинка')));
+      else fileImg(f,256,true).then(u=>{ IMG.cap=u; idb.set('capimg',u); build(); }).catch(()=>toast(tr('Не открылась картинка')));
+    }else if(t.id==='fSnd'){ const n=want; t.value=''; if(!f) return;
+      f.arrayBuffer().then(ab=>{ idb.set('snd_'+n,ab); return useSound(n,ab); }).then(()=>{ if(n==='click') click(1,false); else play(n); }).catch(()=>toast(tr('Не удалось загрузить звук')));
+    }
   });
 }
+/* перекраска всех клавиш во время перетаскивания в палитре не чаще раза в 80 мс */
+let lbT=0; function lazyBuild(){ if(lbT) return; lbT=setTimeout(()=>{ lbT=0; if(!P.on) build(); },80); }
+
+/* редактор пресетов: каждая ячейка меню пуллера, свой цвет */
+function buildKits(){
+  const g=$('#kgrid'); if(!g) return;
+  g.innerHTML=kitList().map((k,i)=>'<label class="kc"><span class="kp">'+capSVG(k,LBS[i%LBS.length],200,188)+'</span><input type="color" data-kit="'+k.id+'" value="'+k.top+'" aria-label="'+tr(k.n)+'"><span class="kn">'+tr(k.n)+'</span></label>').join('');
+}
+let kT=0, kIn=null;
+function refreshKit(){
+  const i=kIn; if(!i) return; const idx=KITS.findIndex(x=>x.id===i.dataset.kit), k=kitList()[idx];
+  i.parentNode.querySelector('.kp').innerHTML=capSVG(k,LBS[idx%LBS.length],200,188);
+  if(!P.on){ document.querySelectorAll('#pad .key').forEach(b=>{ if(SKM[b.dataset.k]===k.id) paintKey(b); }); if(SKM['=']===k.id) applyAccent(); }
+}
+$('#kgrid').addEventListener('input',e=>{ const i=e.target; if(!i.dataset.kit) return;
+  cfg.kits=cfg.kits||{}; cfg.kits[i.dataset.kit]=i.value; KL=null; saveCfg(); kIn=i;
+  if(!kT) kT=setTimeout(()=>{ kT=0; refreshKit(); },80); });
+$('#kgrid').addEventListener('change',e=>{ if(e.target.dataset.kit){ kIn=e.target; clearTimeout(kT); kT=0; refreshKit(); } });
+$('#kReset').addEventListener('click',()=>{ cfg.kits={}; KL=null; saveCfg(); buildKits(); if(!P.on){ document.querySelectorAll('#pad .key').forEach(paintKey); applyAccent(); } });
+
+/* язык */
+function applyLang(){
+  document.documentElement.lang=lang; applyStatic();
+  ['#cFrom','#cTo'].forEach(id=>fillSel($(id)));
+  renderCust(); buildKits(); drawRs(); hSig='';
+  if(!P.on) build(); render();
+}
+$('#lang').innerHTML=LANGS.map(a=>'<option value="'+a[0]+'">'+a[1]+'</option>').join(''); $('#lang').value=lang;
+$('#lang').addEventListener('change',e=>{ lang=e.target.value; try{ localStorage.setItem('mechalc.lang',lang); }catch(err){} applyLang(); });
 async function loadCustom(){
   const r=await Promise.all([idb.get('bgimg'),idb.get('capimg')]); IMG.bg=r[0]||''; IMG.cap=r[1]||''; applyBg(); if(IMG.cap&&!P.on) document.querySelectorAll('#pad .key').forEach(paintKey);
   const fb=await idb.get('capfont'); if(fb&&await loadFont(fb)){ fontSel(); repaintKeys(); } else if(cfg.capFont==='custom'){ cfg.capFont=''; }
@@ -917,7 +1059,7 @@ function intro(){
   setTimeout(()=>{ pad.style.pointerEvents=''; },end+50);
 }
 const introWait=()=>new Promise(r=>{ let t=0; const i=setInterval(()=>{ if(BUF.insert.length||++t>15){ clearInterval(i); r(); } },60); });
-sndIcon(); buildRates(); buildCust(); fillIcons(); liveRates(false);
+applyStatic(); document.documentElement.lang=lang; sndIcon(); buildRates(); wireCust(); renderCust(); fillIcons(); liveRates(false);
 Promise.race([capsReady,new Promise(r=>setTimeout(r,2500))]).then(()=>{ setMode('calc'); if(mode!=='conv') $('#pad').style.visibility='hidden'; loadCustom(); return introWait(); }).then(intro,showPad);
 </script>
 </body>
