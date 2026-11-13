@@ -16,7 +16,7 @@
 :root{--lcd:#ff8f1f;--lcdDim:rgba(255,160,70,.62);--acc:#e8822e;--accedge:#a85a12;--accink:#1b1204;--ink:#eceef1;--muted:#a3a6ad;--tab:#5b5e65;--tabedge:#3a3c41;--shadow:rgba(0,0,0,.45);--lcdrgb:255,143,31;--selarr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23ff8f1f' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;height:100%;color:var(--ink);background:radial-gradient(120% 70% at 50% 0%,#9b9da1,#7a7c81 60%,#6f7176);font:400 16px/1.3 -apple-system,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+body{margin:0;height:100%;color:var(--ink);background:radial-gradient(130% 55% at 50% -4%,rgba(255,255,255,.34),rgba(255,255,255,0) 62%),linear-gradient(168deg,#a9abaf 0%,#898b90 42%,#6c6e73 100%);font:400 16px/1.3 -apple-system,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .sel{-webkit-user-select:text;user-select:text}
 .app{height:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:8px;padding:10px 16px 26px;box-sizing:border-box}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
@@ -43,6 +43,9 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .crow+.crow{border-top:1px solid rgba(var(--lcdrgb),.18)}
 .crow .lcdbox{flex:1;height:56px;min-width:0}
 select{-webkit-appearance:none;appearance:none;max-width:150px;background:#2a241d var(--selarr) no-repeat right 10px center;color:var(--lcd);border:0;border-radius:10px;padding:10px 28px 10px 12px;font:600 14px/1.1 inherit;font-family:inherit;text-overflow:ellipsis}
+.swaprow{position:relative;height:0;z-index:3}
+.swapb{position:absolute;left:70px;top:-16px;width:32px;height:32px;margin-left:-16px;border:1px solid rgba(var(--lcdrgb),.4);border-radius:50%;background:#2a241d;color:var(--lcd);display:grid;place-items:center;padding:0;box-shadow:0 2px 6px rgba(0,0,0,.6);transition:transform .25s}
+.swapb.spin{transform:rotate(180deg)}.swapb:active{background:#3a3128}
 .cnote{color:var(--lcdDim);font-size:13px;text-align:right;padding-top:6px;min-height:2.6em}
 #vHist{justify-content:flex-start;overflow:auto;padding-top:4px}
 .hbar{display:flex;justify-content:space-between;align-items:center;color:var(--lcdDim);font-size:13px;padding:2px 0 8px}
@@ -61,7 +64,10 @@ select{-webkit-appearance:none;appearance:none;max-width:150px;background:#2a241
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
 .sheet[hidden]{display:none}
 .card{background:#23262c;color:var(--ink);width:100%;max-width:440px;border-radius:24px 24px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));max-height:88%;overflow:auto;box-sizing:border-box}
-.card h2{margin:0 0 14px;font-size:22px;font-weight:600}
+.card h2{margin:0;font-size:22px;font-weight:600}
+.hd{position:sticky;top:-20px;z-index:3;display:flex;align-items:center;justify-content:space-between;margin:-20px -20px 6px;padding:20px 20px 10px;background:#23262c}
+.xb{width:36px;height:36px;border:0;border-radius:50%;background:var(--tab);color:var(--ink);display:grid;place-items:center;padding:0;box-shadow:0 2px 0 var(--tabedge)}
+.xb:active{transform:translateY(1px)}
 .card h3{margin:20px 0 8px;font-size:15px;font-weight:600;color:var(--muted)}
 .line{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:8px 0}
 .rr{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
@@ -76,7 +82,11 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
 @media (prefers-reduced-motion:reduce){.key,#toast{transition:none}}
 
 .app{position:relative;z-index:1}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.6;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='.33 .33 .33 0 0 .33 .33 .33 0 0 .33 .33 .33 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%2523n)'/%3E%3C/svg%3E")}
+body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0}
+/* шершавая текстура: рельефный шум (feDiffuseLighting) поверх градиента. Сила: opacity */
+body::before{opacity:.36;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' seed='5' stitchTiles='stitch' result='t'/%3E%3CfeDiffuseLighting in='t' lighting-color='%23fff' surfaceScale='1.5'%3E%3CfeDistantLight azimuth='235' elevation='55'/%3E%3C/feDiffuseLighting%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncG type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncB type='linear' slope='1.7' intercept='-.89'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* крупная неравномерность поверх: лёгкие пятна, как у крашеного пластика */
+body::after{opacity:.35;mix-blend-mode:soft-light;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='3' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='.33 .33 .33 0 0 .33 .33 .33 0 0 .33 .33 .33 0 0 0 0 0 0 1'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncG type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncB type='linear' slope='2.4' intercept='-.7'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E")}
 .key svg{display:block;width:100%;height:100%;pointer-events:none;overflow:visible}
 .sheet{z-index:100}
 .tabs[hidden],.pbar[hidden],.tray[hidden]{display:none}
@@ -100,7 +110,7 @@ html.pulling-on,html.pulling-on *{touch-action:none;cursor:none}
 .puller{position:fixed;left:0;top:0;width:90px;height:130px;pointer-events:none;z-index:120;display:none;filter:drop-shadow(0 6px 5px rgba(0,0,0,.45));will-change:transform}
 .tray{position:fixed;z-index:30;box-sizing:border-box;padding:12px;border-radius:16px;background:rgba(28,30,34,.9);overflow:auto;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .tray .tt{font-weight:600;margin:0 0 10px;text-align:center;color:var(--ink)}
-.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.opts{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
 .opt{border:0;background:none;padding:0;aspect-ratio:187/176;filter:drop-shadow(0 3px 3px var(--shadow));cursor:pointer}
 .opt:active{transform:translateY(2px)}.opt svg{display:block;width:100%;height:100%}
 .plain .lcdbox{filter:none}
@@ -123,7 +133,7 @@ html,body{overflow:hidden}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="engrave" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="inv"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feOffset in="inv" dx="1" dy="2.6" result="io"/><feGaussianBlur in="io" stdDeviation="1.1" result="ib"/><feComposite in="ib" in2="SourceAlpha" operator="in" result="ic"/><feFlood flood-color="#000" flood-opacity=".6"/><feComposite in2="ic" operator="in" result="inner"/><feOffset in="SourceAlpha" dx="-.4" dy="1.9" result="ro"/><feComposite in="ro" in2="SourceAlpha" operator="out" result="rm"/><feGaussianBlur in="rm" stdDeviation=".55" result="rb"/><feFlood flood-color="#fff" flood-opacity=".5"/><feComposite in2="rb" operator="in" result="rim"/><feOffset in="SourceAlpha" dx=".3" dy="-1.1" result="to"/><feComposite in="to" in2="SourceAlpha" operator="out" result="tm"/><feGaussianBlur in="tm" stdDeviation=".5" result="tb"/><feFlood flood-color="#000" flood-opacity=".35"/><feComposite in2="tb" operator="in" result="topw"/><feMerge><feMergeNode in="topw"/><feMergeNode in="rim"/><feMergeNode in="SourceGraphic"/><feMergeNode in="inner"/></feMerge></filter><filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="2" seed="3" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.5 0 0 0 -.75" result="lt"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 0 0 0 .75" result="dk"/><feComposite in="lt" in2="SourceAlpha" operator="in" result="l2"/><feComposite in="dk" in2="SourceAlpha" operator="in" result="d2"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="d2"/><feMergeNode in="l2"/></feMerge></filter></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="engrave" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="inv"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feOffset in="inv" dx="1.8" dy="4.2" result="io"/><feGaussianBlur in="io" stdDeviation="1.7" result="ib"/><feComposite in="ib" in2="SourceAlpha" operator="in" result="ic"/><feFlood flood-color="#000" flood-opacity=".95"/><feComposite in2="ic" operator="in" result="inner"/><feOffset in="inv" dx="-.9" dy="-2.4" result="lo"/><feGaussianBlur in="lo" stdDeviation="1" result="lb"/><feComposite in="lb" in2="SourceAlpha" operator="in" result="lc"/><feFlood flood-color="#fff" flood-opacity=".32"/><feComposite in2="lc" operator="in" result="inlight"/><feOffset in="SourceAlpha" dx="-.4" dy="1.9" result="ro"/><feComposite in="ro" in2="SourceAlpha" operator="out" result="rm"/><feGaussianBlur in="rm" stdDeviation=".55" result="rb"/><feFlood flood-color="#fff" flood-opacity=".5"/><feComposite in2="rb" operator="in" result="rim"/><feOffset in="SourceAlpha" dx=".3" dy="-1.1" result="to"/><feComposite in="to" in2="SourceAlpha" operator="out" result="tm"/><feGaussianBlur in="tm" stdDeviation=".5" result="tb"/><feFlood flood-color="#000" flood-opacity=".35"/><feComposite in2="tb" operator="in" result="topw"/><feMerge><feMergeNode in="topw"/><feMergeNode in="rim"/><feMergeNode in="SourceGraphic"/><feMergeNode in="inlight"/><feMergeNode in="inner"/></feMerge></filter><filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="2" seed="3" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.5 0 0 0 -.75" result="lt"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 0 0 0 .75" result="dk"/><feComposite in="lt" in2="SourceAlpha" operator="in" result="l2"/><feComposite in="dk" in2="SourceAlpha" operator="in" result="d2"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="d2"/><feMergeNode in="l2"/></feMerge></filter></defs></svg>
 <div class="app">
   <nav class="tabs" role="tablist">
     <button class="on" data-m="calc" role="tab" data-i="Обычный">Обычный</button>
@@ -151,6 +161,7 @@ html,body{overflow:hidden}
 
     <div class="view" id="vConv" hidden>
       <div class="crow"><select id="cFrom" aria-label="Из единицы" data-ial="Из единицы"></select><div class="lcdbox" id="cAmt" role="img"></div></div>
+      <div class="swaprow"><button class="swapb" id="cSwap" aria-label="Поменять единицы" data-ial="Поменять единицы"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V5M4 9l4-4 4 4M16 4v15M12 15l4 4 4-4"/></svg></button></div>
       <div class="crow"><select id="cTo" aria-label="В единицу" data-ial="В единицу"></select><div class="lcdbox" id="cOut" role="img"></div></div>
       <div class="cnote" id="cNote"></div>
     </div>
@@ -164,7 +175,7 @@ html,body{overflow:hidden}
 
 <div class="sheet" id="sheet" hidden>
   <div class="card" role="dialog" aria-label="Настройки" data-ial="Настройки">
-    <h2 data-i="Настройки">Настройки</h2>
+    <div class="hd"><h2 data-i="Настройки">Настройки</h2><button class="xb" id="done" aria-label="Закрыть" data-ial="Закрыть"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <label class="line"><span>Язык · Language · Тіл</span><select id="lang" aria-label="Language"></select></label>
     <h3 data-i="Звук клавиш">Звук клавиш</h3>
     <label class="line"><span data-i="Звук включён">Звук включён</span><input type="checkbox" id="sOn"></label>
@@ -175,13 +186,13 @@ html,body{overflow:hidden}
     <h3 data-i="Пресеты кейкапов">Пресеты кейкапов</h3>
     <div class="rst" data-i="Цвет каждой ячейки в меню пуллера">Цвет каждой ячейки в меню пуллера</div>
     <div class="kgrid" id="kgrid"></div>
-    <div style="margin:12px 0 10px"><button class="btn sm" id="kReset" data-i="Сбросить цвета пресетов">Сбросить цвета пресетов</button></div>
+    <div style="margin:12px 0 10px"><button class="btn sm" id="kReset" data-i="Сбросить клавиши к стандартным">Сбросить клавиши к стандартным</button></div>
     <div id="cust"></div>
     <h3 data-i="Курсы к тенге">Курсы к тенге</h3>
     <div class="rst" id="rstat"></div>
     <div id="rates"></div>
     <div class="rst" style="padding-top:8px"><span data-i="Курсы">Курсы</span>: <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a></div>
-    <div class="acts"><button class="btn" id="reset" data-i="Обновить курсы">Обновить курсы</button><button class="btn main" id="done" data-i="Готово">Готово</button></div>
+    <div class="acts"><button class="btn" id="reset" data-i="Обновить курсы">Обновить курсы</button></div>
   </div>
 </div>
 
@@ -202,7 +213,7 @@ en:{
 'Води пуллером по клавишам: кейкапы слетят':'Drag the puller over the keys: the keycaps will pop off','Выбери набор кейкапов':'Choose a keycap set','Выбери кейкапы':'Choose keycaps',
 'Тыкай на свичи, осталось: ':'Tap the switches, left: ','Все кейкапы на месте':'All keycaps are in place','Готово! Все кейкапы на месте':'Done! All keycaps are in place',
 'Звук включён':'Sound on','Звук отпускания':'Key release sound','Громкость':'Volume','Кейкапы':'Keycaps',
-'Пресеты кейкапов':'Keycap presets','Цвет каждой ячейки в меню пуллера':'Colour of every cell in the puller menu','Сбросить цвета пресетов':'Reset preset colours',
+'Пресеты кейкапов':'Keycap presets','Цвет каждой ячейки в меню пуллера':'Colour of every cell in the puller menu','Сбросить клавиши к стандартным':'Reset keys to default','Закрыть':'Close','Пустая клавиша':'Blank key','Цифры':'Digits','Функции':'Functions',
 'Курсы к тенге':'Rates to tenge','Курсы':'Rates','Обновить курсы':'Update rates','Обновляю…':'Updating…','Нет сети: показаны сохранённые курсы':'No network: showing saved rates','Курсы ориентировочные':'Approximate rates','Обновлено':'Updated',
 'Обычный шрифт на дисплее':'Plain font on the display','Оформление':'Appearance','Фон':'Background','Картинка':'Image','Сброс':'Reset',
 'Кейкапы: цифры':'Keycaps: digits','Кейкапы: функции и акцент':'Keycaps: functions & accent','Шрифт клавиш':'Key font','Свой шрифт (файл)':'Custom font (file)',
@@ -233,7 +244,7 @@ kk:{
 'Води пуллером по клавишам: кейкапы слетят':'Суырғышты пернелер үстімен жүргіз: кейкаптар ұшып кетеді','Выбери набор кейкапов':'Кейкап жинағын таңда','Выбери кейкапы':'Кейкаптарды таңда',
 'Тыкай на свичи, осталось: ':'Свичтерді бас, қалғаны: ','Все кейкапы на месте':'Барлық кейкаптар орнында','Готово! Все кейкапы на месте':'Дайын! Барлық кейкаптар орнында',
 'Звук включён':'Дыбыс қосулы','Звук отпускания':'Пернені жіберу дыбысы','Громкость':'Дыбыс деңгейі','Кейкапы':'Кейкаптар',
-'Пресеты кейкапов':'Кейкап пресеттері','Цвет каждой ячейки в меню пуллера':'Суырғыш мәзіріндегі әр ұяшықтың түсі','Сбросить цвета пресетов':'Пресет түстерін бастапқыға қайтару',
+'Пресеты кейкапов':'Кейкап пресеттері','Цвет каждой ячейки в меню пуллера':'Суырғыш мәзіріндегі әр ұяшықтың түсі','Сбросить клавиши к стандартным':'Пернелерді әдепкіге қайтару','Закрыть':'Жабу','Пустая клавиша':'Бос перне','Цифры':'Сандар','Функции':'Функциялар',
 'Курсы к тенге':'Теңгеге қатысты бағамдар','Курсы':'Бағамдар','Обновить курсы':'Бағамдарды жаңарту','Обновляю…':'Жаңартылуда…','Нет сети: показаны сохранённые курсы':'Желі жоқ: сақталған бағамдар көрсетілді','Курсы ориентировочные':'Бағамдар шамамен','Обновлено':'Жаңартылды',
 'Обычный шрифт на дисплее':'Дисплейде қарапайым қаріп','Оформление':'Безендіру','Фон':'Фон','Картинка':'Сурет','Сброс':'Бастапқы',
 'Кейкапы: цифры':'Кейкаптар: сандар','Кейкапы: функции и акцент':'Кейкаптар: функциялар және акцент','Шрифт клавиш':'Перне қарпі','Свой шрифт (файл)':'Өз қарпің (файл)',
@@ -274,7 +285,7 @@ try{
 const save=()=>{try{localStorage.setItem('mechalc.rates',JSON.stringify(rates));localStorage.setItem('mechalc.snd',JSON.stringify(snd));localStorage.setItem('mechalc.hist',JSON.stringify(H));localStorage.setItem('mechalc.deg',deg?'1':'0');}catch(e){}};
 
 const CS={};
-let cfg={plain:false,bg:'',capNum:'',capFn:'',capFont:'',kits:{}}, IMG={bg:'',cap:''};
+let cfg={plain:false,bg:'',capFont:'',kits:{}}, IMG={bg:'',cap:''};
 try{ cfg={...cfg,...JSON.parse(localStorage.getItem('mechalc.cfg')||'{}')}; }catch(e){}
 /* ================= sound ================= */
 let ctx,nb,sample=null,gain0=1;
@@ -617,12 +628,13 @@ function key(k){
 
 /* ================= keypad ================= */
 const NUM=d=>[d,d,'num'];
+/* ['', 'blank', 'fn'] (ряд 4, справа): свободная клавиша без надписи и без действия. Чтобы дать ей функцию: поменяй надпись, ключ и добавь ветку в calcKey/engKey */
 const BASE=[
- ['±','neg','fn'],['%','pct','fn'],['÷','÷','op'],['UNDO','undo','fn'],['=','=','eq'],
- NUM('7'),NUM('8'),NUM('9'),['×','×','op'],['BACK\nSPACE','bs','fn'],
- NUM('4'),NUM('5'),NUM('6'),['−','−','op'],['√','sqrt','fn'],
- NUM('1'),NUM('2'),NUM('3'),['+','+','op tall'],['CLEAR','ac','fn'],
- ['0','0','num wide'],[',',',','num'],['PULLER','puller','fn']];
+ ['±','neg','fn'],['%','pct','fn'],['CLEAR','ac','fn'],['UNDO','undo','fn'],['=','=','eq'],
+ NUM('7'),NUM('8'),NUM('9'),['÷','÷','op'],['BACK\nSPACE','bs','fn'],
+ NUM('4'),NUM('5'),NUM('6'),['×','×','op'],['√','sqrt','fn'],
+ NUM('1'),NUM('2'),NUM('3'),['−','−','op'],['','blank','fn'],
+ ['0','0','num wide'],[',',',','num'],['+','+','op'],['PULLER','puller','fn']];
 const FUNCS=[['sin','sin','fn'],['cos','cos','fn'],['tan','tan','fn'],['ln','ln','fn'],['log','log','fn'],
  ['(','(','fn'],[')',')','fn'],['π','pi','fn'],['e','e','fn'],['xʸ','^','op']];
 const CONV=[NUM('7'),NUM('8'),NUM('9'),['BACK\nSPACE','bs','fn'],NUM('4'),NUM('5'),NUM('6'),['CLEAR','ac','fn'],
@@ -634,6 +646,9 @@ const FONTN=[['','Как в наборе'],['arial','Helvetica'],['sans','Сис
 const DSK={num:{top:'#868784',ink:'#2a1a10',r:17,shape:'rect',font:'arial'},fn:{top:'#d07828',ink:'#2a1a10',r:17,shape:'rect',font:'arial'}};
 DSK.op=DSK.fn; DSK.eq=DSK.fn;
 const KITS=[
+ /* два набора по умолчанию: «Цифры» для цифровых клавиш и «Функции» для всех остальных. Сброс возвращает клавиши к ним */
+ {id:'dnum',n:'Цифры',top:DSK.num.top,ink:DSK.num.ink,r:17,shape:'rect',font:'arial'},
+ {id:'dfn',n:'Функции',top:DSK.fn.top,ink:DSK.fn.ink,r:17,shape:'rect',font:'arial'},
  {id:'cream',n:'Крем',top:'#e3d9c0',ink:'#4a463d',r:17,shape:'rect',font:'sans'},
  {id:'ink',n:'Чёрный',top:'#3a3c42',ink:'#e9ebef',r:14,shape:'cyl',font:'mono'},
  {id:'red',n:'Красный',top:'#d9453d',ink:'#fff3ee',r:60,shape:'sph',font:'round'},
@@ -646,7 +661,7 @@ const KITS=[
  {id:'orange',n:'Оранж',top:'#ff8f1f',ink:'#241300',r:12,shape:'cyl',font:'sans'},
  {id:'snow',n:'Белый',top:'#f1f1ee',ink:'#222222',r:22,shape:'rect',font:'serif'},
  {id:'mint',n:'Мята',top:'#9fdcc6',ink:'#0b3b2e',r:26,shape:'oct',font:'hand'}];
-const LBS=['7','C','+','=','5','−','×','÷','9','%','√','0'];
+const LBS=['7','×','7','C','+','=','5','−','×','÷','9','%','√','0'];
 /* пресеты из меню пуллера; цвет каждого можно поменять в настройках (cfg.kits), цвет надписи подбирается по яркости */
 let KL=null;
 function kitList(){
@@ -737,8 +752,7 @@ function applyAccent(){
 const roleOf=c=>c.includes('eq')?'eq':c.includes('op')?'op':c.includes('num')?'num':'fn';
 function skinFor(k,c){
   const kit=kitList().find(x=>x.id===SKM[k]); if(kit) return kit;
-  const r=roleOf(c), d={...DSK[r]}, col=r==='num'?cfg.capNum:cfg.capFn;
-  if(col){ d.top=col; const n=parseInt(col.slice(1),16), l=(.3*(n>>16)+.59*((n>>8)&255)+.11*(n&255))/255; d.ink=l>.55?'#2a1a10':'#f4efe8'; }
+  const d={...kitList()[roleOf(c)==='num'?0:1]}; /* без своего пресета: набор по умолчанию по роли клавиши */
   if(IMG.cap) d.img=IMG.cap;
   return d;
 }
@@ -754,7 +768,7 @@ function build(){
     if(c.includes('wide')) cell.style.gridColumn='span 2';
     if(c.includes('tall')) cell.style.gridRow='span 2';
     const b=document.createElement('button'); b.className='key '+c; b.dataset.k=k; b.dataset.t=t;
-    b.setAttribute('aria-label',k==='swap'?tr('Поменять единицы'):k==='bs'?tr('Стереть цифру'):k==='ac'?tr('Сбросить'):k==='undo'?tr('Отменить'):k==='puller'?tr('Пуллер кейкапов'):k==='^'?tr('Степень'):t);
+    b.setAttribute('aria-label',k==='swap'?tr('Поменять единицы'):k==='bs'?tr('Стереть цифру'):k==='ac'?tr('Сбросить'):k==='undo'?tr('Отменить'):k==='puller'?tr('Пуллер кейкапов'):k==='^'?tr('Степень'):k==='blank'?tr('Пустая клавиша'):t);
     paintKey(b); cell.appendChild(b); pad.appendChild(cell);
   });
 }
@@ -842,6 +856,7 @@ $('#pad').addEventListener('click',e=>{ if(P.on) return; const b=e.target.closes
 /* physical keyboard */
 const KMAP={',':',','.':',','+':'+','-':'−','*':'×','/':'÷','Enter':'=','=':'=','Backspace':'bs','Escape':'ac','%':'pct','(':'(',')':')','^':'^'};
 window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!$('#sheet').hidden){ $('#sheet').hidden=true; return; }
   if(!$('#sheet').hidden||P.on||e.target.tagName==='SELECT'||e.target.tagName==='INPUT') return;
   if(e.metaKey||e.ctrlKey){ if(e.key.toLowerCase()==='z'&&mode!=='conv'){ e.preventDefault(); key('undo'); } return; }
   let k=/^\d$/.test(e.key)?e.key:KMAP[e.key]; if(!k) return;
@@ -884,6 +899,7 @@ function copyText(t){
 ['#lcdMain','#cAmt','#cOut'].forEach(id=>$(id).addEventListener('click',()=>{ const v=$(id).dataset.v; if(v&&!bad(v)) copyText(v.replace(/\u202f/g,'')); }));
 $('#deg').addEventListener('click',()=>{ deg=!deg; save(); render(); });
 
+$('#cSwap').addEventListener('click',e=>{ const b=e.currentTarget; b.classList.toggle('spin'); click(1,false); key('swap'); });
 /* converter selects */
 ['#cFrom','#cTo'].forEach(id=>{ fillSel($(id)); $(id).addEventListener('change',()=>{ C.from=$('#cFrom').value; C.to=$('#cTo').value; render(); }); });
 
@@ -936,6 +952,8 @@ $('#sheet').addEventListener('click',e=>{ if(e.target.id==='sheet') $('#sheet').
 $('#sVol').value=Math.round(snd.vol*100);
 /* ================= оформление и свои звуки ================= */
 const saveCfg=()=>{ try{ localStorage.setItem('mechalc.cfg',JSON.stringify(cfg)); }catch(e){} };
+/* старые отдельные цвета «цифры»/«функции» переехали в наборы по умолчанию */
+if(cfg.capNum||cfg.capFn){ cfg.kits={...(cfg.kits||{})}; if(cfg.capNum&&!cfg.kits.dnum) cfg.kits.dnum=cfg.capNum; if(cfg.capFn&&!cfg.kits.dfn) cfg.kits.dfn=cfg.capFn; delete cfg.capNum; delete cfg.capFn; saveCfg(); }
 const idb=(()=>{ let db; const open=()=>db||(db=new Promise((res,rej)=>{ const r=indexedDB.open('mechalc',1); r.onupgradeneeded=()=>r.result.createObjectStore('b'); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }));
   const tx=async(m,f)=>{ const d=await open(); return new Promise((res,rej)=>{ const t=d.transaction('b',m), q=f(t.objectStore('b')); t.oncomplete=()=>res(q.result); t.onerror=()=>rej(t.error); }); };
   return {get:k=>tx('readonly',s=>s.get(k)).catch(()=>null),set:(k,v)=>tx('readwrite',s=>s.put(v,k)).catch(()=>{}),del:k=>tx('readwrite',s=>s.delete(k)).catch(()=>{})}; })();
@@ -970,7 +988,7 @@ function renderCust(){
    +crow(tr('Картинка на кейкапах'),'<button class="btn sm" id="cCapImg">'+tr('Выбрать')+'</button><button class="btn sm" id="cCapRst">'+tr('Сброс')+'</button>')
    +'<h3>'+tr('Свои звуки')+'</h3>'+SLOTS.map(a=>crow(tr(a[1]),'<button class="btn sm" data-up="'+a[0]+'">'+tr('Загрузить')+'</button><button class="btn sm" data-rs="'+a[0]+'">'+tr('Сброс')+'</button>')).join('')
    +'<input type="file" id="fImg" accept="image/*" hidden><input type="file" id="fFont" accept=".ttf,.otf,.woff,.woff2,font/*" hidden><input type="file" id="fSnd" accept="audio/*" hidden>';
-  fontSel(); $('#cPlain').checked=cfg.plain; $('#cBg').value=cfg.bg||'#7b7d82'; $('#cNum').value=cfg.capNum||'#868784'; $('#cFn').value=cfg.capFn||'#d07828';
+  fontSel(); $('#cPlain').checked=cfg.plain; $('#cBg').value=cfg.bg||'#7b7d82'; syncDef();
 }
 function wireCust(){
   const box=$('#cust');
@@ -978,8 +996,8 @@ function wireCust(){
     if(b.id==='cBgImg'||b.id==='cCapImg'){ want=b.id; $('#fImg').click(); }
     else if(b.dataset.up){ want=b.dataset.up; $('#fSnd').click(); }
     else if(b.id==='cBgRst'){ cfg.bg=''; IMG.bg=''; idb.del('bgimg'); saveCfg(); applyBg(); $('#cBg').value='#7b7d82'; }
-    else if(b.id==='cNumRst'){ cfg.capNum=''; saveCfg(); $('#cNum').value='#868784'; build(); }
-    else if(b.id==='cFnRst'){ cfg.capFn=''; saveCfg(); $('#cFn').value='#d07828'; build(); }
+    else if(b.id==='cNumRst'){ setDef('dnum',''); }
+    else if(b.id==='cFnRst'){ setDef('dfn',''); }
     else if(b.id==='cCapRst'){ IMG.cap=''; idb.del('capimg'); build(); }
     else if(b.id==='cFontUp'){ $('#fFont').click(); }
     else if(b.id==='cFontRst'){ cfg.capFont=''; idb.del('capfont'); if(FACE){ document.fonts.delete(FACE); FACE=null; } saveCfg(); fontSel(); repaintKeys(); }
@@ -989,8 +1007,8 @@ function wireCust(){
     if(t.id==='cPlain'){ cfg.plain=t.checked; saveCfg(); $('#lcd').classList.toggle('plain',cfg.plain); render(); }
     else if(t.id==='cBg'){ cfg.bg=t.value; IMG.bg=''; idb.del('bgimg'); saveCfg(); applyBg(); }
     else if(t.id==='cFont'){ cfg.capFont=t.value; saveCfg(); repaintKeys(); }
-    else if(t.id==='cNum'){ cfg.capNum=t.value; saveCfg(); lazyBuild(); }
-    else if(t.id==='cFn'){ cfg.capFn=t.value; saveCfg(); lazyBuild(); }
+    else if(t.id==='cNum'){ setDef('dnum',t.value,1); }
+    else if(t.id==='cFn'){ setDef('dfn',t.value,1); }
   });
   box.addEventListener('change',e=>{ const t=e.target, f=t.files&&t.files[0];
     if(t.id==='fFont'){ t.value=''; if(!f) return;
@@ -1004,7 +1022,9 @@ function wireCust(){
   });
 }
 /* перекраска всех клавиш во время перетаскивания в палитре не чаще раза в 80 мс */
-let lbT=0; function lazyBuild(){ if(lbT) return; lbT=setTimeout(()=>{ lbT=0; if(!P.on) build(); },80); }
+let lbT=0; function lazyBuild(){ if(lbT) return; lbT=setTimeout(()=>{ lbT=0; if(!P.on){ build(); buildKits(); } },80); }
+const syncDef=()=>{ const a=$('#cNum'), b=$('#cFn'); if(a) a.value=kitList()[0].top; if(b) b.value=kitList()[1].top; };
+function setDef(id,v,live){ cfg.kits=cfg.kits||{}; if(v) cfg.kits[id]=v; else delete cfg.kits[id]; KL=null; saveCfg(); if(live) lazyBuild(); else{ syncDef(); if(!P.on) build(); buildKits(); } }
 
 /* редактор пресетов: каждая ячейка меню пуллера, свой цвет */
 function buildKits(){
@@ -1015,13 +1035,17 @@ let kT=0, kIn=null;
 function refreshKit(){
   const i=kIn; if(!i) return; const idx=KITS.findIndex(x=>x.id===i.dataset.kit), k=kitList()[idx];
   i.parentNode.querySelector('.kp').innerHTML=capSVG(k,LBS[idx%LBS.length],200,188);
-  if(!P.on){ document.querySelectorAll('#pad .key').forEach(b=>{ if(SKM[b.dataset.k]===k.id) paintKey(b); }); if(SKM['=']===k.id) applyAccent(); }
+  syncDef();
+  if(!P.on){ document.querySelectorAll('#pad .key').forEach(b=>{ const id=SKM[b.dataset.k]||(roleOf(b.className)==='num'?'dnum':'dfn'); if(id===k.id) paintKey(b); }); applyAccent(); }
 }
 $('#kgrid').addEventListener('input',e=>{ const i=e.target; if(!i.dataset.kit) return;
   cfg.kits=cfg.kits||{}; cfg.kits[i.dataset.kit]=i.value; KL=null; saveCfg(); kIn=i;
   if(!kT) kT=setTimeout(()=>{ kT=0; refreshKit(); },80); });
 $('#kgrid').addEventListener('change',e=>{ if(e.target.dataset.kit){ kIn=e.target; clearTimeout(kT); kT=0; refreshKit(); } });
-$('#kReset').addEventListener('click',()=>{ cfg.kits={}; KL=null; saveCfg(); buildKits(); if(!P.on){ document.querySelectorAll('#pad .key').forEach(paintKey); applyAccent(); } });
+$('#kReset').addEventListener('click',()=>{
+  cfg.kits={}; KL=null; saveCfg(); SKM={}; try{ localStorage.removeItem('mechalc.skins'); }catch(e){}
+  syncDef(); buildKits(); if(!P.on){ document.querySelectorAll('#pad .key').forEach(paintKey); applyAccent(); }
+});
 
 /* язык */
 function applyLang(){
