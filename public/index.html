@@ -13,15 +13,16 @@
 <link rel="icon" href="assets/icon-180.png">
 <title>Mechalc</title>
 <style>
-:root{--lcd:#ff8f1f;--lcdDim:rgba(255,160,70,.62);--acc:#e8822e;--accedge:#a85a12;--accink:#1b1204;--ink:#eceef1;--muted:#a3a6ad;--tab:#5b5e65;--tabedge:#3a3c41;--shadow:rgba(0,0,0,.45);--lcdrgb:255,143,31;--selarr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23ff8f1f' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
+:root{--tex:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' seed='5' stitchTiles='stitch' result='t'/%3E%3CfeDiffuseLighting in='t' lighting-color='%23fff' surfaceScale='1.5' result='l'%3E%3CfeDistantLight azimuth='235' elevation='55'/%3E%3C/feDiffuseLighting%3E%3CfeComponentTransfer in='l' result='c'%3E%3CfeFuncR type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncG type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncB type='linear' slope='1.7' intercept='-.89'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix in='c' type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.85 0 0 0 -0.425' result='w'/%3E%3CfeColorMatrix in='c' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.85 0 0 0 0.425' result='d'/%3E%3CfeMerge%3E%3CfeMergeNode in='w'/%3E%3CfeMergeNode in='d'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");--lcd:#ff8f1f;--lcdDim:rgba(255,160,70,.62);--acc:#e8822e;--accedge:#a85a12;--accink:#1b1204;--ink:#eceef1;--muted:#a3a6ad;--tab:#5b5e65;--tabedge:#3a3c41;--shadow:rgba(0,0,0,.45);--lcdrgb:255,143,31;--selarr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23ff8f1f' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
-html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;height:100%;color:var(--ink);background:radial-gradient(130% 55% at 50% -4%,rgba(255,255,255,.34),rgba(255,255,255,0) 62%),linear-gradient(168deg,#a9abaf 0%,#898b90 42%,#6c6e73 100%);font:400 16px/1.3 -apple-system,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+html{height:100%;background-color:#6a6c71;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;color:var(--ink);background:var(--tex) 0 0/256px 256px repeat,radial-gradient(130% 55% at 50% -4%,rgba(255,255,255,.26),rgba(255,255,255,0) 62%),linear-gradient(168deg,#9a9ca0 0%,#7a7c81 42%,#5f6166 100%);font:400 16px/1.3 -apple-system,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .sel{-webkit-user-select:text;user-select:text}
-.app{height:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:8px;padding:10px 16px 26px;box-sizing:border-box}
+.app{height:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:8px;padding:10px 16px 14px;box-sizing:border-box}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.tabs button{border:0;border-radius:10px;padding:11px 2px;font:600 12.5px/1 inherit;font-family:inherit;background:var(--tab);color:var(--ink);box-shadow:0 2px 0 var(--tabedge);white-space:nowrap}
-.tabs button.on{background:var(--acc);color:var(--accink);box-shadow:0 2px 0 var(--accedge)}
+.tabs button{border:0;margin:0;padding:0;height:50px;background:none;position:relative;filter:drop-shadow(0 3px 3px var(--shadow));transition:transform .045s,filter .045s;touch-action:manipulation;cursor:pointer}
+.tabs button svg{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
+.tabs button.on{transform:translateY(3px) scale(.985);filter:brightness(.92) drop-shadow(0 1px 1px var(--shadow))}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .lcd{position:relative;flex:1;min-height:150px;display:flex;flex-direction:column;padding:8px 14px 12px;border-radius:18px;background:linear-gradient(#17120d,#0c0906);box-shadow:inset 0 2px 12px rgba(0,0,0,.85),inset 0 0 0 1px rgba(255,255,255,.05),0 1px 0 rgba(255,255,255,.22)}
 .lcdtop{display:flex;align-items:center;justify-content:space-between;min-height:30px}
@@ -82,7 +83,6 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
 @media (prefers-reduced-motion:reduce){.key,#toast{transition:none}}
 
 .app{position:relative;z-index:1}
-body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0}
 /* шершавая текстура: рельефный шум (feDiffuseLighting) поверх градиента. Сила: opacity */
 body::before{opacity:.36;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' seed='5' stitchTiles='stitch' result='t'/%3E%3CfeDiffuseLighting in='t' lighting-color='%23fff' surfaceScale='1.5'%3E%3CfeDistantLight azimuth='235' elevation='55'/%3E%3C/feDiffuseLighting%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncG type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncB type='linear' slope='1.7' intercept='-.89'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 /* крупная неравномерность поверх: лёгкие пятна, как у крашеного пластика */
@@ -110,7 +110,7 @@ html.pulling-on,html.pulling-on *{touch-action:none;cursor:none}
 .puller{position:fixed;left:0;top:0;width:90px;height:130px;pointer-events:none;z-index:120;display:none;filter:drop-shadow(0 6px 5px rgba(0,0,0,.45));will-change:transform}
 .tray{position:fixed;z-index:30;box-sizing:border-box;padding:12px;border-radius:16px;background:rgba(28,30,34,.9);overflow:auto;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .tray .tt{font-weight:600;margin:0 0 10px;text-align:center;color:var(--ink)}
-.opts{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .opt{border:0;background:none;padding:0;aspect-ratio:187/176;filter:drop-shadow(0 3px 3px var(--shadow));cursor:pointer}
 .opt:active{transform:translateY(2px)}.opt svg{display:block;width:100%;height:100%}
 .plain .lcdbox{filter:none}
@@ -133,12 +133,12 @@ html,body{overflow:hidden}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="engrave" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="inv"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer><feOffset in="inv" dx="1.8" dy="4.2" result="io"/><feGaussianBlur in="io" stdDeviation="1.7" result="ib"/><feComposite in="ib" in2="SourceAlpha" operator="in" result="ic"/><feFlood flood-color="#000" flood-opacity=".95"/><feComposite in2="ic" operator="in" result="inner"/><feOffset in="inv" dx="-.9" dy="-2.4" result="lo"/><feGaussianBlur in="lo" stdDeviation="1" result="lb"/><feComposite in="lb" in2="SourceAlpha" operator="in" result="lc"/><feFlood flood-color="#fff" flood-opacity=".32"/><feComposite in2="lc" operator="in" result="inlight"/><feOffset in="SourceAlpha" dx="-.4" dy="1.9" result="ro"/><feComposite in="ro" in2="SourceAlpha" operator="out" result="rm"/><feGaussianBlur in="rm" stdDeviation=".55" result="rb"/><feFlood flood-color="#fff" flood-opacity=".5"/><feComposite in2="rb" operator="in" result="rim"/><feOffset in="SourceAlpha" dx=".3" dy="-1.1" result="to"/><feComposite in="to" in2="SourceAlpha" operator="out" result="tm"/><feGaussianBlur in="tm" stdDeviation=".5" result="tb"/><feFlood flood-color="#000" flood-opacity=".35"/><feComposite in2="tb" operator="in" result="topw"/><feMerge><feMergeNode in="topw"/><feMergeNode in="rim"/><feMergeNode in="SourceGraphic"/><feMergeNode in="inlight"/><feMergeNode in="inner"/></feMerge></filter><filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="2" seed="3" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.5 0 0 0 -.75" result="lt"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 0 0 0 .75" result="dk"/><feComposite in="lt" in2="SourceAlpha" operator="in" result="l2"/><feComposite in="dk" in2="SourceAlpha" operator="in" result="d2"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="d2"/><feMergeNode in="l2"/></feMerge></filter></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="engrave" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feOffset in="SourceAlpha" dx="-.3" dy="1.7" result="ro"/><feComposite in="ro" in2="SourceAlpha" operator="out" result="rm"/><feGaussianBlur in="rm" stdDeviation=".4" result="rb"/><feFlood flood-color="#fff" flood-opacity=".6"/><feComposite in2="rb" operator="in" result="rim"/><feOffset in="SourceAlpha" dx=".3" dy="-1.4" result="to"/><feComposite in="to" in2="SourceAlpha" operator="out" result="tm"/><feGaussianBlur in="tm" stdDeviation=".4" result="tb"/><feFlood flood-color="#000" flood-opacity=".5"/><feComposite in2="tb" operator="in" result="topw"/><feMerge><feMergeNode in="topw"/><feMergeNode in="rim"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="2" seed="3" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.5 0 0 0 -.75" result="lt"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 0 0 0 .75" result="dk"/><feComposite in="lt" in2="SourceAlpha" operator="in" result="l2"/><feComposite in="dk" in2="SourceAlpha" operator="in" result="d2"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="d2"/><feMergeNode in="l2"/></feMerge></filter></defs></svg>
 <div class="app">
   <nav class="tabs" role="tablist">
-    <button class="on" data-m="calc" role="tab" data-i="Обычный">Обычный</button>
-    <button data-m="eng" role="tab" data-i="Инженерный">Инженерный</button>
-    <button data-m="conv" role="tab" data-i="Конвертер">Конвертер</button>
+    <button class="on" data-m="calc" role="tab"></button>
+    <button data-m="eng" role="tab"></button>
+    <button data-m="conv" role="tab"></button>
   </nav>
   <div class="pbar" id="pbar" hidden><span id="phint"></span><span class="btns"><button class="btn" id="pchange" data-i="Сменить" hidden>Сменить</button><button class="btn main" id="pdone" data-i="Готово">Готово</button></span></div>
 
@@ -161,7 +161,7 @@ html,body{overflow:hidden}
 
     <div class="view" id="vConv" hidden>
       <div class="crow"><select id="cFrom" aria-label="Из единицы" data-ial="Из единицы"></select><div class="lcdbox" id="cAmt" role="img"></div></div>
-      <div class="swaprow"><button class="swapb" id="cSwap" aria-label="Поменять единицы" data-ial="Поменять единицы"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V5M4 9l4-4 4 4M16 4v15M12 15l4 4 4-4"/></svg></button></div>
+      <div class="swaprow"><button class="swapb" id="cSwap" aria-label="Поменять единицы" data-ial="Поменять единицы"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V5M4 9l4-4 4 4M16 4v15M12 15l4 4 4-4"/></svg></button></div>
       <div class="crow"><select id="cTo" aria-label="В единицу" data-ial="В единицу"></select><div class="lcdbox" id="cOut" role="img"></div></div>
       <div class="cnote" id="cNote"></div>
     </div>
@@ -213,7 +213,7 @@ en:{
 'Води пуллером по клавишам: кейкапы слетят':'Drag the puller over the keys: the keycaps will pop off','Выбери набор кейкапов':'Choose a keycap set','Выбери кейкапы':'Choose keycaps',
 'Тыкай на свичи, осталось: ':'Tap the switches, left: ','Все кейкапы на месте':'All keycaps are in place','Готово! Все кейкапы на месте':'Done! All keycaps are in place',
 'Звук включён':'Sound on','Звук отпускания':'Key release sound','Громкость':'Volume','Кейкапы':'Keycaps',
-'Пресеты кейкапов':'Keycap presets','Цвет каждой ячейки в меню пуллера':'Colour of every cell in the puller menu','Сбросить клавиши к стандартным':'Reset keys to default','Закрыть':'Close','Пустая клавиша':'Blank key','Цифры':'Digits','Функции':'Functions',
+'Пресеты кейкапов':'Keycap presets','Цвет каждой ячейки в меню пуллера':'Colour of every cell in the puller menu','Сбросить клавиши к стандартным':'Reset keys to default','Закрыть':'Close','Пустая клавиша':'Blank key','Цифры':'Digits','Функции':'Functions','Форма кейкапов (PNG)':'Keycap shape (PNG)','CAPNOTE':'Grey PNG on a transparent background. The keycap sets the colour; light and shade come from the grey tone. Face brightness about 170 of 255, face in the same place as on the samples. Keep the sample proportions. Samples:','Высокий (⇄)':'Tall (⇄)','Обычный (1u)':'Regular (1u)','Широкий (0 и вкладки)':'Wide (0 and tabs)','Не подходит: нужны пропорции образца':'Does not fit: keep the sample proportions',
 'Курсы к тенге':'Rates to tenge','Курсы':'Rates','Обновить курсы':'Update rates','Обновляю…':'Updating…','Нет сети: показаны сохранённые курсы':'No network: showing saved rates','Курсы ориентировочные':'Approximate rates','Обновлено':'Updated',
 'Обычный шрифт на дисплее':'Plain font on the display','Оформление':'Appearance','Фон':'Background','Картинка':'Image','Сброс':'Reset',
 'Кейкапы: цифры':'Keycaps: digits','Кейкапы: функции и акцент':'Keycaps: functions & accent','Шрифт клавиш':'Key font','Свой шрифт (файл)':'Custom font (file)',
@@ -244,7 +244,7 @@ kk:{
 'Води пуллером по клавишам: кейкапы слетят':'Суырғышты пернелер үстімен жүргіз: кейкаптар ұшып кетеді','Выбери набор кейкапов':'Кейкап жинағын таңда','Выбери кейкапы':'Кейкаптарды таңда',
 'Тыкай на свичи, осталось: ':'Свичтерді бас, қалғаны: ','Все кейкапы на месте':'Барлық кейкаптар орнында','Готово! Все кейкапы на месте':'Дайын! Барлық кейкаптар орнында',
 'Звук включён':'Дыбыс қосулы','Звук отпускания':'Пернені жіберу дыбысы','Громкость':'Дыбыс деңгейі','Кейкапы':'Кейкаптар',
-'Пресеты кейкапов':'Кейкап пресеттері','Цвет каждой ячейки в меню пуллера':'Суырғыш мәзіріндегі әр ұяшықтың түсі','Сбросить клавиши к стандартным':'Пернелерді әдепкіге қайтару','Закрыть':'Жабу','Пустая клавиша':'Бос перне','Цифры':'Сандар','Функции':'Функциялар',
+'Пресеты кейкапов':'Кейкап пресеттері','Цвет каждой ячейки в меню пуллера':'Суырғыш мәзіріндегі әр ұяшықтың түсі','Сбросить клавиши к стандартным':'Пернелерді әдепкіге қайтару','Закрыть':'Жабу','Пустая клавиша':'Бос перне','Цифры':'Сандар','Функции':'Функциялар','Форма кейкапов (PNG)':'Кейкап пішіні (PNG)','CAPNOTE':'Мөлдір фондағы сұр PNG. Түсті кейкап береді, жарық пен көлеңке сұр реңнен алынады. Беттің жарықтығы шамамен 170/255, беті үлгідегідей орналасуы керек. Пропорциясы үлгідегідей болсын. Үлгілер:','Высокий (⇄)':'Биік (⇄)','Обычный (1u)':'Қарапайым (1u)','Широкий (0 и вкладки)':'Кең (0 және беттер)','Не подходит: нужны пропорции образца':'Жарамайды: пропорциясы үлгідегідей болсын',
 'Курсы к тенге':'Теңгеге қатысты бағамдар','Курсы':'Бағамдар','Обновить курсы':'Бағамдарды жаңарту','Обновляю…':'Жаңартылуда…','Нет сети: показаны сохранённые курсы':'Желі жоқ: сақталған бағамдар көрсетілді','Курсы ориентировочные':'Бағамдар шамамен','Обновлено':'Жаңартылды',
 'Обычный шрифт на дисплее':'Дисплейде қарапайым қаріп','Оформление':'Безендіру','Фон':'Фон','Картинка':'Сурет','Сброс':'Бастапқы',
 'Кейкапы: цифры':'Кейкаптар: сандар','Кейкапы: функции и акцент':'Кейкаптар: функциялар және акцент','Шрифт клавиш':'Перне қарпі','Свой шрифт (файл)':'Өз қарпің (файл)',
@@ -643,7 +643,7 @@ const CONV=[NUM('7'),NUM('8'),NUM('9'),['BACK\nSPACE','bs','fn'],NUM('4'),NUM('5
 /* ---- векторные кейкапы (повторяют растровые: скосы, блики, зерно) ---- */
 const FONTS={arial:'"Helvetica Neue",Helvetica,Arial,sans-serif',sans:'-apple-system,"SF Pro Display",system-ui,"Segoe UI",Roboto,sans-serif',mono:'ui-monospace,Menlo,Consolas,monospace',serif:'Georgia,"Times New Roman",serif',round:'ui-rounded,"SF Pro Rounded","Trebuchet MS",sans-serif',slab:'Rockwell,"Courier New",serif',bold:'Impact,"Arial Black",sans-serif',hand:'"Brush Script MT","Segoe Script",cursive',custom:'"MechCap",sans-serif'};
 const FONTN=[['','Как в наборе'],['arial','Helvetica'],['sans','Системный'],['mono','Моноширинный'],['serif','С засечками'],['round','Округлый'],['slab','Брусковый'],['bold','Плакатный'],['hand','Рукописный']];
-const DSK={num:{top:'#868784',ink:'#2a1a10',r:17,shape:'rect',font:'arial'},fn:{top:'#d07828',ink:'#2a1a10',r:17,shape:'rect',font:'arial'}};
+const DSK={num:{top:'#efefec',ink:'#2a1a10',r:17,shape:'rect',font:'arial'},fn:{top:'#d07828',ink:'#2a1a10',r:17,shape:'rect',font:'arial'}};
 DSK.op=DSK.fn; DSK.eq=DSK.fn;
 const KITS=[
  /* два набора по умолчанию: «Цифры» для цифровых клавиш и «Функции» для всех остальных. Сброс возвращает клавиши к ним */
@@ -658,10 +658,8 @@ const KITS=[
  {id:'navy',n:'Синий',top:'#2f4aa8',ink:'#e8eeff',r:17,shape:'rect',font:'serif'},
  {id:'lime',n:'Лайм',top:'#9ad63a',ink:'#1d3300',r:34,shape:'oct',font:'mono'},
  {id:'lilac',n:'Сирень',top:'#a98be0',ink:'#ffffff',r:60,shape:'sph',font:'bold'},
- {id:'orange',n:'Оранж',top:'#ff8f1f',ink:'#241300',r:12,shape:'cyl',font:'sans'},
- {id:'snow',n:'Белый',top:'#f1f1ee',ink:'#222222',r:22,shape:'rect',font:'serif'},
- {id:'mint',n:'Мята',top:'#9fdcc6',ink:'#0b3b2e',r:26,shape:'oct',font:'hand'}];
-const LBS=['7','×','7','C','+','=','5','−','×','÷','9','%','√','0'];
+ {id:'snow',n:'Белый',top:'#f1f1ee',ink:'#222222',r:22,shape:'rect',font:'serif'}];
+const LBS=['7','×','7','C','+','=','5','−','×','÷','9','√'];
 /* пресеты из меню пуллера; цвет каждого можно поменять в настройках (cfg.kits), цвет надписи подбирается по яркости */
 let KL=null;
 function kitList(){
@@ -702,10 +700,17 @@ function capSVGv(sk,label,vw,vh){
 /* ---- растровые кейкапы: серые вырезки (assets/keys) перекрашиваются в любой цвет,
    сам растр (скосы, свет, зерно пластика) остаётся как есть ---- */
 const CAPS={u:{src:'assets/keys/cap1.png',face:[.14,.01,.73,.75]},w:{src:'assets/keys/cap2.png',face:[.0625,.008,.875,.77]},t:{src:'assets/keys/cap_tall.png',face:[.14,.01,.73,.855]}};
-const capsReady=Promise.all(Object.keys(CAPS).map(k=>new Promise(res=>{
+/* readCap: читает серую картинку кейкапа в пиксели. strict=true для файлов пользователя: пропорции должны быть близки к образцу */
+const CAPAR={u:256/253,w:512/259,t:256/497};
+function readCap(k,src,strict){ return new Promise(res=>{
   const im=new Image();
-  im.onload=()=>{ try{ const c=document.createElement('canvas'); c.width=im.naturalWidth; c.height=im.naturalHeight; const x=c.getContext('2d',{willReadFrequently:true}); x.drawImage(im,0,0); CAPS[k].w=c.width; CAPS[k].h=c.height; CAPS[k].d=x.getImageData(0,0,c.width,c.height).data; }catch(e){} res(); };
-  im.onerror=()=>res(); im.src=CAPS[k].src; })));
+  im.onload=()=>{ try{
+    if(strict&&Math.abs(im.naturalWidth/im.naturalHeight/CAPAR[k]-1)>.25) return res(false);
+    const c=document.createElement('canvas'); c.width=im.naturalWidth; c.height=im.naturalHeight; const x=c.getContext('2d',{willReadFrequently:true}); x.drawImage(im,0,0);
+    const d=x.getImageData(0,0,c.width,c.height).data; CAPS[k].w=c.width; CAPS[k].h=c.height; CAPS[k].d=d; for(const q in TINT) delete TINT[q]; res(true);
+  }catch(e){ res(false); } };
+  im.onerror=()=>res(false); im.src=src; }); }
+const capsReady=Promise.all(Object.keys(CAPS).map(k=>readCap(k,CAPS[k].src)));
 const TINT={}, CAPR=.125; /* CAPR: радиус скругления клавиши в долях ширины 1u (256 px). Больше число, круглее углы; светлые «уши» сверху срезаются */
 function tintURL(t,hex){
   const k=t+hex, S=CAPS[t]; if(TINT[k]) return TINT[k]; if(!S||!S.d) return '';
@@ -724,16 +729,17 @@ function tintURL(t,hex){
   x.arcTo(S.w,0,S.w,S.h,rd); x.arcTo(S.w,S.h,0,S.h,rd); x.arcTo(0,S.h,0,0,rd); x.arcTo(0,0,S.w,0,rd); x.closePath(); x.fill();
   return TINT[k]=c.toDataURL('image/png');
 }
-function capSVG(sk,label,vw,vh){
+function capSVG(sk,label,vw,vh,fsx){
   const t=vw>300?'w':vh>300?'t':'u', S=CAPS[t], url=S&&S.d?tintURL(t,sk.top):'';
   if(!url) return capSVGv(sk,label,vw,vh);
   const id='c'+(++capN), X=vw*S.face[0], Y=vh*S.face[1], fw=vw*S.face[2], fh=vh*S.face[3], cx=X+fw/2, cy=Y+fh/2;
   const lines=String(label).split('\n'), n=Math.max(...lines.map(x=>[...x].length));
-  const fs=Math.min(fh*(lines.length>1?.27:.5),fw/(n*.8));
+  const fs=fsx||Math.min(fh*(lines.length>1?.27:.5),fw/(n*.8));
   const font=FONTS[cfg.capFont]||FONTS[sk.font||'arial'], fwt=cfg.capFont==='custom'?400:800;
   const photo=sk.img?'<clipPath id="'+id+'p"><rect x="'+X+'" y="'+Y+'" width="'+fw+'" height="'+fh+'" rx="'+(fw*.1)+'"/></clipPath><image href="'+sk.img+'" x="'+X+'" y="'+Y+'" width="'+fw+'" height="'+fh+'" preserveAspectRatio="xMidYMid slice" clip-path="url(#'+id+'p)"/>':'';
   return '<svg viewBox="0 0 '+vw+' '+vh+'" preserveAspectRatio="none" aria-hidden="true"><image href="'+url+'" width="'+vw+'" height="'+vh+'" preserveAspectRatio="none"/>'+photo
-   +'<text text-anchor="middle" filter="url(#engrave)" font-family=\''+font+'\' font-size="'+fs+'" font-weight="'+fwt+'" fill="'+sk.ink+'">'+lines.map((l,i)=>'<tspan x="'+cx+'" y="'+(cy+(i-(lines.length-1)/2)*fs*1.1)+'" dy=".35em">'+l+'</tspan>').join('')+'</text></svg>';
+   +(label==='⇄'?(()=>{ const u=fw*.2, P=(a,b)=>(cx+a*u).toFixed(1)+' '+(cy+b*u).toFixed(1); return '<path filter="url(#engrave)" fill="none" stroke="'+sk.ink+'" stroke-width="'+(u*.34).toFixed(1)+'" stroke-linecap="round" stroke-linejoin="round" d="M'+P(-1,-.5)+'L'+P(1,-.5)+'M'+P(.45,-1)+'L'+P(1,-.5)+'L'+P(.45,0)+'M'+P(1,.5)+'L'+P(-1,.5)+'M'+P(-.45,0)+'L'+P(-1,.5)+'L'+P(-.45,1)+'"/></svg>'; })()
+   :'<text text-anchor="middle" filter="url(#engrave)" font-family=\''+font+'\' font-size="'+fs+'" font-weight="'+fwt+'" fill="'+sk.ink+'">'+lines.map((l,i)=>'<tspan x="'+cx+'" y="'+(cy+(i-(lines.length-1)/2)*fs*1.1)+'" dy=".35em">'+l+'</tspan>').join('')+'</text></svg>');
 }
 /* акцентный цвет интерфейса и цифр дисплея = цвет клавиши «=» (бывшей оранжевой) */
 function rgb2hsl(R,G,B){ R/=255;G/=255;B/=255; const mx=Math.max(R,G,B), mn=Math.min(R,G,B), l=(mx+mn)/2, d=mx-mn; let h=0,s=0;
@@ -759,8 +765,10 @@ function skinFor(k,c){
 const VB=c=>c.includes('wide')?[411,188]:c.includes('tall')?[200,388]:[200,188];
 function paintKey(b){ const c=b.className, v=VB(c); b.innerHTML=capSVG(skinFor(b.dataset.k,c),b.dataset.t,v[0],v[1]); }
 const SW='<svg class="sw" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><rect x="12" y="12" width="76" height="76" rx="9" fill="#2a2c30"/><rect x="18" y="18" width="64" height="64" rx="7" fill="#3b3e44" stroke="#15161a" stroke-width="2"/><rect x="25" y="25" width="50" height="50" rx="5" fill="#1d1f23"/><g fill="#e0453a"><rect x="44" y="34" width="12" height="32" rx="2.5"/><rect x="34" y="44" width="32" height="12" rx="2.5"/></g><path d="M45 36v28M36 46h28" stroke="#fff" stroke-opacity=".25" stroke-width="1.5"/><circle cx="21" cy="21" r="1.8" fill="#8b8f98"/><circle cx="79" cy="79" r="1.8" fill="#8b8f98"/></svg>';
+const TABN={calc:'Обычный',eng:'Инженерный',conv:'Конвертер'};
+function paintTabs(){ document.querySelectorAll('.tabs button').forEach(b=>{ const t=tr(TABN[b.dataset.m]); b.innerHTML=capSVG(b.dataset.m===mode?skinFor('=','eq'):skinFor('7','num'),t,411,188,42); b.setAttribute('aria-label',t); }); }
 function build(){
-  applyAccent();
+  applyAccent(); paintTabs();
   const pad=$('#pad'); pad.innerHTML='';
   const layout=mode==='conv'?CONV:mode==='eng'?FUNCS.concat(BASE):BASE;
   layout.forEach(([t,k,c])=>{
@@ -842,7 +850,7 @@ window.addEventListener('resize',()=>{ if(P.on&&P.phase==='pick') posTray(); });
 function fitPad(){
   const pad=$('#pad'); pad.hidden=false;
   const cols=mode==='conv'?4:5, rows=mode==='eng'?7:mode==='conv'?4:5, gap=4;
-  const avail=Math.min(window.innerWidth,440)-32, Hh=window.innerHeight-264-(mode==='conv'?0:150); /* 150px резерв: на низком окне ПК клавиши не должны выдавливать историю */
+  const avail=Math.min(window.innerWidth,440)-32, Hh=$('.app').clientHeight-(10+14+50+16)-(mode==='conv'?235:170); /* высота приложения минус рамки и вкладки минус минимум дисплея (история на низком окне ПК не должна пропадать) */
   let c=(Hh-(rows-1)*gap)/(rows*.94);
   c=Math.max(40,Math.min(c,(avail-(cols-1)*gap)/cols,92));
   pad.style.width=(cols*c+(cols-1)*gap)+'px'; pad.style.setProperty('--cols',cols);
@@ -872,7 +880,7 @@ function setMode(m){
   $('#deg').hidden=m!=='eng';
   build(); fitPad(); render();
 }
-document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.m)));
+document.querySelectorAll('.tabs button').forEach(b=>{ b.addEventListener('click',()=>setMode(b.dataset.m)); b.addEventListener('pointerdown',()=>click(1.05,false)); b.addEventListener('pointerup',()=>click(1.05,true)); });
 window.addEventListener('resize',fitPad);
 
 /* history */
@@ -957,7 +965,7 @@ if(cfg.capNum||cfg.capFn){ cfg.kits={...(cfg.kits||{})}; if(cfg.capNum&&!cfg.kit
 const idb=(()=>{ let db; const open=()=>db||(db=new Promise((res,rej)=>{ const r=indexedDB.open('mechalc',1); r.onupgradeneeded=()=>r.result.createObjectStore('b'); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }));
   const tx=async(m,f)=>{ const d=await open(); return new Promise((res,rej)=>{ const t=d.transaction('b',m), q=f(t.objectStore('b')); t.oncomplete=()=>res(q.result); t.onerror=()=>rej(t.error); }); };
   return {get:k=>tx('readonly',s=>s.get(k)).catch(()=>null),set:(k,v)=>tx('readwrite',s=>s.put(v,k)).catch(()=>{}),del:k=>tx('readwrite',s=>s.delete(k)).catch(()=>{})}; })();
-function applyBg(){ const b=document.body.style; b.background=IMG.bg?'url('+IMG.bg+') center/cover fixed':cfg.bg||''; }
+function applyBg(){ const b=document.body.style, T='var(--tex) 0 0/256px 256px repeat'; b.background=IMG.bg?T+',url('+IMG.bg+') center/cover no-repeat':cfg.bg?T+','+cfg.bg:''; }
 function fileImg(file,size,cover){ return new Promise((res,rej)=>{
   const u=URL.createObjectURL(file), im=new Image();
   im.onload=()=>{ const c=document.createElement('canvas'), x=c.getContext('2d');
@@ -970,6 +978,7 @@ async function useSound(n,ab){
   const buf=await ctx.decodeAudioData(ab.slice(0)), d=buf.getChannelData(0); let pk=0; for(let i=0;i<d.length;i++) pk=Math.max(pk,Math.abs(d[i]));
   CS[n]={buf,g:pk>0?Math.min(3,.9/pk):1};
 }
+const CAPSL=[['u','Обычный (1u)','256×253'],['w','Широкий (0 и вкладки)','512×259'],['t','Высокий (⇄)','256×497']];
 const SLOTS=[['click','Клавиши'],['pull','Снятие кейкапа'],['insert','Посадка кейкапа']];
 const crow=(t,h)=>'<div class="line"><span>'+t+'</span><span class="in">'+h+'</span></div>';
 let FACE=null;
@@ -986,8 +995,10 @@ function renderCust(){
    +crow(tr('Шрифт клавиш'),'<select id="cFont" aria-label="'+tr('Шрифт клавиш')+'"></select>')
    +crow(tr('Свой шрифт (файл)'),'<button class="btn sm" id="cFontUp">'+tr('Загрузить')+'</button><button class="btn sm" id="cFontRst">'+tr('Сброс')+'</button>')
    +crow(tr('Картинка на кейкапах'),'<button class="btn sm" id="cCapImg">'+tr('Выбрать')+'</button><button class="btn sm" id="cCapRst">'+tr('Сброс')+'</button>')
+   +'<h3>'+tr('Форма кейкапов (PNG)')+'</h3><div class="rst">'+(TR[lang]?tr('CAPNOTE'):'Серая картинка PNG на прозрачном фоне. Цвет задаёт кейкап, свет и тень берутся из серого тона. Яркость лицевой грани около 170 из 255, грань там же, где на образцах. Пропорции как у образца. Образцы:')+'<br><a href="assets/keys/cap1.png" target="_blank" rel="noopener">1u</a> · <a href="assets/keys/cap2.png" target="_blank" rel="noopener">2u</a> · <a href="assets/keys/cap_tall.png" target="_blank" rel="noopener">'+tr('Высокий (⇄)')+'</a></div>'
+   +CAPSL.map(a=>crow(tr(a[1])+' · '+a[2],'<button class="btn sm" data-cu="'+a[0]+'">'+tr('Загрузить')+'</button><button class="btn sm" data-cr="'+a[0]+'">'+tr('Сброс')+'</button>')).join('')
    +'<h3>'+tr('Свои звуки')+'</h3>'+SLOTS.map(a=>crow(tr(a[1]),'<button class="btn sm" data-up="'+a[0]+'">'+tr('Загрузить')+'</button><button class="btn sm" data-rs="'+a[0]+'">'+tr('Сброс')+'</button>')).join('')
-   +'<input type="file" id="fImg" accept="image/*" hidden><input type="file" id="fFont" accept=".ttf,.otf,.woff,.woff2,font/*" hidden><input type="file" id="fSnd" accept="audio/*" hidden>';
+   +'<input type="file" id="fCap" accept="image/png,image/*" hidden><input type="file" id="fImg" accept="image/*" hidden><input type="file" id="fFont" accept=".ttf,.otf,.woff,.woff2,font/*" hidden><input type="file" id="fSnd" accept="audio/*" hidden>';
   fontSel(); $('#cPlain').checked=cfg.plain; $('#cBg').value=cfg.bg||'#7b7d82'; syncDef();
 }
 function wireCust(){
@@ -995,6 +1006,8 @@ function wireCust(){
   box.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return;
     if(b.id==='cBgImg'||b.id==='cCapImg'){ want=b.id; $('#fImg').click(); }
     else if(b.dataset.up){ want=b.dataset.up; $('#fSnd').click(); }
+    else if(b.dataset.cu){ want=b.dataset.cu; $('#fCap').click(); }
+    else if(b.dataset.cr){ const k=b.dataset.cr; idb.del('cap_'+k); readCap(k,CAPS[k].src).then(repaintAll); }
     else if(b.id==='cBgRst'){ cfg.bg=''; IMG.bg=''; idb.del('bgimg'); saveCfg(); applyBg(); $('#cBg').value='#7b7d82'; }
     else if(b.id==='cNumRst'){ setDef('dnum',''); }
     else if(b.id==='cFnRst'){ setDef('dfn',''); }
@@ -1016,12 +1029,15 @@ function wireCust(){
     }else if(t.id==='fImg'){ t.value=''; if(!f) return;
       if(want==='cBgImg') fileImg(f,1400,false).then(u=>{ IMG.bg=u; idb.set('bgimg',u); applyBg(); }).catch(()=>toast(tr('Не открылась картинка')));
       else fileImg(f,256,true).then(u=>{ IMG.cap=u; idb.set('capimg',u); build(); }).catch(()=>toast(tr('Не открылась картинка')));
+    }else if(t.id==='fCap'){ const k=want; t.value=''; if(!f) return;
+      const r=new FileReader(); r.onload=()=>readCap(k,r.result,true).then(ok=>{ if(ok){ idb.set('cap_'+k,r.result); repaintAll(); } else toast(tr('Не подходит: нужны пропорции образца')); }); r.onerror=()=>toast(tr('Не открылась картинка')); r.readAsDataURL(f);
     }else if(t.id==='fSnd'){ const n=want; t.value=''; if(!f) return;
       f.arrayBuffer().then(ab=>{ idb.set('snd_'+n,ab); return useSound(n,ab); }).then(()=>{ if(n==='click') click(1,false); else play(n); }).catch(()=>toast(tr('Не удалось загрузить звук')));
     }
   });
 }
 /* перекраска всех клавиш во время перетаскивания в палитре не чаще раза в 80 мс */
+const repaintAll=()=>{ if(!P.on){ build(); buildKits(); } };
 let lbT=0; function lazyBuild(){ if(lbT) return; lbT=setTimeout(()=>{ lbT=0; if(!P.on){ build(); buildKits(); } },80); }
 const syncDef=()=>{ const a=$('#cNum'), b=$('#cFn'); if(a) a.value=kitList()[0].top; if(b) b.value=kitList()[1].top; };
 function setDef(id,v,live){ cfg.kits=cfg.kits||{}; if(v) cfg.kits[id]=v; else delete cfg.kits[id]; KL=null; saveCfg(); if(live) lazyBuild(); else{ syncDef(); if(!P.on) build(); buildKits(); } }
@@ -1059,6 +1075,7 @@ $('#lang').addEventListener('change',e=>{ lang=e.target.value; try{ localStorage
 async function loadCustom(){
   const r=await Promise.all([idb.get('bgimg'),idb.get('capimg')]); IMG.bg=r[0]||''; IMG.cap=r[1]||''; applyBg(); if(IMG.cap&&!P.on) document.querySelectorAll('#pad .key').forEach(paintKey);
   const fb=await idb.get('capfont'); if(fb&&await loadFont(fb)){ fontSel(); repaintKeys(); } else if(cfg.capFont==='custom'){ cfg.capFont=''; }
+  let capsChanged=false; for(const k in CAPS){ const u=await idb.get('cap_'+k); if(u&&await readCap(k,u,true)) capsChanged=true; } if(capsChanged) repaintAll();
   for(const a of SLOTS){ const ab=await idb.get('snd_'+a[0]); if(ab) try{ await useSound(a[0],ab); }catch(e){} }
 }
 $('#lcd').classList.toggle('plain',cfg.plain); applyBg();
