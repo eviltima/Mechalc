@@ -6,7 +6,15 @@
   "background_color": "#7b7d82",
   "theme_color": "#7b7d82",
   "icons": [
-    {"src": "assets/icon-180.png", "sizes": "180x180", "type": "image/png"},
-    {"src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png"}
+    {
+      "src": "assets/icon-orange-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-orange-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }

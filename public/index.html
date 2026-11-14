@@ -9,14 +9,14 @@
 <meta name="apple-mobile-web-app-title" content="Mechalc">
 <meta name="theme-color" content="#7b7d82">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="assets/icon-180.png">
-<link rel="icon" href="assets/icon-180.png">
+<link rel="apple-touch-icon" href="assets/icon-orange-180.png">
+<link rel="icon" href="assets/icon-orange-180.png">
 <title>Mechalc</title>
 <style>
 :root{--tex:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' seed='5' stitchTiles='stitch' result='t'/%3E%3CfeDiffuseLighting in='t' lighting-color='%23fff' surfaceScale='1.5' result='l'%3E%3CfeDistantLight azimuth='235' elevation='55'/%3E%3C/feDiffuseLighting%3E%3CfeComponentTransfer in='l' result='c'%3E%3CfeFuncR type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncG type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncB type='linear' slope='1.7' intercept='-.89'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix in='c' type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.85 0 0 0 -0.425' result='w'/%3E%3CfeColorMatrix in='c' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.85 0 0 0 0.425' result='d'/%3E%3CfeMerge%3E%3CfeMergeNode in='w'/%3E%3CfeMergeNode in='d'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");--lcd:#ff8f1f;--lcdDim:rgba(255,160,70,.62);--acc:#e8822e;--accedge:#a85a12;--accink:#1b1204;--ink:#eceef1;--muted:#a3a6ad;--tab:#5b5e65;--tabedge:#3a3c41;--shadow:rgba(0,0,0,.45);--lcdrgb:255,143,31;--selarr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23ff8f1f' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
 html{height:100%;background-color:#6a6c71;scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;height:100%;color:var(--ink);background:var(--tex) 0 0/128px 128px repeat,radial-gradient(130% 55% at 50% -4%,rgba(255,255,255,.26),rgba(255,255,255,0) 62%),linear-gradient(168deg,#9a9ca0 0%,#7a7c81 42%,#5f6166 100%);font:400 16px/1.3 -apple-system,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+body{margin:0;height:100%;color:var(--ink);background:var(--tex) 0 0/64px 64px repeat,radial-gradient(130% 55% at 50% -4%,rgba(255,255,255,.26),rgba(255,255,255,0) 62%),linear-gradient(168deg,#9a9ca0 0%,#7a7c81 42%,#5f6166 100%);font:400 16px/1.3 -apple-system,"SF Pro Text",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 .sel{-webkit-user-select:text;user-select:text}
 .app{height:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:8px;padding:10px 16px 14px;box-sizing:border-box}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
@@ -86,7 +86,7 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
 body::before{opacity:.36;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' seed='5' stitchTiles='stitch' result='t'/%3E%3CfeDiffuseLighting in='t' lighting-color='%23fff' surfaceScale='1.5'%3E%3CfeDistantLight azimuth='235' elevation='55'/%3E%3C/feDiffuseLighting%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncG type='linear' slope='1.7' intercept='-.89'/%3E%3CfeFuncB type='linear' slope='1.7' intercept='-.89'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 /* крупная неравномерность поверх: лёгкие пятна, как у крашеного пластика */
 body::after{opacity:.35;mix-blend-mode:soft-light;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='3' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='.33 .33 .33 0 0 .33 .33 .33 0 0 .33 .33 .33 0 0 0 0 0 0 1'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncG type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncB type='linear' slope='2.4' intercept='-.7'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E")}
-body::before{background-size:128px 128px}
+body::before{background-size:64px 64px}
 html.nograin body::before,html.nograin body::after{display:none}
 /* iOS Safari: mix-blend-mode на фиксированных слоях даёт призрачные тени под клавишами. ::before дублировал шагрень из фона, ::after теперь без смешивания */
 body::before{display:none}
@@ -387,10 +387,16 @@ function twoSVG(s){
   return '<svg viewBox="0 0 '+(w+16)+' 200" preserveAspectRatio="xMaxYMid meet" aria-hidden="true">'+t(50,a)+t(150,b)+'</svg>';
 }
 function setLCD(el,s){
-  let h=cfg.plain?plainSVG(s):lcdSVG(s), two=false;
+  const L=lcdSVG(s); let h=cfg.plain?plainSVG(s):L, fb=false;
   const W=el.clientWidth, H=el.clientHeight||88;
-  if(W>0&&s.length>3&&s!=='±∞'){ const vw=+(h.match(/viewBox="0 0 ([\d.]+)/)||[])[1]; if(vw&&vw*H/106>W+1){ h=twoSVG(s); two=true; } }
-  el.innerHTML=h; el.classList.toggle('two',two); el.setAttribute('aria-label',s); el.dataset.v=s; }
+  if(W>0&&s.length>3&&s!=='±∞'){
+    const vw=x=>+(x.match(/viewBox=\"0 0 ([\d.]+)/)||[])[1], full=H/106, hb=document.querySelector('#hList .hrow b'), hpx=hb?parseFloat(getComputedStyle(hb).fontSize)||16:16;
+    /* 1) ЖК-цифры сжимаются до 62% высоты; 2) обычный шрифт, сжимается до размера истории; 3) две строки */
+    if(!cfg.plain&&W/vw(L)>=full*.62) h=L;
+    else if(90*Math.min(full,W/(Math.max(1,s.length)*52+16))>=hpx){ h=plainSVG(s); fb=true; }
+    else{ h=twoSVG(s); fb=true; }
+  }
+  el.innerHTML=h; el.classList.toggle('two',fb); el.setAttribute('aria-label',s); el.dataset.v=s; }
 window.addEventListener('resize',()=>{ document.querySelectorAll('.lcdbox[data-v]').forEach(e=>setLCD(e,e.dataset.v)); });
 
 /* ================= formatting & math ================= */
@@ -983,15 +989,15 @@ const idb=(()=>{ let db; const open=()=>db||(db=new Promise((res,rej)=>{ const r
   const tx=async(m,f)=>{ const d=await open(); return new Promise((res,rej)=>{ const t=d.transaction('b',m), q=f(t.objectStore('b')); t.oncomplete=()=>res(q.result); t.onerror=()=>rej(t.error); }); };
   return {get:k=>tx('readonly',s=>s.get(k)).catch(()=>null),set:(k,v)=>tx('readwrite',s=>s.put(v,k)).catch(()=>{}),del:k=>tx('readwrite',s=>s.delete(k)).catch(()=>{})}; })();
 function applyBg(){ const g=cfg.grad!==false, n=cfg.grain!==false, L=[];
-  if(n) L.push('var(--tex) 0 0/128px 128px repeat');
+  if(n) L.push('var(--tex) 0 0/64px 64px repeat');
   if(g) L.push('radial-gradient(130% 55% at 50% -4%,rgba(255,255,255,.26),rgba(255,255,255,0) 62%)','linear-gradient(168deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,0) 42%,rgba(0,0,0,.22) 100%)');
   L.push(IMG.bg?'url('+IMG.bg+') center/cover no-repeat':(cfg.bg||'#7a7c81'));
-  document.body.style.background=L.join(','); document.documentElement.classList.toggle('nograin',!n); }
+  document.documentElement.style.background=L.join(','); document.body.style.background='transparent'; document.documentElement.classList.toggle('nograin',!n); }
 const ICONS={gray:['assets/icon-180.png','assets/icon-512.png'],orange:['assets/icon-orange-180.png','assets/icon-orange-512.png']};
-function applyIcon(){ const o=cfg.icon==='orange', i=o?ICONS.orange:ICONS.gray;
+function applyIcon(){ const o=cfg.icon!=='gray', i=o?ICONS.orange:ICONS.gray;
   document.querySelectorAll('link[rel=apple-touch-icon],link[rel=icon]').forEach(l=>l.href=i[0]);
   const l=document.querySelector('link[rel=manifest]'); if(!l) return; if(l.dataset.b){ URL.revokeObjectURL(l.dataset.b); delete l.dataset.b; }
-  if(!o){ l.href='manifest.webmanifest'; return; }
+  if(o){ l.href='manifest.webmanifest'; return; }
   try{ const A=u=>new URL(u,location.href).href, m={name:'Mechalc',short_name:'Mechalc',start_url:location.href.split('#')[0],display:'standalone',background_color:'#7b7d82',theme_color:'#7b7d82',icons:[{src:A(i[0]),sizes:'180x180',type:'image/png'},{src:A(i[1]),sizes:'512x512',type:'image/png'}]};
     const u=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'})); l.dataset.b=u; l.href=u; }catch(e){} }
 function fileImg(file,size,cover){ return new Promise((res,rej)=>{
@@ -1030,7 +1036,7 @@ function renderCust(){
    +CAPSL.map(a=>crow(tr(a[1])+' · '+a[2],'<button class="btn sm" data-cu="'+a[0]+'">'+tr('Загрузить')+'</button><button class="btn sm" data-cr="'+a[0]+'">'+tr('Сброс')+'</button>')).join('')
    +'<h3>'+tr('Свои звуки')+'</h3>'+SLOTS.map(a=>crow(tr(a[1]),'<button class="btn sm" data-up="'+a[0]+'">'+tr('Загрузить')+'</button><button class="btn sm" data-rs="'+a[0]+'">'+tr('Сброс')+'</button>')).join('')
    +'<input type="file" id="fCap" accept="image/png,image/*" hidden><input type="file" id="fImg" accept="image/*" hidden><input type="file" id="fFont" accept=".ttf,.otf,.woff,.woff2,font/*" hidden><input type="file" id="fSnd" accept="audio/*" hidden>';
-  fontSel(); $('#cPlain').checked=cfg.plain; $('#cGrain').checked=cfg.grain!==false; $('#cGrad').checked=cfg.grad!==false; $('#cIcon').value=cfg.icon==='orange'?'orange':'gray'; $('#cBg').value=cfg.bg||'#7b7d82'; syncDef();
+  fontSel(); $('#cPlain').checked=cfg.plain; $('#cGrain').checked=cfg.grain!==false; $('#cGrad').checked=cfg.grad!==false; $('#cIcon').value=cfg.icon==='gray'?'gray':'orange'; $('#cBg').value=cfg.bg||'#7b7d82'; syncDef();
 }
 function wireCust(){
   const box=$('#cust');
