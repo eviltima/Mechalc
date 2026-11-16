@@ -1298,5 +1298,6 @@ pullerLoad('assets/puller.png');
 applyStatic(); document.documentElement.lang=lang; sndIcon(); buildRates(); wireCust(); renderCust(); fillIcons(); liveRates(false);
 Promise.race([capsReady,new Promise(r=>setTimeout(r,2500))]).then(()=>{ setMode('calc'); if(mode!=='conv') $('#pad').style.visibility='hidden'; loadCustom(); return introWait(); }).then(intro,showPad);
 </script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1d20c29501174e618b9b6186bda593e3"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
