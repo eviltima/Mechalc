@@ -98,6 +98,7 @@ body::after{mix-blend-mode:normal;opacity:.06}
 .line1 #hist{flex:1;min-width:0}.line1 .lcdbox{flex:1;min-width:0}
 .cp{border:0;background:none;color:var(--lcdDim);width:30px;height:30px;display:grid;place-items:center;border-radius:8px;flex:none;opacity:.85;padding:0}
 .cp:active{color:var(--lcd)}
+.cpcol{display:flex;flex-direction:column;justify-content:center;gap:4px;flex:none}
 .hrow span{flex:1;min-width:0}
 .btn.wide{width:100%;display:flex;align-items:center;justify-content:center;gap:10px}
 .rst{color:var(--muted);font-size:13px;padding:0 0 8px}.rst a{color:inherit}
@@ -140,7 +141,7 @@ html,body{overflow:hidden}
 .toy .kp{flex:none;width:84px;aspect-ratio:187/176;filter:drop-shadow(0 4px 4px var(--shadow))}
 .toy .kp svg{display:block;width:100%;height:100%}
 .toy .tb{flex:1;min-width:0}
-.toy .th{font-size:15px;font-weight:800;letter-spacing:.22em;color:var(--ink);margin-bottom:4px}
+.toy .th{font-size:15px;font-weight:800;letter-spacing:.04em;color:var(--ink);margin-bottom:4px}
 .toy .rst{padding:0 0 8px}
 .toy .acts2{display:flex;gap:8px}
 html.pulling-on .pbar,html.pulling-on .pbar *{cursor:pointer}
@@ -170,7 +171,7 @@ html.pulling-on .pbar,html.pulling-on .pbar *{cursor:pointer}
     <div class="view" id="vCalc">
       <div id="hList"></div>
       <div class="line1"><div id="hist"></div><button class="cp" data-cp="hist" aria-label="Копировать" data-ial="Копировать"></button></div>
-      <div class="line1"><div class="lcdbox" id="lcdMain" role="img"></div><button class="cp" data-cp="main" aria-label="Копировать" data-ial="Копировать"></button><button class="cp ps" aria-label="Вставить" data-ial="Вставить"></button></div>
+      <div class="line1"><div class="lcdbox" id="lcdMain" role="img"></div><span class="cpcol"><button class="cp" data-cp="main" aria-label="Копировать" data-ial="Копировать"></button><button class="cp ps" aria-label="Вставить" data-ial="Вставить"></button></span></div>
     </div>
 
     <div class="view" id="vConv" hidden>
@@ -236,7 +237,7 @@ en:{
 'Курсы к тенге':'Rates to tenge','Курсы':'Rates','Обновить курсы':'Update rates','Обновляю…':'Updating…','Нет сети: показаны сохранённые курсы':'No network: showing saved rates','Курсы ориентировочные':'Approximate rates','Обновлено':'Updated',
 'Обычный шрифт на дисплее':'Plain font on the display','Шагрень на фоне':'Background grain','Градиент на фоне':'Background gradient','Иконка':'Icon','Серая':'Gray','Оранжевая':'Orange','Оформление':'Appearance','Фон':'Background','Картинка':'Image','Сброс':'Reset',
 'Кейкапы: цифры':'Keycaps: digits','Кейкапы: функции и акцент':'Keycaps: functions & accent','Шрифт клавиш':'Key font','Свой шрифт (файл)':'Custom font (file)',
-'Загрузить':'Upload','Картинка на кейкапах':'Image on keycaps','Выбрать':'Choose','Свои звуки':'Custom sounds',
+'Загрузить':'Upload','Картинка на кейкапах':'Image on keycaps','Выбрать':'Choose','Свои звуки':'Custom sounds','Свой кейкап':'Custom keycap',
 'Клавиши':'Keys','Снятие кейкапа':'Keycap removal','Посадка кейкапа':'Keycap insertion',
 'Как в наборе':'As in the set','Системный':'System','Моноширинный':'Monospace','С засечками':'Serif','Округлый':'Rounded','Брусковый':'Slab','Плакатный':'Poster','Рукописный':'Handwritten','Свой файл':'Custom file',
 'Крем':'Cream','Чёрный':'Black','Красный':'Red','Бирюза':'Teal','Розовый':'Pink','Жёлтый':'Yellow','Синий':'Blue','Лайм':'Lime','Сирень':'Lilac','Оранж':'Orange','Белый':'White','Мята':'Mint',
@@ -269,7 +270,7 @@ kk:{
 'Курсы к тенге':'Теңгеге қатысты бағамдар','Курсы':'Бағамдар','Обновить курсы':'Бағамдарды жаңарту','Обновляю…':'Жаңартылуда…','Нет сети: показаны сохранённые курсы':'Желі жоқ: сақталған бағамдар көрсетілді','Курсы ориентировочные':'Бағамдар шамамен','Обновлено':'Жаңартылды',
 'Обычный шрифт на дисплее':'Дисплейде қарапайым қаріп','Шагрень на фоне':'Фондағы түйіршік','Градиент на фоне':'Фондағы градиент','Иконка':'Белгіше','Серая':'Сұр','Оранжевая':'Қызғылт сары','Оформление':'Безендіру','Фон':'Фон','Картинка':'Сурет','Сброс':'Бастапқы',
 'Кейкапы: цифры':'Кейкаптар: сандар','Кейкапы: функции и акцент':'Кейкаптар: функциялар және акцент','Шрифт клавиш':'Перне қарпі','Свой шрифт (файл)':'Өз қарпің (файл)',
-'Загрузить':'Жүктеу','Картинка на кейкапах':'Кейкаптардағы сурет','Выбрать':'Таңдау','Свои звуки':'Өз дыбыстарың',
+'Загрузить':'Жүктеу','Картинка на кейкапах':'Кейкаптардағы сурет','Выбрать':'Таңдау','Свои звуки':'Өз дыбыстарың','Свой кейкап':'Өз кейкабың',
 'Клавиши':'Пернелер','Снятие кейкапа':'Кейкапты шешу','Посадка кейкапа':'Кейкапты орнату',
 'Как в наборе':'Жинақтағыдай','Системный':'Жүйелік','Моноширинный':'Моноенді','С засечками':'Сызықшалы','Округлый':'Дөңгелек','Брусковый':'Тақта типті','Плакатный':'Плакаттық','Рукописный':'Қолжазба','Свой файл':'Өз файлың',
 'Крем':'Крем','Чёрный':'Қара','Красный':'Қызыл','Бирюза':'Көгілдір','Розовый':'Қызғылт','Жёлтый':'Сары','Синий':'Көк','Лайм':'Лайм','Сирень':'Күлгін','Оранж':'Қызғылт сары','Белый':'Ақ','Мята':'Жалбыз',
@@ -722,7 +723,7 @@ const KITS=[
  {id:'lilac',n:'Сирень',top:'#a98be0',ink:'#ffffff',r:60,shape:'sph',font:'bold'},
  {id:'snow',n:'Белый',top:'#f1f1ee',ink:'#222222',r:22,shape:'rect',font:'serif'},
   /* игрушечный кейкап: своя картинка целиком (по умолчанию assets/keys/toy.png), без надписи; цвет top нужен только как запасной */
-  {id:'toy',n:'СВОЙ',toy:true,top:'#2f6fc4',ink:'#ffffff',r:17,shape:'rect',font:'arial'}];
+  {id:'toy',n:'Свой кейкап',toy:true,top:'#2f6fc4',ink:'#ffffff',r:17,shape:'rect',font:'arial'}];
 const LBS=['7','×','7','C','+','=','5','−','×','÷','9','√'];
 /* пресеты из меню пуллера; цвет каждого можно поменять в настройках (cfg.kits), цвет надписи подбирается по яркости */
 let KL=null;
@@ -1146,7 +1147,7 @@ async function loadFont(ab){ try{ if(FACE) document.fonts.delete(FACE); FACE=new
 const repaintKeys=()=>{ if(!P.on) document.querySelectorAll('#pad .key').forEach(paintKey); };
 function fontSel(){ const e=$('#cFont'); if(!e) return; e.innerHTML=FONTN.concat(FACE?[['custom','Свой файл']]:[]).map(a=>'<option value="'+a[0]+'">'+tr(a[1])+'</option>').join(''); e.value=cfg.capFont||''; }
 let want=null;
-const APP_VER='v0.15';
+const APP_VER='v0.16';
 function renderCust(){
   const av=$('#appVer'); if(av) av.textContent=APP_VER;
   const ps=$('#pulset'); if(ps) ps.innerHTML=crow(tr('Картинка пуллера')+' · 226×535','<button class="btn sm" data-pl="up">'+tr('Загрузить')+'</button><button class="btn sm" data-pl="rs">'+tr('Сброс')+'</button>')+'<div class="rst">'+tr('PNG с прозрачным фоном: пуллер стоит вертикально, рабочая петля внизу. Нужен размер 226×535 px, подойдёт любой с такими же пропорциями (крупнее чётче, высота до 2000 px).')+' <a href="assets/puller.png" target="_blank" rel="noopener">'+tr('Образец')+'</a></div>';
@@ -1218,7 +1219,7 @@ function buildKits(){
   buildToy();
 }
 function buildToy(){ const b=$('#toybox'); if(!b) return; const k=kitList().find(x=>x.toy);
-  b.innerHTML='<div class="toy"><span class="kp">'+capSVG(k,'',200,188)+'</span><div class="tb"><div class="th">СВОЙ</div><div class="rst">'+tr('PNG с прозрачным фоном: игрушечный кейкап целиком. Нужен размер 400×455 px, подойдёт любой с похожими пропорциями (ширина от 300 px). Садится на любую клавишу вместо обычного кейкапа, без надписи.')+' <a href="assets/keys/toy.png" target="_blank" rel="noopener">'+tr('Образец')+'</a></div><div class="acts2"><button class="btn sm" data-toy="up">'+tr('Загрузить')+'</button><button class="btn sm" data-toy="rs">'+tr('Сброс')+'</button></div></div></div>'; }
+  b.innerHTML='<div class="toy"><span class="kp">'+capSVG(k,'',200,188)+'</span><div class="tb"><div class="th">'+tr('Свой кейкап')+'</div><div class="rst">'+tr('PNG с прозрачным фоном: игрушечный кейкап целиком. Нужен размер 400×455 px, подойдёт любой с похожими пропорциями (ширина от 300 px). Садится на любую клавишу вместо обычного кейкапа, без надписи.')+' <a href="assets/keys/toy.png" target="_blank" rel="noopener">'+tr('Образец')+'</a></div><div class="acts2"><button class="btn sm" data-toy="up">'+tr('Загрузить')+'</button><button class="btn sm" data-toy="rs">'+tr('Сброс')+'</button></div></div></div>'; }
 let kT=0, kIn=null;
 function refreshKit(){
   const i=kIn; if(!i) return; const idx=KITS.findIndex(x=>x.id===i.dataset.kit), k=kitList()[idx];
