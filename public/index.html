@@ -170,11 +170,11 @@ html.pulling-on .pbar,html.pulling-on .pbar *{cursor:pointer}
     <div class="view" id="vCalc">
       <div id="hList"></div>
       <div class="line1"><div id="hist"></div><button class="cp" data-cp="hist" aria-label="Копировать" data-ial="Копировать"></button></div>
-      <div class="line1"><div class="lcdbox" id="lcdMain" role="img"></div><button class="cp" data-cp="main" aria-label="Копировать" data-ial="Копировать"></button></div>
+      <div class="line1"><div class="lcdbox" id="lcdMain" role="img"></div><button class="cp" data-cp="main" aria-label="Копировать" data-ial="Копировать"></button><button class="cp ps" aria-label="Вставить" data-ial="Вставить"></button></div>
     </div>
 
     <div class="view" id="vConv" hidden>
-      <div class="crow"><select id="cFrom" aria-label="Из единицы" data-ial="Из единицы"></select><div class="lcdbox" id="cAmt" role="img"></div></div>
+      <div class="crow"><select id="cFrom" aria-label="Из единицы" data-ial="Из единицы"></select><div class="lcdbox" id="cAmt" role="img"></div><button class="cp ps" aria-label="Вставить" data-ial="Вставить"></button></div>
       <div class="swaprow"><button class="swapb" id="cSwap" aria-label="Поменять единицы" data-ial="Поменять единицы"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V5M4 9l4-4 4 4M16 4v15M12 15l4 4 4-4"/></svg></button></div>
       <div class="crow"><select id="cTo" aria-label="В единицу" data-ial="В единицу"></select><div class="lcdbox" id="cOut" role="img"></div></div>
       <div class="cnote" id="cNote"></div>
@@ -225,7 +225,7 @@ en:{
 'PNG с прозрачным фоном: пуллер стоит вертикально, рабочая петля внизу. Нужен размер 226×535 px, подойдёт любой с такими же пропорциями (крупнее чётче, высота до 2000 px).':'PNG on a transparent background: the puller stands upright with the working loop at the bottom. Size 226×535 px; any size with the same proportions works (bigger is sharper, height up to 2000 px).',
 'PNG с прозрачным фоном: игрушечный кейкап целиком. Нужен размер 400×455 px, подойдёт любой с похожими пропорциями (ширина от 300 px). Садится на любую клавишу вместо обычного кейкапа, без надписи.':'PNG on a transparent background: a whole toy keycap. Size 400×455 px; any size with similar proportions works (width from 300 px). It goes on any key instead of a regular keycap, without a legend.',
 'Очистить историю':'Clear history','Звук клавиш':'Key sound','Настройки':'Settings','Копировать':'Copy',
-'Из единицы':'From unit','В единицу':'To unit','Скопировано':'Copied',
+'Из единицы':'From unit','В единицу':'To unit','Скопировано':'Copied','Буфер пуст':'Clipboard is empty','Не удалось вставить':'Could not paste','Не помещается':'Does not fit','Нет доступа к буферу: нажми Ctrl+V или долгое нажатие':'No clipboard access: press Ctrl+V or long-press',
 'Не удалось загрузить шрифт':'Could not load the font','Не открылась картинка':'Could not open the image','Не удалось загрузить звук':'Could not load the sound',
 '0 ÷ 0: подойдёт любое число':'0 ÷ 0: any number fits','на ноль нельзя, но справа +∞, слева −∞':'no division by zero, but +∞ from the right and −∞ from the left',
 'Поменять единицы':'Swap units','Стереть цифру':'Backspace','Сбросить':'Clear','Отменить':'Undo','Пуллер кейкапов':'Keycap puller','Степень':'Power',
@@ -258,7 +258,7 @@ kk:{
 'PNG с прозрачным фоном: пуллер стоит вертикально, рабочая петля внизу. Нужен размер 226×535 px, подойдёт любой с такими же пропорциями (крупнее чётче, высота до 2000 px).':'Мөлдір фондағы PNG: суырғыш тік тұрады, жұмыс ілмегі төменде. Өлшемі 226×535 px, пропорциясы осындай кез келген өлшем жарайды (үлкені анығырақ, биіктігі 2000 px-ге дейін).',
 'PNG с прозрачным фоном: игрушечный кейкап целиком. Нужен размер 400×455 px, подойдёт любой с похожими пропорциями (ширина от 300 px). Садится на любую клавишу вместо обычного кейкапа, без надписи.':'Мөлдір фондағы PNG: толық ойыншық кейкап. Өлшемі 400×455 px, пропорциясы ұқсас кез келген өлшем жарайды (ені 300 px-тен). Кез келген пернеге әдеттегі кейкаптың орнына орнатылады, жазусыз.',
 'Очистить историю':'Тарихты тазалау','Звук клавиш':'Пернелер дыбысы','Настройки':'Баптаулар','Копировать':'Көшіру',
-'Из единицы':'Қай бірліктен','В единицу':'Қай бірлікке','Скопировано':'Көшірілді',
+'Из единицы':'Қай бірліктен','В единицу':'Қай бірлікке','Скопировано':'Көшірілді','Буфер пуст':'Буфер бос','Не удалось вставить':'Қою мүмкін болмады','Не помещается':'Сыймайды','Нет доступа к буферу: нажми Ctrl+V или долгое нажатие':'Буферге қол жеткізу жоқ: Ctrl+V басыңыз',
 'Не удалось загрузить шрифт':'Қаріпті жүктеу мүмкін болмады','Не открылась картинка':'Суретті ашу мүмкін болмады','Не удалось загрузить звук':'Дыбысты жүктеу мүмкін болмады',
 '0 ÷ 0: подойдёт любое число':'0 ÷ 0: кез келген сан сәйкес келеді','на ноль нельзя, но справа +∞, слева −∞':'нөлге бөлуге болмайды, бірақ оң жағынан +∞, сол жағынан −∞',
 'Поменять единицы':'Бірліктерді ауыстыру','Стереть цифру':'Санды өшіру','Сбросить':'Тазалау','Отменить':'Болдырмау','Пуллер кейкапов':'Кейкап суырғыш','Степень':'Дәреже',
@@ -593,15 +593,15 @@ function engKey(k){
 
 /* ================= universal converter ================= */
 const CATS=[
- ['Длина',[['mm','миллиметр',.001],['cm','сантиметр',.01],['m','метр',1],['km','километр',1000],['in','дюйм',.0254],['ft','фут',.3048],['yd','ярд',.9144],['mi','миля',1609.344],['nmi','морская миля',1852]]],
  ['Масса',[['mg','миллиграмм',1e-6],['g','грамм',.001],['kg','килограмм',1],['t','тонна',1000],['oz','унция',.028349523125],['lb','фунт',.45359237]]],
+ ['Длина',[['mm','миллиметр',.001],['cm','сантиметр',.01],['m','метр',1],['km','километр',1000],['in','дюйм',.0254],['ft','фут',.3048],['yd','ярд',.9144],['mi','миля',1609.344],['nmi','морская миля',1852]]],
  ['Температура',[['C','градус Цельсия',0],['F','градус Фаренгейта',0],['K','кельвин',0]]],
  ['Объём',[['ml','миллилитр',.001],['l','литр',1],['gal','галлон США',3.785411784],['cup','стакан США',.2365882365],['tbsp','столовая ложка',.01478676478]]],
  ['Площадь',[['m2','кв. метр',1],['km2','кв. километр',1e6],['ha','гектар',1e4],['ac','акр',4046.8564224],['ft2','кв. фут',.09290304]]],
  ['Скорость',[['ms','метр в секунду',1],['kmh','километр в час',1/3.6],['mph','миля в час',.44704],['kn','узел',.514444]]],
  ['Время',[['s','секунда',1],['min','минута',60],['h','час',3600],['d','сутки',86400],['wk','неделя',604800],['yr','год',31557600]]],
- ['Данные',[['B','байт',1],['KB','килобайт',1024],['MB','мегабайт',1048576],['GB','гигабайт',1073741824],['TB','терабайт',1099511627776]]],
- ['Валюты',Object.keys(DEF).map(c=>[c,CURN[c],0])]
+ ['Валюты',Object.keys(DEF).map(c=>[c,CURN[c],0])],
+ ['Данные',[['B','байт',1],['KB','килобайт',1024],['MB','мегабайт',1048576],['GB','гигабайт',1073741824],['TB','терабайт',1099511627776]]]
 ];
 const UNITS={};
 CATS.forEach(([cat,list])=>list.forEach(([id,name,f])=>{ UNITS[id]={id,nm:name,cat,f,cur:cat==='Валюты'}; }));
@@ -632,7 +632,7 @@ function numStr(v){
 function convKey(k){
   if(/^\d$/.test(k)){ if(C.amt==='0') C.amt=k; else if(C.amt.replace(/\D/g,'').length<100&&lcdRoom($('#cAmt'),fmt(C.amt+k))) C.amt+=k; }
   else if(k===','){ if(!C.amt.includes('.')&&lcdRoom($('#cAmt'),fmt(C.amt+'.'))) C.amt+='.'; }
-  else if(k==='bs'){ C.amt=C.amt.length>1?C.amt.slice(0,-1):'0'; }
+  else if(k==='bs'){ C.amt=C.amt.length>1?C.amt.slice(0,-1):'0'; if(C.amt==='-') C.amt='0'; }
   else if(k==='ac'){ C.amt='0'; }
   else if(k==='swap'){ [C.from,C.to]=[C.to,C.from]; }
 }
@@ -1042,11 +1042,61 @@ async function liveRates(force){
 }
 /* копирование: иконки у строки истории над дисплеем и у главной строки */
 const CPI='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg>';
-function fillIcons(){ document.querySelectorAll('.cp:empty').forEach(b=>{ b.innerHTML=CPI; }); }
+const PSI='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6v3H9z"/><path d="M15 5.5h2a2 2 0 012 2V19a2 2 0 01-2 2H7a2 2 0 01-2-2V7.5a2 2 0 012-2h2"/></svg>';
+function fillIcons(){ document.querySelectorAll('.cp:empty').forEach(b=>{ b.innerHTML=b.classList.contains('ps')?PSI:CPI; }); }
 document.querySelectorAll('.cp[data-cp]').forEach(b=>b.addEventListener('click',()=>{
   const t=b.dataset.cp==='main'?$('#lcdMain').dataset.v:$('#hist').textContent.trim();
   if(t&&!bad(t)) copyText(t.replace(/\u202f/g,'')); else if(t) copyText(t);
 }));
+
+/* вставка из буфера в основную строку (кнопка, Ctrl/Cmd+V, контекстная вставка браузера) */
+function parseNum(t){
+  let x=String(t).trim().replace(/[\s\u00a0\u202f']/g,'').replace(/[−–—]/g,'-');
+  if(!/^[-+]?[\d.,]+$/.test(x)){ const m=x.match(/^[-+]?\d*[.,]?\d+(?:e[-+]?\d+)?$/i); if(!m) return null; return str(Number(x.replace(',','.'))); }
+  const neg=x[0]==='-'; x=x.replace(/^[-+]/,'');
+  const lc=x.lastIndexOf(','), ld=x.lastIndexOf('.');
+  if(lc>=0&&ld>=0){ const dec=lc>ld?',':'.'; x=dec===','?x.replace(/\./g,'').replace(',','.'):x.replace(/,/g,''); }
+  else if(lc>=0||ld>=0){ const sep=lc>=0?',':'.', n=x.split(sep).length-1; if(n>1) x=x.split(sep).join(''); else x=x.replace(sep,'.'); }
+  if(!/^\d*\.?\d*$/.test(x)||!/\d/.test(x)) return null;
+  if(x[0]==='.') x='0'+x;
+  x=x.replace(/^0+(?=\d)/,''); if(x.endsWith('.')) x=x.slice(0,-1);
+  return (neg&&+x!==0?'-':'')+x;
+}
+function doPaste(t){
+  t=String(t||'').trim(); if(!t){ toast(tr('Буфер пуст')); return; }
+  if(mode==='eng'){
+    const ex=t.replace(/[\s\u00a0\u202f]/g,'').replace(/[*]/g,'×').replace(/[\/:]/g,'÷').replace(/[-–—]/g,'−').replace(/,/g,'.');
+    if(!/^[\d.+−×÷^()]+$/.test(ex)){ const n=parseNum(t); if(n===null){ toast(tr('Не удалось вставить')); return; } return doPaste2(n); }
+    if(E.fresh){ E.expr=''; E.fresh=false; E.hist=''; }
+    E.expr+=ex; render(); return;
+  }
+  const n=parseNum(t); if(n===null){ toast(tr('Не удалось вставить')); return; }
+  doPaste2(n);
+}
+function doPaste2(n){
+  U.push(snap()); if(U.length>60) U.shift();
+  if(mode==='conv'){
+    if(n.replace(/\D/g,'').length>100||!lcdRoom($('#cAmt'),fmt(n))){ U.pop(); toast(tr('Не помещается')); return; }
+    C.amt=n;
+  }else if(mode==='eng'){
+    if(E.fresh){ E.expr=''; E.fresh=false; E.hist=''; }
+    E.expr+=n.replace('-','−');
+  }else{
+    if(n.replace(/\D/g,'').length>100||!lcdRoom($('#lcdMain'),fmt(n))){ U.pop(); toast(tr('Не помещается')); return; }
+    if(bad(S.cur)) S.hist='';
+    S.cur=n; S.fresh=false; S.note='';
+  }
+  render();
+}
+function pasteFromClipboard(){
+  if(navigator.clipboard&&navigator.clipboard.readText) navigator.clipboard.readText().then(doPaste,()=>toast(tr('Нет доступа к буферу: нажми Ctrl+V или долгое нажатие')));
+  else toast(tr('Нет доступа к буферу: нажми Ctrl+V или долгое нажатие'));
+}
+document.querySelectorAll('.cp.ps').forEach(b=>b.addEventListener('click',pasteFromClipboard));
+window.addEventListener('paste',e=>{
+  if(!$('#sheet').hidden||P.on||/^(INPUT|SELECT|TEXTAREA)$/.test((e.target||{}).tagName)) return;
+  const t=e.clipboardData&&e.clipboardData.getData('text'); if(t){ e.preventDefault(); doPaste(t); }
+});
 const sndIcon=()=>{ $('#snd').classList.toggle('off',!snd.on); $('#snd').setAttribute('aria-pressed',String(snd.on)); $('#sOn').checked=snd.on; $('#sRel').checked=snd.rel!==false; };
 $('#snd').addEventListener('click',()=>{ snd.on=!snd.on; save(); sndIcon(); click(1,false); });
 $('#sOn').addEventListener('change',e=>{ snd.on=e.target.checked; save(); sndIcon(); click(1,false); });
@@ -1096,7 +1146,7 @@ async function loadFont(ab){ try{ if(FACE) document.fonts.delete(FACE); FACE=new
 const repaintKeys=()=>{ if(!P.on) document.querySelectorAll('#pad .key').forEach(paintKey); };
 function fontSel(){ const e=$('#cFont'); if(!e) return; e.innerHTML=FONTN.concat(FACE?[['custom','Свой файл']]:[]).map(a=>'<option value="'+a[0]+'">'+tr(a[1])+'</option>').join(''); e.value=cfg.capFont||''; }
 let want=null;
-const APP_VER='v0.14';
+const APP_VER='v0.15';
 function renderCust(){
   const av=$('#appVer'); if(av) av.textContent=APP_VER;
   const ps=$('#pulset'); if(ps) ps.innerHTML=crow(tr('Картинка пуллера')+' · 226×535','<button class="btn sm" data-pl="up">'+tr('Загрузить')+'</button><button class="btn sm" data-pl="rs">'+tr('Сброс')+'</button>')+'<div class="rst">'+tr('PNG с прозрачным фоном: пуллер стоит вертикально, рабочая петля внизу. Нужен размер 226×535 px, подойдёт любой с такими же пропорциями (крупнее чётче, высота до 2000 px).')+' <a href="assets/puller.png" target="_blank" rel="noopener">'+tr('Образец')+'</a></div>';
