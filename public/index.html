@@ -100,6 +100,8 @@ body::after{mix-blend-mode:normal;opacity:.06}
 .cp:active{color:var(--lcd)}
 .cpcol{display:flex;flex-direction:column;justify-content:center;gap:4px;flex:none}
 .hrow span{flex:1;min-width:0}
+a.btn{text-decoration:none;box-sizing:border-box}
+#fbBtn{margin:6px 0 4px}
 .btn.wide{width:100%;display:flex;align-items:center;justify-content:center;gap:10px}
 .rst{color:var(--muted);font-size:13px;padding:0 0 8px}.rst a{color:inherit}
 .pbar{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:38px;color:var(--ink);font-size:13px;font-weight:600;line-height:1.2}
@@ -192,6 +194,8 @@ html.pulling-on .pbar,html.pulling-on .pbar *{cursor:pointer}
   <div class="card" role="dialog" aria-label="Настройки" data-ial="Настройки">
     <div class="hd"><h2><span data-i="Настройки">Настройки</span><span class="ver" id="appVer"></span></h2><button class="xb" id="done" aria-label="Закрыть" data-ial="Закрыть"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <label class="line"><span>Язык · Language · Тіл</span><select id="lang" aria-label="Language"></select></label>
+    <a class="btn wide" id="fbBtn" href="https://t.me/teamoore" target="_blank" rel="noopener"><span data-i="Написать в Telegram">Написать в Telegram</span><span>@teamoore</span></a>
+    <div class="rst" data-i="Пиши текстом, голосовым или видео: что сломалось или чего не хватает.">Пиши текстом, голосовым или видео: что сломалось или чего не хватает.</div>
     <h3 data-i="Звук клавиш">Звук клавиш</h3>
     <label class="line"><span data-i="Звук включён">Звук включён</span><input type="checkbox" id="sOn"></label>
     <label class="line"><span data-i="Звук отпускания">Звук отпускания</span><input type="checkbox" id="sRel"></label>
@@ -237,7 +241,7 @@ en:{
 'Курсы к тенге':'Rates to tenge','Курсы':'Rates','Обновить курсы':'Update rates','Обновляю…':'Updating…','Нет сети: показаны сохранённые курсы':'No network: showing saved rates','Курсы ориентировочные':'Approximate rates','Обновлено':'Updated',
 'Обычный шрифт на дисплее':'Plain font on the display','Шагрень на фоне':'Background grain','Градиент на фоне':'Background gradient','Иконка':'Icon','Серая':'Gray','Оранжевая':'Orange','Оформление':'Appearance','Фон':'Background','Картинка':'Image','Сброс':'Reset',
 'Кейкапы: цифры':'Keycaps: digits','Кейкапы: функции и акцент':'Keycaps: functions & accent','Шрифт клавиш':'Key font','Свой шрифт (файл)':'Custom font (file)',
-'Загрузить':'Upload','Картинка на кейкапах':'Image on keycaps','Выбрать':'Choose','Свои звуки':'Custom sounds','Свой кейкап':'Custom keycap',
+'Загрузить':'Upload','Картинка на кейкапах':'Image on keycaps','Выбрать':'Choose','Свои звуки':'Custom sounds','Обратная связь':'Feedback','Пиши текстом, голосовым или видео: что сломалось или чего не хватает.':'Send text, a voice message or a video: what broke or what is missing.','Написать в Telegram':'Message on Telegram','Свой кейкап':'Custom keycap',
 'Клавиши':'Keys','Снятие кейкапа':'Keycap removal','Посадка кейкапа':'Keycap insertion',
 'Как в наборе':'As in the set','Системный':'System','Моноширинный':'Monospace','С засечками':'Serif','Округлый':'Rounded','Брусковый':'Slab','Плакатный':'Poster','Рукописный':'Handwritten','Свой файл':'Custom file',
 'Крем':'Cream','Чёрный':'Black','Красный':'Red','Бирюза':'Teal','Розовый':'Pink','Жёлтый':'Yellow','Синий':'Blue','Лайм':'Lime','Сирень':'Lilac','Оранж':'Orange','Белый':'White','Мята':'Mint',
@@ -270,7 +274,7 @@ kk:{
 'Курсы к тенге':'Теңгеге қатысты бағамдар','Курсы':'Бағамдар','Обновить курсы':'Бағамдарды жаңарту','Обновляю…':'Жаңартылуда…','Нет сети: показаны сохранённые курсы':'Желі жоқ: сақталған бағамдар көрсетілді','Курсы ориентировочные':'Бағамдар шамамен','Обновлено':'Жаңартылды',
 'Обычный шрифт на дисплее':'Дисплейде қарапайым қаріп','Шагрень на фоне':'Фондағы түйіршік','Градиент на фоне':'Фондағы градиент','Иконка':'Белгіше','Серая':'Сұр','Оранжевая':'Қызғылт сары','Оформление':'Безендіру','Фон':'Фон','Картинка':'Сурет','Сброс':'Бастапқы',
 'Кейкапы: цифры':'Кейкаптар: сандар','Кейкапы: функции и акцент':'Кейкаптар: функциялар және акцент','Шрифт клавиш':'Перне қарпі','Свой шрифт (файл)':'Өз қарпің (файл)',
-'Загрузить':'Жүктеу','Картинка на кейкапах':'Кейкаптардағы сурет','Выбрать':'Таңдау','Свои звуки':'Өз дыбыстарың','Свой кейкап':'Өз кейкабың',
+'Загрузить':'Жүктеу','Картинка на кейкапах':'Кейкаптардағы сурет','Выбрать':'Таңдау','Свои звуки':'Өз дыбыстарың','Обратная связь':'Кері байланыс','Пиши текстом, голосовым или видео: что сломалось или чего не хватает.':'Мәтінмен, дауыстық хабарламамен немесе бейнемен жаз: не бұзылды немесе не жетіспейді.','Написать в Telegram':'Telegram-да жазу','Свой кейкап':'Өз кейкабың',
 'Клавиши':'Пернелер','Снятие кейкапа':'Кейкапты шешу','Посадка кейкапа':'Кейкапты орнату',
 'Как в наборе':'Жинақтағыдай','Системный':'Жүйелік','Моноширинный':'Моноенді','С засечками':'Сызықшалы','Округлый':'Дөңгелек','Брусковый':'Тақта типті','Плакатный':'Плакаттық','Рукописный':'Қолжазба','Свой файл':'Өз файлың',
 'Крем':'Крем','Чёрный':'Қара','Красный':'Қызыл','Бирюза':'Көгілдір','Розовый':'Қызғылт','Жёлтый':'Сары','Синий':'Көк','Лайм':'Лайм','Сирень':'Күлгін','Оранж':'Қызғылт сары','Белый':'Ақ','Мята':'Жалбыз',
@@ -1147,7 +1151,7 @@ async function loadFont(ab){ try{ if(FACE) document.fonts.delete(FACE); FACE=new
 const repaintKeys=()=>{ if(!P.on) document.querySelectorAll('#pad .key').forEach(paintKey); };
 function fontSel(){ const e=$('#cFont'); if(!e) return; e.innerHTML=FONTN.concat(FACE?[['custom','Свой файл']]:[]).map(a=>'<option value="'+a[0]+'">'+tr(a[1])+'</option>').join(''); e.value=cfg.capFont||''; }
 let want=null;
-const APP_VER='v0.16';
+const APP_VER='v0.18';
 function renderCust(){
   const av=$('#appVer'); if(av) av.textContent=APP_VER;
   const ps=$('#pulset'); if(ps) ps.innerHTML=crow(tr('Картинка пуллера')+' · 226×535','<button class="btn sm" data-pl="up">'+tr('Загрузить')+'</button><button class="btn sm" data-pl="rs">'+tr('Сброс')+'</button>')+'<div class="rst">'+tr('PNG с прозрачным фоном: пуллер стоит вертикально, рабочая петля внизу. Нужен размер 226×535 px, подойдёт любой с такими же пропорциями (крупнее чётче, высота до 2000 px).')+' <a href="assets/puller.png" target="_blank" rel="noopener">'+tr('Образец')+'</a></div>';
@@ -1298,6 +1302,5 @@ pullerLoad('assets/puller.png');
 applyStatic(); document.documentElement.lang=lang; sndIcon(); buildRates(); wireCust(); renderCust(); fillIcons(); liveRates(false);
 Promise.race([capsReady,new Promise(r=>setTimeout(r,2500))]).then(()=>{ setMode('calc'); if(mode!=='conv') $('#pad').style.visibility='hidden'; loadCustom(); return introWait(); }).then(intro,showPad);
 </script>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1d20c29501174e618b9b6186bda593e3"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
